@@ -126,7 +126,7 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function sendGenericMessage(recipientId) {
-  var messageData = {
+  /*var messageData = {
     recipient: {
       id: recipientId
     },
@@ -137,8 +137,16 @@ function sendGenericMessage(recipientId) {
           template_type: "generic",
           elements: [{
             title: "rift",
-            subtitle: "Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. ",            
-            buttons: [{
+            subtitle: "Next-generation virtual reality. 
+            Next-generation virtual reality. 
+            Next-generation virtual reality. 
+            Next-generation virtual reality. 
+            Next-generation virtual reality. 
+            Next-generation virtual reality. 
+            Next-generation virtual reality. 
+            Next-generation virtual reality. 
+            Next-generation virtual reality. ",            
+            quick_replies: [{
               type: "postback",
               title: "A",
               payload: "1. A",
@@ -165,7 +173,28 @@ function sendGenericMessage(recipientId) {
         }
       }
     }
-  };  
+  }; */
+
+  var messageData = {
+  	recipient: {
+      id: recipientId
+    },
+   	message:{
+    text: "Here's a quick reply!",
+    quick_replies:[
+	      {
+	        content_type:"text",
+	        title:"A",
+	        payload:"<POSTBACK_PAYLOAD>"        
+	      },
+	      {
+	        content_type:"text",
+	        title:"B",
+	        payload:"<POSTBACK_PAYLOAD>"        
+	      }
+    	]
+  	}
+  }; 
 
   callSendAPI(messageData);
 }
