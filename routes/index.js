@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+const request = require('request');
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.json({ message : 'hellohello'});
@@ -36,6 +38,8 @@ router.post('/webhook', function (req, res) {
       entry.messaging.forEach(function(event) {
         if (event.message) {
           //receivedMessage(event);
+          var senderID = event.sender.id;
+          sendGenericMessage(senderID);
           console.log('Message');
         } else if (event.postback) {
           //receivedPostback(event);  
