@@ -137,7 +137,7 @@ function sendGenericMessage(recipientId) {
           template_type: "generic",
           elements: [{
             title: "rift",
-            subtitle: "Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. "            
+            subtitle: "Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. Next-generation virtual reality. ",            
             buttons: [{
               type: "postback",
               title: "A",
