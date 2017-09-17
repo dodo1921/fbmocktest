@@ -4,7 +4,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/payments');
+var payments = require('./routes/payments');
 
 var app = express();
 
