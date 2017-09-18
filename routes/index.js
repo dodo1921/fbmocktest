@@ -180,7 +180,12 @@ function sendGenericMessage(recipientId) {
       id: recipientId
     },
    	message:{
-    text: "Here's a quick reply!",
+    attachment:{
+      type:"image",
+      payload:{
+        url:"https://s3.ap-south-1.amazonaws.com/hahusers/images/elder_care.jpg"
+      }
+    },
     quick_replies:[
 	      {
 	        content_type:"text",
