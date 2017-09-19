@@ -88,34 +88,37 @@ function receivedMessage(event) {
         }
         case '<SCORE>':{
 
-          knex('users').where({fbid: senderID}).select('score')
-          .then( user => {
+            knex('users').where({fbid: senderID}).select('score')
+            .then( user => {
 
-            if(user.length >0){
+              if(user.length >0){
 
-              let msgText = 'Overall Total Score: '+user[0].score; 
-              sendMsgModeA(senderID, msgText);
+                let msgText = 'Overall Total Score: '+user[0].score; 
+                sendMsgModeA(senderID, msgText);
 
-            }else if( user.length == 0){
+              }else if( user.length == 0){
 
-                knex('users').insert({fbid: senderID})
-                .then( () => {
-                  console.log('New User Created');
-                  let msgText = 'Overall Total Score: 0'; 
-                  sendMsgModeA(senderID, msgText);
-                }).catch(err => {
+                  knex('users').insert({fbid: senderID})
+                  .then( () => {
+                    console.log('New User Created');
+                    let msgText = 'Overall Total Score: 0'; 
+                    sendMsgModeA(senderID, msgText);
+                  }).catch(err => {
 
-                });
+                  });
 
-            }
+              }
 
-          }).catch(err => {
+            }).catch(err => {
 
-          });
+            });
 
-          break;
+            break;
+
         }
         default:{
+
+            console.log('Default payload');
 
         }
 
@@ -130,7 +133,8 @@ function receivedMessage(event) {
           break;
         }
 
-      default:{          
+      default:{   
+          console.log('Default messageText');       
           let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks.";
           sendMsgModeA(senderID, msgText);
         }
