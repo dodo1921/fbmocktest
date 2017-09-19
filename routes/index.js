@@ -75,24 +75,72 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
 
-  if (messageText) {
-    // If we receive a text message, check to see if it matches a keyword
-    // and send back the template example. Otherwise, just echo the text we received.
+  if( message.quick_reply.payload){
+
+      switch (message.quick_reply.payload) {
+        case '<START TEST>':{
+
+          break;
+        }
+        case '<ADD MONEY>':{
+
+          break;
+        }
+        case '<SCORE>':{
+
+          knex('users').where({fbid: senderID}).select('score')
+          .then( user => {
+
+            if(user.length >0){
+
+              let msgText = 'Overall Total Score: '+user[0].score; 
+              sendMsgModeA(senderID, msgText);
+
+            }else if( user.length == 0){
+
+                knex('users').insert({fbid: senderID})
+                .then( () => {
+                  console.log('New User Created');
+                  let msgText = 'Overall Total Score: 0'; 
+                  sendMsgModeA(senderID, msgText);
+                }).catch(err => {
+
+                });
+
+            }
+
+          }).catch(err => {
+
+          });
+
+          break;
+        }
+        default:{
+
+        }
+
+      }
+
+
+  } else if (messageText) {
+    
     switch (messageText) {
       case 'generic':{
 
           break;
         }
 
-      default:{
-          console.log('PAYLOAD'+message.quick_reply.payload);
+      default:{          
           let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks.";
           sendMsgModeA(senderID, msgText);
         }
       }
   } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
+
+      sendTextMessage(senderID, "Message with attachment received");
+
   }
+
 }
 
 function receivedPostback(event) {
@@ -140,8 +188,8 @@ function sendMsgModeA(recipientId, messageText) {
           },
           {
             content_type:"text",
-            title:"Wallet",
-            payload:"<WALLET>"        
+            title:"Add Money",
+            payload:"<ADD MONEY>"        
           },          
           {
             content_type:"text",
