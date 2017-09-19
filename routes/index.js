@@ -40,13 +40,9 @@ router.post('/webhook', function (req, res) {
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
         if (event.message) {
-          //receivedMessage(event);
-          var senderID = event.sender.id;
-          sendGenericMessage(senderID);
-          console.log('Message');
+          receivedMessage(event);          
         } else if (event.postback) {
-          receivedPostback(event);
-          console.log('Postback'); 
+          receivedPostback(event);          
         } else {
           console.log("Webhook received unknown event: ", event);
         }
@@ -83,13 +79,16 @@ function receivedMessage(event) {
     // If we receive a text message, check to see if it matches a keyword
     // and send back the template example. Otherwise, just echo the text we received.
     switch (messageText) {
-      case 'generic':
-        sendGenericMessage(senderID);
-        break;
+      case 'generic':{
 
-      default:
-        sendTextMessage(senderID, messageText);
-    }
+          break;
+        }
+
+      default:{
+          let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks.";
+          sendMsgModeA(senderID, msgText);
+        }
+      }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
   }
@@ -112,7 +111,7 @@ function receivedPostback(event) {
   .then( () => {
     console.log('New User Created');
     let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. ";
-    sendMsgModeA(senderID, msgText)
+    sendMsgModeA(senderID, msgText);
   }).catch(err => {
 
   })
@@ -130,31 +129,29 @@ function sendMsgModeA(recipientId, messageText) {
     recipient: {
       id: recipientId
     },
-    message:{
-    attachment:{
-      text: messageText
-    },
-    quick_replies:[
-        {
-          content_type:"text",
-          title:"Start Test",
-          payload:"<START TEST>"        
-        },
-        {
-          content_type:"text",
-          title:"Add Money",
-          payload:"<Add Money>"        
-        },
-        {
-          content_type:"text",
-          title:"Balance",
-          payload:"<BALANCE>"        
-        },
-        {
-          content_type:"text",
-          title:"Score",
-          payload:"<SCORE>"        
-        }
+    message:{    
+      text: messageText,    
+      quick_replies:[
+          {
+            content_type:"text",
+            title:"Start Test",
+            payload:"<START TEST>"        
+          },
+          {
+            content_type:"text",
+            title:"Add Money",
+            payload:"<Add Money>"        
+          },
+          {
+            content_type:"text",
+            title:"Balance",
+            payload:"<BALANCE>"        
+          },
+          {
+            content_type:"text",
+            title:"Score",
+            payload:"<SCORE>"        
+          }
       ]
     }
   }; 
