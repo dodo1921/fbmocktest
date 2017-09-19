@@ -76,7 +76,7 @@ function receivedMessage(event) {
   console.log('>>>>>>'+messageText);
   var messageAttachments = message.attachments;
 
-  if( message.quick_reply.payload){
+  /*if( message.quick_reply.payload){
       console.log('>>>>>>>>>>>>>'+message.quick_reply.payload);
       switch (message.quick_reply.payload) {
         case '<START TEST>':{
@@ -126,7 +126,7 @@ function receivedMessage(event) {
       }
 
 
-  } else if (messageText) {
+  } else*/ if (messageText) {
     console.log('Default messageText');
     switch (messageText) {
       case 'generic':{
