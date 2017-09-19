@@ -39,13 +39,40 @@ router.post('/webhook', function (req, res) {
 
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
-        if (event.message) {
-          receivedMessage(event);          
-        } else if (event.postback) {
-          receivedPostback(event);          
-        } else {
-          console.log("Webhook received unknown event: ", event);
-        }
+
+            knex('user').where({fbid: event.sender.id}).select()
+            .then(user => {
+
+                  if( user && user.length>0 ){
+                      if (event.message) {
+                        receivedMessage(event, user[0]);          
+                      } else if (event.postback) {
+                        receivedPostback(event, user[0]);          
+                      } else {
+                        console.log("Webhook received unknown event: ", event);
+                      }
+                  }else if(user.length == 0) {
+
+                      knex('users').insert({fbid: event.sender.id})
+                      .then( () => {                
+                          
+                          if (event.message) {
+                            receivedMessage(event, { fbid: event.sender.id, mode: 'A', score: 0 } );          
+                          } else if (event.postback) {
+                            receivedPostback(event, { fbid: event.sender.id, mode: 'A', score: 0 } );          
+                          } else {
+                            console.log("Webhook received unknown event: ", event);
+                          }
+
+                      }).catch(err => {
+
+                      });
+
+                  }
+
+            }).catch( err => {});      
+
+
       });
     });
 
@@ -60,7 +87,7 @@ router.post('/webhook', function (req, res) {
 
 
 // Incoming events handling
-function receivedMessage(event) {
+function receivedMessage(event, user) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
@@ -73,11 +100,11 @@ function receivedMessage(event) {
   var messageId = message.mid;
 
   var messageText = message.text;
-  console.log('>>>>>>'+messageText);
+  
   var messageAttachments = message.attachments;
 
   if( message.quick_reply && message.quick_reply.payload){
-      console.log('>>>>>>>>>>>>>'+message.quick_reply.payload);
+      
       switch (message.quick_reply.payload) {
         case '<START TEST>':{
 
@@ -89,30 +116,11 @@ function receivedMessage(event) {
         }
         case '<SCORE>':{
 
-            knex('users').where({fbid: senderID}).select('score')
-            .then( user => {
-
-              if(user.length >0){
-
-                let msgText = 'Overall Total Score: '+user[0].score; 
+              if(user.mode === 'A'){
+                let msgText = 'Overall Total Score: '+user.score; 
                 sendMsgModeA(senderID, msgText);
-
-              }else if( user.length == 0){
-
-                  knex('users').insert({fbid: senderID})
-                  .then( () => {
-                    console.log('New User Created');
-                    let msgText = 'Overall Total Score: 0'; 
-                    sendMsgModeA(senderID, msgText);
-                  }).catch(err => {
-
-                  });
-
               }
-
-            }).catch(err => {
-
-            });
+              
 
             break;
 
@@ -127,54 +135,51 @@ function receivedMessage(event) {
 
 
   } else if (messageText) {
-    console.log('Default messageText');
+    
     switch (messageText) {
-      case 'generic':{
 
-          break;
+        case 'generic':{
+
+            break;
         }
 
-      default:{   
-          console.log('Default messageText');       
-          let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks.";
-          sendMsgModeA(senderID, msgText);
+        default:{   
+            if(user.mode === 'A'){
+              let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
+              sendMsgModeA(senderID, msgText);
+            }      
+            
         }
-      }
+        
+    }
+
   } else{
 
-          console.log('Default messageText');       
-          let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks.";
-          sendMsgModeA(senderID, msgText);
+          if(user.mode === 'A'){
+            let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
+            sendMsgModeA(senderID, msgText);
+          } 
 
   }
 
 }
 
-function receivedPostback(event) {
+function receivedPostback(event, user) {
+
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfPostback = event.timestamp;
-
-  // The 'payload' param is a developer-defined field which is set in a postback 
-  // button for Structured Messages. 
+  
   var payload = event.postback.payload;
 
   console.log("Received postback for user %d and page %d with payload '%s' " + 
     "at %d", senderID, recipientID, payload, timeOfPostback);
 
-
-  knex('users').insert({fbid: senderID})
-  .then( () => {
-    console.log('New User Created');
-    let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. ";
+  if(user.mode === 'A'){
+    let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
     sendMsgModeA(senderID, msgText);
-  }).catch(err => {
+  }
 
-  })
-
-  // When a postback is called, we'll send a message back to the sender to 
-  // let them know it was successful
-  //sendTextMessage(senderID, "Postback called");
 }
 
 //////////////////////////
