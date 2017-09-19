@@ -111,6 +111,8 @@ function receivedPostback(event) {
   knex('users').insert({fbid: senderID})
   .then( () => {
     console.log('New User Created');
+    let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. ";
+    sendMsgModeA(senderID, msgText)
   }).catch(err => {
 
   })
@@ -123,18 +125,46 @@ function receivedPostback(event) {
 //////////////////////////
 // Sending helpers
 //////////////////////////
-function sendTextMessage(recipientId, messageText) {
+function sendMsgModeA(recipientId, messageText) {
   var messageData = {
     recipient: {
       id: recipientId
     },
-    message: {
+    message:{
+    attachment:{
       text: messageText
+    },
+    quick_replies:[
+        {
+          content_type:"text",
+          title:"Start Test",
+          payload:"<START TEST>"        
+        },
+        {
+          content_type:"text",
+          title:"Add Money",
+          payload:"<Add Money>"        
+        },
+        {
+          content_type:"text",
+          title:"Balance",
+          payload:"<BALANCE>"        
+        },
+        {
+          content_type:"text",
+          title:"Score",
+          payload:"<SCORE>"        
+        }
+      ]
     }
-  };
+  }; 
 
   callSendAPI(messageData);
 }
+
+
+
+
 
 function sendGenericMessage(recipientId) {
   /*var messageData = {
