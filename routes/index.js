@@ -73,6 +73,7 @@ function receivedMessage(event) {
   var messageId = message.mid;
 
   var messageText = message.text;
+  console.log('>>>>>>'+messageText);
   var messageAttachments = message.attachments;
 
   if( message.quick_reply.payload){
