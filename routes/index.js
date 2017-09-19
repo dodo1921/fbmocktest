@@ -127,7 +127,7 @@ function receivedMessage(event) {
 
 
   } else if (messageText) {
-    
+    console.log('Default messageText');
     switch (messageText) {
       case 'generic':{
 
