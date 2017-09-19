@@ -11,6 +11,9 @@
     "debug": "~2.6.0",
     "express": "~4.14.1",
     "ejs": "^1.0.0",
-    "request": "*"    
+    "request": "*",
+    "knex": "*",
+    "mysql": "^2.13.0",
+    "mysql2": "*"    
   }
 }
