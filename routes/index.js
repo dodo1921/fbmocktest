@@ -85,6 +85,7 @@ function receivedMessage(event) {
         }
 
       default:{
+          console.log('PAYLOAD'+message.quick_reply.payload);
           let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks.";
           sendMsgModeA(senderID, msgText);
         }
@@ -139,14 +140,9 @@ function sendMsgModeA(recipientId, messageText) {
           },
           {
             content_type:"text",
-            title:"Add Money",
-            payload:"<Add Money>"        
-          },
-          {
-            content_type:"text",
-            title:"Balance",
-            payload:"<BALANCE>"        
-          },
+            title:"Wallet",
+            payload:"<WALLET>"        
+          },          
           {
             content_type:"text",
             title:"Score",
