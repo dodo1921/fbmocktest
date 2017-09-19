@@ -40,7 +40,7 @@ router.post('/webhook', function (req, res) {
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
 
-            knex('user').where({fbid: event.sender.id}).select()
+            knex('users').where({fbid: event.sender.id}).select()
             .then(user => {
 
                   if( user && user.length>0 ){
@@ -150,7 +150,7 @@ function receivedMessage(event, user) {
             }      
             
         }
-        
+
     }
 
   } else{
