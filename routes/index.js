@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+let knex = require('../db/knex');
+let Promise = require('bluebird');
+
 const request = require('request');
 
 /* GET home page. */
@@ -42,7 +45,7 @@ router.post('/webhook', function (req, res) {
           sendGenericMessage(senderID);
           console.log('Message');
         } else if (event.postback) {
-          //receivedPostback(event);  
+          receivedPostback(event);
           console.log('Postback'); 
         } else {
           console.log("Webhook received unknown event: ", event);
@@ -106,7 +109,7 @@ function receivedPostback(event) {
 
   // When a postback is called, we'll send a message back to the sender to 
   // let them know it was successful
-  sendTextMessage(senderID, "Postback called");
+  //sendTextMessage(senderID, "Postback called");
 }
 
 //////////////////////////
@@ -174,6 +177,8 @@ function sendGenericMessage(recipientId) {
       }
     }
   }; */
+
+
 
   var messageData = {
   	recipient: {
