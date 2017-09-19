@@ -77,7 +77,7 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
 
   if( message.quick_reply.payload){
-
+      console.log('>>>>>>>>>>>>>'+message.quick_reply.payload);
       switch (message.quick_reply.payload) {
         case '<START TEST>':{
 
@@ -140,9 +140,11 @@ function receivedMessage(event) {
           sendMsgModeA(senderID, msgText);
         }
       }
-  } else if (messageAttachments) {
+  } else{
 
-      sendTextMessage(senderID, "Message with attachment received");
+          console.log('Default messageText');       
+          let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks.";
+          sendMsgModeA(senderID, msgText);
 
   }
 
