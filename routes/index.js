@@ -115,7 +115,8 @@ function receivedMessage(event, user) {
         }
         case '<ADD MONEY>':{
 
-              if(user.mode === 'A'){                
+              if(user.mode === 'A'){      
+                console.log('Add money');          
                 sendPaymentLinkPasscode(senderID, user);
               }
 
@@ -224,10 +225,14 @@ function sendMsgModeA(recipientId, messageText) {
 
 function sendPaymentLinkPasscode(recipientId, user) {  
 
+                  console.log('Add money2');          
   
 
   knex('users').where({fbid:recipientId}).update({passcode})
   .then( () => {
+
+                      console.log('Add money3');          
+
 
       let passcode = speakeasy.totp({secret: 'secret',  encoding: 'base32'});
       let msg = "Current Balance: Rs."+user.balance+"\n\n"+"Passcode:"+passcode+"\nUse the passcode to make a payment";
@@ -265,8 +270,10 @@ function sendPaymentLinkPasscode(recipientId, user) {
 
   }).catch(err => {
 
+                    console.log('Add money4');          
 
-  })
+
+  });
   
   
 }
