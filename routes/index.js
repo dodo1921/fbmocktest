@@ -227,14 +227,14 @@ function sendPaymentLinkPasscode(recipientId, user) {
 
                   console.log('Add money2');          
   
-
+  let passcode = speakeasy.totp({secret: 'secret',  encoding: 'base32'});                
   knex('users').where({fbid:recipientId}).update({passcode})
   .then( () => {
 
                       console.log('Add money3');          
 
 
-      let passcode = speakeasy.totp({secret: 'secret',  encoding: 'base32'});
+      
       let msg = "Current Balance: Rs."+user.balance+"\n\n"+"Passcode:"+passcode+"\nUse the passcode to make a payment";
 
       var messageData = {
