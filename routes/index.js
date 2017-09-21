@@ -4,6 +4,9 @@ var router = express.Router();
 let knex = require('../db/knex');
 let Promise = require('bluebird');
 
+
+let speakeasy = require('speakeasy');
+
 const request = require('request');
 
 /* GET home page. */
@@ -57,9 +60,9 @@ router.post('/webhook', function (req, res) {
                       .then( () => {                
                           
                           if (event.message) {
-                            receivedMessage(event, { fbid: event.sender.id, mode: 'A', score: 0 } );          
+                            receivedMessage(event, { fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } );          
                           } else if (event.postback) {
-                            receivedPostback(event, { fbid: event.sender.id, mode: 'A', score: 0 } );          
+                            receivedPostback(event, { fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } );          
                           } else {
                             console.log("Webhook received unknown event: ", event);
                           }
@@ -112,6 +115,10 @@ function receivedMessage(event, user) {
         }
         case '<ADD MONEY>':{
 
+              if(user.mode === 'A'){                
+                sendPaymentLinkPasscode(senderID, user);
+              }
+
           break;
         }
         case '<SCORE>':{
@@ -119,8 +126,7 @@ function receivedMessage(event, user) {
               if(user.mode === 'A'){
                 let msgText = 'Overall Total Score: '+user.score; 
                 sendMsgModeA(senderID, msgText);
-              }
-              
+              }              
 
             break;
 
@@ -213,6 +219,56 @@ function sendMsgModeA(recipientId, messageText) {
   }; 
 
   callSendAPI(messageData);
+}
+
+
+function sendPaymentLinkPasscode(recipientId, user) {  
+
+  
+
+  knex('users').where({fbid:recipientId}).update({passcode})
+  .then( () => {
+
+      let passcode = speakeasy.totp({secret: 'secret',  encoding: 'base32'});
+      let msg = "Current Balance: Rs."+user.balance+"\n\n"+"Passcode:"+passcode+"\nUse the passcode to make a payment";
+
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          attachment: {
+            type: "template",
+            payload: {
+              template_type: "button",
+              elements: [{
+                text:msg,            
+                buttons: [{
+                  type: "web_url",
+                  url: "https://fbmocktest.herokuapp.com/payments/",
+                  title: "Paytm Payment link"
+                }, {
+                  type: "postback",
+                  title: "back",
+                  payload: "<BACK>",
+                }],
+              }]
+            }
+          }
+        }
+      };  
+
+
+      callSendAPI(messageData); 
+
+
+
+  }).catch(err => {
+
+
+  })
+  
+  
 }
 
 
