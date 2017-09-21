@@ -246,9 +246,8 @@ function sendPaymentLinkPasscode(recipientId, user) {
             type: "template",
             payload: {
               template_type: "button",
-              elements: [{
-                text:msg,            
-                buttons: [{
+              text:msg, 
+              buttons: [{
                   type: "web_url",
                   url: "https://fbmocktest.herokuapp.com/payments/",
                   title: "Paytm Payment link"
@@ -256,8 +255,7 @@ function sendPaymentLinkPasscode(recipientId, user) {
                   type: "postback",
                   title: "back",
                   payload: "<BACK>",
-                }],
-              }]
+              }]              
             }
           }
         }
