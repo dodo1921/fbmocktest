@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Super Awesome</title>
+
+  <!-- CSS (load bootstrap from a CDN) -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <style>
+      body    { padding-top:50px; }
+  </style>
+</head>
+<body class="container">
+
+    <header>
+        
+      <nav class="navbar navbar-default" role="navigation">
+          <div class="container-fluid">
+
+              <div class="navbar-header">
+                  <a class="navbar-brand" href="#">
+                      <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
+                      EJS Is Fun
+                  </a>
+              </div>
+
+              <ul class="nav navbar-nav">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/about">About</a></li>
+              </ul>
+
+          </div>
+      </nav>
+
+    </header>
+
+    <main>
+        <div class="row">
+            <div class="col-sm-8">
+
+                <div class="jumbotron">
+                    <h1>This is great</h1>
+                    <p>Welcome to templating using EJS</p>
+                    <p><%= recipientId %></p>
+                </div>
+
+            </div>
+            <div class="col-sm-4">
+
+                <div class="well">
+                    <h3>Look I'm A Sidebar!</h3>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p class="text-center text-muted">© Copyright 2014 The Awesome People</p>
+    </footer>
+
+</body>
+</html>

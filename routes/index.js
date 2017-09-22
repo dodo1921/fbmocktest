@@ -249,7 +249,7 @@ function sendPaymentLinkPasscode(recipientId, user) {
               text:msg, 
               buttons: [{
                   type: "web_url",
-                  url: "https://fbmocktest.herokuapp.com/payments/",
+                  url: "https://fbmocktest.herokuapp.com/payments/"+recipientId,
                   title: "Paytm Payment link"
                 }, {
                   type: "postback",
