@@ -4,7 +4,7 @@ var router = express.Router();
 /* GET users listing. */
 router.get('/:recipientId', function(req, res) {  
 	
-	res.render('views/passcode', {
+	res.render('passcode', {
 		recipientId: req.param.recipientId
 	});
 
