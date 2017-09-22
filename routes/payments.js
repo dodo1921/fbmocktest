@@ -3,9 +3,11 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/:recipientId', function(req, res) {  
+
+	console.log(req.params.recipientId);
 	
 	res.render('passcode', {
-		recipientId: req.param.recipientId
+		recipientId: req.params.recipientId
 	});
 
 });
