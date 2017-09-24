@@ -424,6 +424,7 @@ function startTest(recipientId, user) {
           }).then( () => {
               sendMsgModeA(recipientId, question_one);
           }).catch( err => {
+              console.log(err);
               sendMsgModeA(recipientId, err.name+' OMG');
           });
 
