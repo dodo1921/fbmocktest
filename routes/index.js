@@ -339,12 +339,12 @@ function startTest(recipientId, user) {
 
               console.log('here1-'+qb.length);
               for(let i=0; i< val.length-1; i++){
-                question_queue += 'qa'+val[i].id+',';
-                answer_queue +=val[i].a+',';
+                question_queue += ('qa'+val[i].id+',');
+                answer_queue += (val[i].a+',');
               }
 
-              question_queue += 'qa'+val[i].id;
-              answer_queue +=val[i].a;
+              question_queue += ('qa'+val[i].id);
+              answer_queue += (val[i].a);
 
               console.log(question_queue+':::'+answer_queue);  
 
