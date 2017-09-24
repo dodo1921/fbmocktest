@@ -337,7 +337,7 @@ function startTest(recipientId, user) {
           knex('qA').whereIn('id', qa).select('id','a')
           .then( val => {
 
-              console.log('here1-'+val.length);
+              console.log('here1-'+qb.length);
               for(let i=0; i< val.length-1; i++){
                 question_queue += 'qa'+val[i].id+',';
                 answer_queue +=val[i].a+',';
@@ -346,6 +346,7 @@ function startTest(recipientId, user) {
               question_queue += 'qa'+val[i].id;
               answer_queue +=val[i].a;
 
+              console.log(question_queue+':::'+answer_queue);  
 
               knex('qB').whereIn('id', qb).select('id','a')
               .then( valb => {
