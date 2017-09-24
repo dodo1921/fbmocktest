@@ -137,7 +137,8 @@ function receivedMessage(event, user) {
         }
         default:{
 
-            console.log('Default payload');
+            if(user.mode === 'E')
+              processAnswer(recipientId, user)
 
         }
 
@@ -226,6 +227,42 @@ function sendMsgModeA(recipientId, messageText) {
 }
 
 
+function sendTestQuestion(recipientId, imagename, testid) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message:{    
+      attachment:{
+        type:"image",
+        payload:{
+          url:"https://s3.ap-south-1.amazonaws.com/mayukhdemo/tests/"+imagename+".jpg"
+        }
+      }   
+      quick_replies:[
+          {
+            content_type:"text",
+            title:"Start Test",
+            payload:"<START TEST>"        
+          },
+          {
+            content_type:"text",
+            title:"Add Money",
+            payload:"<ADD MONEY>"        
+          },          
+          {
+            content_type:"text",
+            title:"Score",
+            payload:"<SCORE>"        
+          }
+      ]
+    }
+  }; 
+
+  callSendAPI(messageData);
+}
+
+
 function sendPaymentLinkPasscode(recipientId, user) {                          
   
   let passcode = speakeasy.totp({secret: 'secret',  encoding: 'base32'});                
@@ -273,7 +310,7 @@ function startTest(recipientId, user) {
 
 
   let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 39, maxqb = 39, t, answer_queue='', question_queue='';
-  let question_one;
+  let question_one, testid;
 
   knex('tests').where({user_id: recipientId}).count('user_id as i')
   .then(val => {
@@ -399,7 +436,7 @@ function startTest(recipientId, user) {
                 expected_answers: answer_queue
               }
 
-              tt = knex('tests').insert(test).transacting(trx);
+              tt = knex('tests').returning('id').insert(test).transacting(trx);
               p.push(tt);
 
               tt = knex('users').where({ fbid: recipientId }).update({mode:'E'}).transacting(trx);
@@ -410,6 +447,8 @@ function startTest(recipientId, user) {
 
                 for( let i=0; i<values.length; i++ ){
                   console.log('>>>>>>>'+values[i]);
+                  if(i==0)
+                    testid = values[i];
                   if(values[i] == 0 ){                  
                     throw new Error('Transaction failed');
                   }
@@ -422,7 +461,7 @@ function startTest(recipientId, user) {
 
 
           }).then( () => {
-              sendMsgModeA(recipientId, question_one);
+              sendTestQuestion(recipientId, question_one, testid);
           }).catch( err => {
               console.log(err);
               sendMsgModeA(recipientId, err.name+' OMG');
