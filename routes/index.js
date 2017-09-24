@@ -377,60 +377,59 @@ function startTest(recipientId, user) {
   })
   .then( question => {
 
-    if(question.length == 0 )
-      throw new Error('Something went wrong. Try Again');
-    else{
-      question_one = question[0].q;
-      console.log('Q:'+question_one+'>>>>'+user.id);
-      return knex.transaction( trx => {
+        if(question.length == 0 )
+          throw new Error('Something went wrong. Try Again');
+        else{
+          question_one = question[0].q;
+          console.log('Q:'+question_one+'>>>>'+user.id);
+          
+          knex.transaction( trx => {
 
-          let p = [];
-          let tt;
-          let curr_time = new Date();
-          let test_end = new Date(curr_time.getTime() + 15*60000);
+              let p = [];
+              let tt;
+              let curr_time = new Date();
+              let test_end = new Date(curr_time.getTime() + 15*60000);
 
-          let test = {
-            user_id: user.id,
-            start: curr_time.getTime(),
-            end: test_end.getTime(),
-            current_qno: 1,
-            questions: question_queue,
-            answers: expected_answers
-          }
-
-          tt = knex('tests').insert(test).transacting(trx);
-          p.push(tt);
-
-          tt = knex('users').where({ fbid: recipientId }).update({mode:'E'}).transacting(trx);
-          p.push(tt);
-
-          Promise.all(p)
-          .then( values => {
-
-            for( let i=0; i<values.length; i++ ){
-              console.log('>>>>>>>'+values[i]);
-              if(values[i] == 0 ){                  
-                throw new Error('Transaction failed');
+              let test = {
+                user_id: user.id,
+                start: curr_time.getTime(),
+                end: test_end.getTime(),
+                current_qno: 1,
+                questions: question_queue,
+                answers: expected_answers
               }
-            }
-                         
 
-          })
-          .then(trx.commit)
-          .catch(trx.rollback)
+              tt = knex('tests').insert(test).transacting(trx);
+              p.push(tt);
+
+              tt = knex('users').where({ fbid: recipientId }).update({mode:'E'}).transacting(trx);
+              p.push(tt);
+
+              Promise.all(p)
+              .then( values => {
+
+                for( let i=0; i<values.length; i++ ){
+                  console.log('>>>>>>>'+values[i]);
+                  if(values[i] == 0 ){                  
+                    throw new Error('Transaction failed');
+                  }
+                }
+                             
+
+              })
+              .then(trx.commit)
+              .catch(trx.rollback)
 
 
-      });
+          }).then( () => {
+              sendMsgModeA(recipientId, question_one);
+          }).catch( err => {
+              sendMsgModeA(recipientId, err.name+' OMG');
+          });
 
     }
 
-  })
-  .then( () => {
-
-    sendMsgModeA(recipientId, question_one);
-
-
-  })
+  })  
   .catch(err=>{
     sendMsgModeA(recipientId, err.name);
   });
