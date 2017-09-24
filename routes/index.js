@@ -396,7 +396,7 @@ function startTest(recipientId, user) {
                 end: test_end.getTime(),
                 current_qno: 1,
                 questions: question_queue,
-                answers: expected_answers
+                expected_answers: answer_queue
               }
 
               tt = knex('tests').insert(test).transacting(trx);
