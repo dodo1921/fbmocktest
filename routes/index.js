@@ -358,7 +358,7 @@ function startTest(recipientId, user) {
                   answer_queue +=val[i].a;
 
                   let msgText = question_queue+'\n'+answer_queue;
-                  (recipientId, msgText);
+                  sendMsgModeA(recipientId, msgText);
 
 
 
