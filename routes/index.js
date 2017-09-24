@@ -380,7 +380,7 @@ function startTest(recipientId, user) {
     if(question.length == 0 )
       throw new Error('Something went wrong. Try Again');
     else{
-      question_one = question[0];
+      question_one = question[0].q;
       console.log('Q:'+question_one);
       return knex.transaction( trx => {
 
