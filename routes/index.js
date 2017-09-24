@@ -381,7 +381,7 @@ function startTest(recipientId, user) {
       throw new Error('Something went wrong. Try Again');
     else{
       question_one = question[0];
-
+      console.log('Q:'+question_one);
       return knex.transaction( trx => {
 
           let p = [];
