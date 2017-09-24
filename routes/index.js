@@ -332,12 +332,12 @@ function startTest(recipientId, user) {
 
           }
 
-          let answer_queue, question_queue;
+          let answer_queue='', question_queue='';
 
           knex('qA').whereIn('id', qa).select('id','a')
           .then( val => {
 
-              console.log('here1-'+qb.length);
+              console.log('here1-'+val.length);
               let i=0;
               for(i=0; i< val.length-1; i++){
                 console.log('loop1');
