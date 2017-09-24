@@ -332,7 +332,7 @@ function startTest(recipientId, user) {
 
           }
 
-          for(let x = 1; x<=5; x++){
+          for(let x = 0; x<5; x++){
             console.log(qa[x]+'    '+qb[x]);
           }
           
@@ -342,7 +342,7 @@ function startTest(recipientId, user) {
         }
 
   }).catch(err=>{
-    
+
   });
 
   
