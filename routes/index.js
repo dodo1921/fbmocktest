@@ -276,70 +276,76 @@ function startTest(recipientId, user) {
   knex('tests').where({user_id: recipientId}).count('user_id as i')
   .then(val => {
 
-    if(val[0].i >= 2 && user.balance < 5 ){
-      let msgText = "Not enough balance. Please add money to start test."
-      sendMsgModeA(recipientId, msgText);
-    }else{
+        if(val[0].i >= 2 && user.balance < 5 ){
+          let msgText = "Not enough balance. Please add money to start test."
+          sendMsgModeA(recipientId, msgText);
+        }else{
 
-      //generate questions list
-      //get q1
-      //change mode, start time, end time
-      //
+          //generate questions list
+          //get q1
+          //change mode, start time, end time
+          //
 
-      let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 100, maxqb = 100, t;
+          let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 100, maxqb = 100, t;
 
-      for(let i=1; i<=qacount;i++){
+          for(let i=1; i<=qacount;i++){
 
-            let flag=true; let t=0;
+                let flag=true; let t=0;
 
-            while(flag){
+                while(flag){
 
-              t = Math.floor(Math.random() * (maxqa - 1 + 1)) + 1;
-              flag=false;
-              for(let j=0; j<qa.length; j++){
-                if(qa[j] == t){
-                    flag=true;
-                    break;
+                  t = Math.floor(Math.random() * (maxqa - 1 + 1)) + 1;
+                  flag=false;
+                  for(let j=0; j<qa.length; j++){
+                    if(qa[j] == t){
+                        flag=true;
+                        break;
+                      }
+
                   }
 
-              }
+                  qa.push(t);
 
-              qa.push(t);
+                }
 
-            }
+          }
 
-      }
+          for(let i=1; i<=qbcount;i++){
 
-      for(let i=1; i<=qbcount;i++){
+                let flag=true; let t=0;
 
-            let flag=true; let t=0;
+                while(flag){
 
-            while(flag){
+                  t = Math.floor(Math.random() * (maxqb - 1 + 1)) + 1;
+                  flag=false;
+                  for(let j=0; j<qb.length; j++){
+                    if(qb[j] == t){
+                        flag=true;
+                        break;
+                      }
 
-              t = Math.floor(Math.random() * (maxqb - 1 + 1)) + 1;
-              flag=false;
-              for(let j=0; j<qb.length; j++){
-                if(qb[j] == t){
-                    flag=true;
-                    break;
                   }
 
-              }
+                  qb.push(t);
 
-              qb.push(t);
+                }
 
-            }
+          }
 
-      }
+          for(let x = 1; x<=5; x++){
+            console.log(qa[x]+'    '+qb[x]);
+          }
+          
+          let msgText = 'omg';
+          sendMsgModeA(recipientId, msgText);
 
-      for(let x = 1; x<=5; x++){
-        console.log(qa[x]+'    '+qb[x]);
-      }
-      
-      let msgText = 'omg';
-      sendMsgModeA(recipientId, msgText);
+        }
 
-  }).catch(err=>{});
+  }).catch(err=>{
+    
+  });
+
+  
   
   
 }
