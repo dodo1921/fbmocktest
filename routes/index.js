@@ -364,7 +364,8 @@ function startTest(recipientId, user) {
               question_queue += 'qb'+valb[i].id;
               answer_queue +=valb[i].a;
 
-              //let msgText = question_queue+'\n'+answer_queue;
+              let msgText = question_queue+'\n'+answer_queue;
+              console.log(msgText);
               //sendMsgModeA(recipientId, msgText);
 
               let qid = question_queue.split(',')[0].substring(2);
@@ -397,10 +398,10 @@ function startTest(recipientId, user) {
             answers: expected_answers
           }
 
-          t = knex('tests').insert(test);
+          t = knex('tests').insert(test).transacting(trx);
           p.push(t);
 
-          t = knex('users').where({ id: user.id }).update({mode:'E'});
+          t = knex('users').where({ id: user.id }).update({mode:'E'}).transacting(trx);
           p.push(t);
 
           Promise.all(p)
