@@ -137,8 +137,10 @@ function receivedMessage(event, user) {
         }
         default:{
 
-            if(user.mode === 'E')
-              processAnswer(recipientId, user)
+            if(user.mode === 'E'){
+              //processAnswer(recipientId, user)
+              console.log('payload:'+message.quick_reply.payload);
+            }
 
         }
 
