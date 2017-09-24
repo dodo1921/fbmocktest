@@ -338,7 +338,8 @@ function startTest(recipientId, user) {
           .then( val => {
 
               console.log('here1-'+qb.length);
-              for(let i=0; i< val.length-1; i++){
+              let i=0;
+              for(i=0; i< val.length-1; i++){
                 console.log('loop1');
                 question_queue = question_queue +  ('qa'+val[i].id+',');
                 answer_queue = answer_queue + (val[i].a+',');
@@ -353,7 +354,8 @@ function startTest(recipientId, user) {
               .then( valb => {
 
                   console.log('here2-'+valb.length);
-                  for(let i=0; i< valb.length-1; i++){
+                  let i=0;
+                  for(i=0; i< valb.length-1; i++){
                     question_queue += 'qb'+valb[i].id+',';
                     answer_queue +=valb[i].a+',';
                   }
