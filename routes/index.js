@@ -381,11 +381,11 @@ function startTest(recipientId, user) {
       throw new Error('Something went wrong. Try Again');
     else{
       question_one = question[0].q;
-      console.log('Q:'+question_one);
+      console.log('Q:'+question_one+'>>>>'+user.id);
       return knex.transaction( trx => {
 
           let p = [];
-          let t;
+          let tt;
           let curr_time = new Date();
           let test_end = new Date(curr_time.getTime() + 15*60000);
 
@@ -398,11 +398,11 @@ function startTest(recipientId, user) {
             answers: expected_answers
           }
 
-          t = knex('tests').insert(test).transacting(trx);
-          p.push(t);
+          tt = knex('tests').insert(test).transacting(trx);
+          p.push(tt);
 
-          t = knex('users').where({ id: user.id }).update({mode:'E'}).transacting(trx);
-          p.push(t);
+          tt = knex('users').where({ fbid: recipientId }).update({mode:'E'}).transacting(trx);
+          p.push(tt);
 
           Promise.all(p)
           .then( values => {
