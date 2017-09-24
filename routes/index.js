@@ -238,22 +238,27 @@ function sendTestQuestion(recipientId, imagename, testid) {
         payload:{
           url:"https://s3.ap-south-1.amazonaws.com/mayukhdemo/tests/"+imagename+".jpg"
         }
-      }   
+      },   
       quick_replies:[
           {
             content_type:"text",
-            title:"Start Test",
-            payload:"<START TEST>"        
+            title:"A",
+            payload: testid+",A"        
           },
           {
             content_type:"text",
-            title:"Add Money",
-            payload:"<ADD MONEY>"        
+            title:"B",
+            payload: testid+",B"         
           },          
           {
             content_type:"text",
-            title:"Score",
-            payload:"<SCORE>"        
+            title:"C",
+            payload: testid+",C"         
+          },
+          {
+            content_type:"text",
+            title:"D",
+            payload: testid+",D"         
           }
       ]
     }
