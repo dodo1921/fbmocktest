@@ -286,7 +286,7 @@ function startTest(recipientId, user) {
           //change mode, start time, end time
           //
 
-          let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 100, maxqb = 100, t;
+          let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 39, maxqb = 39, t;
 
           for(let i=1; i<=qacount;i++){
 
@@ -332,12 +332,50 @@ function startTest(recipientId, user) {
 
           }
 
-          for(let x = 0; x<5; x++){
-            console.log(qa[x]+'    '+qb[x]);
-          }
+          let answer_queue, question_queue;
+
+          knex('qA').whereIn('id', qa).select('id','a')
+          .then( val => {
+
+              for(let i=0; i< val.length-1; i++){
+                question_queue += 'qa'+val[i].id+',';
+                answer_queue +=val[i].a+',';
+              }
+
+              question_queue += 'qa'+val[i].id;
+              answer_queue +=val[i].a;
+
+
+              knex('qB').whereIn('id', qb).select('id','a')
+              .then( val => {
+
+                  for(let i=0; i< val.length-1; i++){
+                    question_queue += 'qb'+val[i].id+',';
+                    answer_queue +=val[i].a+',';
+                  }
+
+                  question_queue += 'qb'+val[i].id;
+                  answer_queue +=val[i].a;
+
+                  let msgText = question_queue+'\n'+answer_queue;
+                  (recipientId, msgText);
+
+
+
+              }).catch(err => {
+
+              })
+
+
+
+
+          }).catch(err => {
+
+          })
+
           
-          let msgText = 'omg';
-          sendMsgModeA(recipientId, msgText);
+          
+          
 
         }
 
