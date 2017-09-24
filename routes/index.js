@@ -339,6 +339,7 @@ function startTest(recipientId, user) {
 
               console.log('here1-'+qb.length);
               for(let i=0; i< val.length-1; i++){
+                console.log('loop1');
                 question_queue = question_queue +  ('qa'+val[i].id+',');
                 answer_queue = answer_queue + (val[i].a+',');
               }
