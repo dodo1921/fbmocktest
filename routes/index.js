@@ -56,7 +56,7 @@ router.post('/webhook', function (req, res) {
                       }
                   }else if(user.length == 0) {
 
-                      knex('users')..returning('id').insert({fbid: event.sender.id})
+                      knex('users').returning('id').insert({fbid: event.sender.id})
                       .then( id => {                
                           
                           if (event.message) {
