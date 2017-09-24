@@ -110,7 +110,10 @@ function receivedMessage(event, user) {
       
       switch (message.quick_reply.payload) {
         case '<START TEST>':{
-
+              if(user.mode === 'A'){      
+                console.log('Start test');          
+                startTest(senderID, user);
+              }
           break;
         }
         case '<ADD MONEY>':{
@@ -223,18 +226,12 @@ function sendMsgModeA(recipientId, messageText) {
 }
 
 
-function sendPaymentLinkPasscode(recipientId, user) {  
-
-                  console.log('Add money2');          
+function sendPaymentLinkPasscode(recipientId, user) {                          
   
   let passcode = speakeasy.totp({secret: 'secret',  encoding: 'base32'});                
   knex('users').where({fbid:recipientId}).update({passcode})
   .then( () => {
 
-                      console.log('Add money3');          
-
-
-      
       let msg = "Current Balance: Rs."+user.balance+"\n\n"+"Passcode:"+passcode+"\nUse the passcode to make a payment";
 
       var messageData = {
@@ -266,12 +263,83 @@ function sendPaymentLinkPasscode(recipientId, user) {
 
 
 
-  }).catch(err => {
+  }).catch(err => {});
+  
+  
+}
 
-                    console.log('Add money4');          
 
+function startTest(recipientId, user) {     
 
-  });
+  let maxqa = 100, maxqb = 100;                     
+  
+  knex('tests').where({user_id: recipientId}).count('user_id as i')
+  .then(val => {
+
+    if(val[0].i >= 2 && user.balance < 5 ){
+      let msgText = "Not enough balance. Please add money to start test."
+      sendMsgModeA(recipientId, msgText);
+    }else{
+
+      //generate questions list
+      //get q1
+      //change mode, start time, end time
+      //
+
+      let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 100, maxqb = 100, t;
+
+      for(let i=1; i<=qacount;i++){
+
+            let flag=true; let t=0;
+
+            while(flag){
+
+              t = Math.floor(Math.random() * (maxqa - 1 + 1)) + 1;
+              flag=false;
+              for(let j=0; j<qa.length; j++){
+                if(qa[j] == t){
+                    flag=true;
+                    break;
+                  }
+
+              }
+
+              qa.push(t);
+
+            }
+
+      }
+
+      for(let i=1; i<=qbcount;i++){
+
+            let flag=true; let t=0;
+
+            while(flag){
+
+              t = Math.floor(Math.random() * (maxqb - 1 + 1)) + 1;
+              flag=false;
+              for(let j=0; j<qb.length; j++){
+                if(qb[j] == t){
+                    flag=true;
+                    break;
+                  }
+
+              }
+
+              qb.push(t);
+
+            }
+
+      }
+
+      for(let x = 1; x<=5; x++){
+        console.log(qa[x]+'    '+qb[x]);
+      }
+      
+      let msgText = 'omg';
+      sendMsgModeA(recipientId, msgText);
+
+  }).catch(err=>{});
   
   
 }
@@ -280,86 +348,7 @@ function sendPaymentLinkPasscode(recipientId, user) {
 
 
 
-function sendGenericMessage(recipientId) {
-  /*var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [{
-            title: "rift",
-            subtitle: "Next-generation virtual reality. 
-            Next-generation virtual reality. 
-            Next-generation virtual reality. 
-            Next-generation virtual reality. 
-            Next-generation virtual reality. 
-            Next-generation virtual reality. 
-            Next-generation virtual reality. 
-            Next-generation virtual reality. 
-            Next-generation virtual reality. ",            
-            quick_replies: [{
-              type: "postback",
-              title: "A",
-              payload: "1. A",
-            }, {
-              type: "postback",
-              title: "B",
-              payload: "1. B",
-            }],
-          }, {
-            title: "touch",
-            subtitle: "Your Hands, Now in VR",
-            item_url: "https://www.oculus.com/en-us/touch/",               
-            image_url: "http://messengerdemo.parseapp.com/img/touch.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/touch/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for second bubble",
-            }]
-          }]
-        }
-      }
-    }
-  }; */
 
-
-
-  var messageData = {
-  	recipient: {
-      id: recipientId
-    },
-   	message:{
-    attachment:{
-      type:"image",
-      payload:{
-        url:"https://s3.ap-south-1.amazonaws.com/hahusers/images/elder_care.jpg"
-      }
-    },
-    quick_replies:[
-	      {
-	        content_type:"text",
-	        title:"A",
-	        payload:"<POSTBACK_PAYLOAD>"        
-	      },
-	      {
-	        content_type:"text",
-	        title:"B",
-	        payload:"<POSTBACK_PAYLOAD>"        
-	      }
-    	]
-  	}
-  }; 
-
-  callSendAPI(messageData);
-}
 
 function callSendAPI(messageData) {
   request({
