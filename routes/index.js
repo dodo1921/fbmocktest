@@ -337,6 +337,7 @@ function startTest(recipientId, user) {
           knex('qA').whereIn('id', qa).select('id','a')
           .then( val => {
 
+              console.log('here1-'+val.length);
               for(let i=0; i< val.length-1; i++){
                 question_queue += 'qa'+val[i].id+',';
                 answer_queue +=val[i].a+',';
@@ -347,15 +348,16 @@ function startTest(recipientId, user) {
 
 
               knex('qB').whereIn('id', qb).select('id','a')
-              .then( val => {
+              .then( valb => {
 
-                  for(let i=0; i< val.length-1; i++){
-                    question_queue += 'qb'+val[i].id+',';
-                    answer_queue +=val[i].a+',';
+                  console.log('here2-'+valb.length);
+                  for(let i=0; i< valb.length-1; i++){
+                    question_queue += 'qb'+valb[i].id+',';
+                    answer_queue +=valb[i].a+',';
                   }
 
-                  question_queue += 'qb'+val[i].id;
-                  answer_queue +=val[i].a;
+                  question_queue += 'qb'+valb[i].id;
+                  answer_queue +=valb[i].a;
 
                   let msgText = question_queue+'\n'+answer_queue;
                   sendMsgModeA(recipientId, msgText);
