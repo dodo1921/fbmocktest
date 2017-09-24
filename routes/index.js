@@ -269,24 +269,19 @@ function sendPaymentLinkPasscode(recipientId, user) {
 }
 
 
-function startTest(recipientId, user) {     
+function startTest(recipientId, user) {
 
-  let maxqa = 100, maxqb = 100;                     
-  
+
+  let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 39, maxqb = 39, t, answer_queue='', question_queue='';
+
   knex('tests').where({user_id: recipientId}).count('user_id as i')
   .then(val => {
 
         if(val[0].i >= 2 && user.balance < 5 ){
-          let msgText = "Not enough balance. Please add money to start test."
-          sendMsgModeA(recipientId, msgText);
+
+          throw new Error('Not enough balance. Please add money to start test.');          
+          
         }else{
-
-          //generate questions list
-          //get q1
-          //change mode, start time, end time
-          //
-
-          let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 39, maxqb = 39, t;
 
           for(let i=1; i<=qacount;i++){
 
@@ -332,61 +327,51 @@ function startTest(recipientId, user) {
 
           }
 
-          let answer_queue='', question_queue='';
-
-          knex('qA').whereIn('id', qa).select('id','a')
-          .then( val => {
-
-              console.log('here1-'+val.length);
-              let i=0;
-              for(i=0; i< val.length-1; i++){
-                console.log('loop1');
-                question_queue = question_queue +  ('qa'+val[i].id+',');
-                answer_queue = answer_queue + (val[i].a+',');
-              }
-
-              question_queue = question_queue + ('qa'+val[i].id);
-              answer_queue = answer_queue + (val[i].a);
-
-              console.log(question_queue+':::'+answer_queue);  
-
-              knex('qB').whereIn('id', qb).select('id','a')
-              .then( valb => {
-
-                  console.log('here2-'+valb.length);
-                  let i=0;
-                  for(i=0; i< valb.length-1; i++){
-                    question_queue += 'qb'+valb[i].id+',';
-                    answer_queue +=valb[i].a+',';
-                  }
-
-                  question_queue += 'qb'+valb[i].id;
-                  answer_queue +=valb[i].a;
-
-                  let msgText = question_queue+'\n'+answer_queue;
-                  sendMsgModeA(recipientId, msgText);
-
-
-
-              }).catch(err => {
-
-              })
-
-
-
-
-          }).catch(err => {
-
-          })
-
           
-          
+
+          return knex('qA').whereIn('id', qa).select('id','a');         
           
 
         }
 
-  }).catch(err=>{
+  })
+  .then( val => {
 
+              console.log('here1-'+val.length);
+              let i=0;
+              for(i=0; i< val.length-1; i++){                
+                question_queue = question_queue +  ('qa'+val[i].id+',');
+                answer_queue = answer_queue + (val[i].a+',');
+              }
+
+              question_queue = question_queue + ('qa'+val[i].id+',');
+              answer_queue = answer_queue + (val[i].a+',');
+               
+
+              return knex('qB').whereIn('id', qb).select('id','a');
+              
+  })
+  .then( valb => {
+
+              console.log('here2-'+valb.length);
+              let i=0;
+              for(i=0; i< valb.length-1; i++){
+                question_queue += 'qb'+valb[i].id+',';
+                answer_queue +=valb[i].a+',';
+              }
+
+              question_queue += 'qb'+valb[i].id;
+              answer_queue +=valb[i].a;
+
+              let msgText = question_queue+'\n'+answer_queue;
+              sendMsgModeA(recipientId, msgText);
+
+
+
+
+  })
+  .catch(err=>{
+    sendMsgModeA(recipientId, err.name);
   });
 
   
