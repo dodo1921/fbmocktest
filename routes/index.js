@@ -56,13 +56,13 @@ router.post('/webhook', function (req, res) {
                       }
                   }else if(user.length == 0) {
 
-                      knex('users').insert({fbid: event.sender.id})
-                      .then( () => {                
+                      knex('users')..returning('id').insert({fbid: event.sender.id})
+                      .then( id => {                
                           
                           if (event.message) {
-                            receivedMessage(event, { fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } );          
+                            receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } );          
                           } else if (event.postback) {
-                            receivedPostback(event, { fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } );          
+                            receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } );          
                           } else {
                             console.log("Webhook received unknown event: ", event);
                           }
@@ -273,6 +273,7 @@ function startTest(recipientId, user) {
 
 
   let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 39, maxqb = 39, t, answer_queue='', question_queue='';
+  let question_one;
 
   knex('tests').where({user_id: recipientId}).count('user_id as i')
   .then(val => {
@@ -349,7 +350,7 @@ function startTest(recipientId, user) {
                
 
               return knex('qB').whereIn('id', qb).select('id','a');
-              
+
   })
   .then( valb => {
 
@@ -363,10 +364,69 @@ function startTest(recipientId, user) {
               question_queue += 'qb'+valb[i].id;
               answer_queue +=valb[i].a;
 
-              let msgText = question_queue+'\n'+answer_queue;
-              sendMsgModeA(recipientId, msgText);
+              //let msgText = question_queue+'\n'+answer_queue;
+              //sendMsgModeA(recipientId, msgText);
+
+              let qid = question_queue.split(',')[0].substring(2);
+              console.log('>>>>'+qid);
+
+              return knex('qA').where({id: qid }).select('q');
 
 
+  })
+  .then( question => {
+
+    if(question.length == 0 )
+      throw new Error('Something went wrong. Try Again');
+    else{
+      question_one = question[0];
+
+      return knex.transaction( trx => {
+
+          let p = [];
+          let t;
+          let curr_time = new Date();
+          let test_end = new Date(curr_time.getTime() + 15*60000);
+
+          let test = {
+            user_id: user.id,
+            start: curr_time.getTime(),
+            end: test_end.getTime(),
+            current_qno: 1,
+            questions: question_queue,
+            answers: expected_answers
+          }
+
+          t = knex('tests').insert(test);
+          p.push(t);
+
+          t = knex('users').where({ id: user.id }).update({mode:'E'});
+          p.push(t);
+
+          Promise.all(p)
+          .then( values => {
+
+            for( let i=0; i<values.length; i++ ){
+              console.log('>>>>>>>'+values[i]);
+              if(values[i] == 0 ){                  
+                throw new Error('Transaction failed');
+              }
+            }
+                         
+
+          })
+          .then(trx.commit)
+          .catch(trx.rollback)
+
+
+      });
+
+    }
+
+  })
+  .then( () => {
+
+    sendMsgModeA(recipientId, question_one);
 
 
   })
