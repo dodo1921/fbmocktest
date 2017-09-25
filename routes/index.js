@@ -505,7 +505,7 @@ function sendRemainingQ(recipientId ,curr_test, qno, testid){
 
 function sendReport(recipientId ,curr_test){
 
-  let messageText='';
+  let messageText='Expected            Actual\n';
 
   let E = curr_test.expected_answers;
   let Earray = E.split(',');
@@ -517,7 +517,7 @@ function sendReport(recipientId ,curr_test){
 
   for(let i=1; i<=10; i++){
 
-    messageText+=i+'. '+Earray[i-1]+'   '+Aarray[i-1];
+    messageText+=i+'. '+Earray[i-1]+'           '+Aarray[i-1];
 
     if(Earray[i-1]===Aarray[i-1]){
       messageText+='   Correct\n'; score++;
@@ -545,6 +545,10 @@ function sendReport(recipientId ,curr_test){
 
   callSendAPI(messageData);
 
+  knex('users').where({fbid:recipientId}).increment('score', score)
+  .then(()=>{})
+  .catch(err=>{});
+
   changeUserMode(recipientId, 'Share MockTest chatbot with your friends.')
 
 }
@@ -554,10 +558,12 @@ function startTest(recipientId, user) {
 
 
   let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 39, maxqb = 39, t, answer_queue='', question_queue='';
-  let question_one, testid;
+  let question_one, testid, test_taken=0;;
 
   knex('tests').where({user_id: recipientId}).count('user_id as i')
   .then(val => {
+
+        test_taken = val[0].i;
 
         if(val[0].i >= 2 && user.balance < 5 ){
 
@@ -685,6 +691,15 @@ function startTest(recipientId, user) {
 
               tt = knex('users').where({ fbid: recipientId }).update({mode:'E'}).transacting(trx);
               p.push(tt);
+
+              if(test_taken>=2){
+
+                tt = knex('users').where({ fbid: recipientId }).decrement('balance', 5}).transacting(trx);
+                p.push(tt);
+
+              }
+
+                
 
               Promise.all(p)
               .then( values => {
