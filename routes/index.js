@@ -139,7 +139,7 @@ function receivedMessage(event, user, timeOfEvent) {
 
             if(user.mode === 'E'){
               console.log('payload:'+message.quick_reply.payload);
-              processAnswer(recipientId, user, timeOfEvent, message.quick_reply.payload );              
+              processAnswer(senderID, user, timeOfEvent, message.quick_reply.payload );              
             }
 
         }
