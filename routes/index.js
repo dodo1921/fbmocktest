@@ -138,8 +138,8 @@ function receivedMessage(event, user, timeOfEvent) {
         default:{
 
             if(user.mode === 'E'){
-              processAnswer(recipientId, user, timeOfEvent, message.quick_reply.payload );
               console.log('payload:'+message.quick_reply.payload);
+              processAnswer(recipientId, user, timeOfEvent, message.quick_reply.payload );              
             }
 
         }
@@ -220,6 +220,8 @@ function sendMsgModeA(recipientId, messageText) {
 
 
 function sendTestQuestion(recipientId, imagename, testid, qno) {
+
+
   var messageData = {
     recipient: {
       id: recipientId
@@ -326,6 +328,8 @@ function processAnswer(recipientId, user, timeOfEvent, payload){
     let testid = ans[0];
     let qno = ans[1];
     let answer = ans[2];
+
+    console.log(testid+':'+qno+':'+answer);
 
     let curr_test;
 
