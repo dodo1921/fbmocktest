@@ -460,6 +460,46 @@ function sendRemainingQ(recipientId ,curr_test, qno){
 
 function sendReport(recipientId ,curr_test){
 
+  let messageText='';
+
+  let E = curr_test.expected_answers;
+  let Earray = E.split(',');
+
+  let A = curr_test.actual_answers;
+  let Aarray = A.split(',');
+
+  let score=0;
+
+  for(let i=1; i<=10; i++){
+
+    messageText+=i+'. '+Earray[i-1]+'   '+Aarray[i-1];
+
+    if(Earray[i-1]===Aarray[i-1]){
+      messageText+='   Correct\n'; score++;
+    }else{
+      messageText+='   Wrong\n';
+    }
+
+    messageText+='Score:'+score+'/10';
+
+  }
+
+  console.log(messageText);
+
+
+  let messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: messageText
+    }
+  };
+
+  callSendAPI(messageData);
+
+  changeUserMode(recipientId, 'Share MockTest chatbot with your friends.')
+
 }
 
 
