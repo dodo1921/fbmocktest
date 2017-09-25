@@ -422,7 +422,7 @@ function changeUserMode(recipientId, msgText){
     knex('users').where({fbid:recipientId}).update({mode:'A'})
       .then( () => {
 
-        setTimeout(function(){ sendMsgModeA(recipientId,msgText); }, 2000);
+        setTimeout(function(){ sendMsgModeA(recipientId,msgText); }, 5000);
         
 
       }).catch(err=>{});
@@ -498,7 +498,7 @@ function sendRemainingQ(recipientId ,curr_test, qno, testid){
 
   }
 
-  setTimeout(function(){ sendReport(recipientId ,curr_test) }, 1000*(10-qno+1));    
+  setTimeout(function(){ sendReport(recipientId ,curr_test) }, 1000*(10-qno+5));    
 
 }
 
