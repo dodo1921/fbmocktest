@@ -724,7 +724,7 @@ function startTest(recipientId, user) {
 
   })  
   .catch(err=>{
-    sendMsgModeA(recipientId, err.name);
+    sendMsgModeA(recipientId, err.message);
   });
 
   
