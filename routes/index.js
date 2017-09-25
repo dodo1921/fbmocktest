@@ -692,6 +692,8 @@ function startTest(recipientId, user) {
               tt = knex('users').where({ fbid: recipientId }).update({mode:'E'}).transacting(trx);
               p.push(tt);
 
+              console.log('Test taken:'+test_taken);
+
               if(test_taken>=2){
 
                 tt = knex('users').where({ fbid: recipientId }).increment('balance', -5.00).transacting(trx);
@@ -705,7 +707,7 @@ function startTest(recipientId, user) {
               .then( values => {
 
                 for( let i=0; i<values.length; i++ ){
-                  console.log('>>>>>>>'+values[i]);
+                  console.log('Promise>>>>>>>'+values[i]);
                   if(i==0)
                     testid = values[i];
                   if(values[i] == 0 ){                  
