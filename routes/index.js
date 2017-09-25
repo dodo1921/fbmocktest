@@ -498,7 +498,7 @@ function sendRemainingQ(recipientId ,curr_test, qno, testid){
 
   }
 
-  setTimeout(function(){ sendReport(recipientId ,curr_test) }, 9000);    
+  setTimeout(function(){ sendReport(recipientId ,curr_test) }, 1000*(10-qno+1));    
 
 }
 
