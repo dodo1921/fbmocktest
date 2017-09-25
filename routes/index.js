@@ -430,7 +430,7 @@ function changeUserMode(recipientId, msgText){
 
 function sendNextQ( recipientId ,curr_test, qno, testid){
 
-  let qq = parseInt(qno)++;
+  let qq = parseInt(qno);
 
   let qlist = curr_test.questions;
 
@@ -445,7 +445,7 @@ function sendNextQ( recipientId ,curr_test, qno, testid){
 
   query.then( question => {
 
-    sendTestQuestion(recipientId, question[0].q, testid, qq);
+    sendTestQuestion(recipientId, question[0].q, testid, qq+1);
 
   }).catch(err => {});
 
