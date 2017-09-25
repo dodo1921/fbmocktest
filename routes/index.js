@@ -505,7 +505,7 @@ function sendRemainingQ(recipientId ,curr_test, qno, testid){
 
 function sendReport(recipientId ,curr_test){
 
-  let messageText='Expected            Actual\n';
+  let messageText='Answers\n';
 
   let E = curr_test.expected_answers;
   let Earray = E.split(',');
@@ -517,15 +517,7 @@ function sendReport(recipientId ,curr_test){
 
   for(let i=1; i<=10; i++){
 
-    messageText+=i+'. '+Earray[i-1]+'           '+Aarray[i-1];
-
-    if(Earray[i-1]===Aarray[i-1]){
-      messageText+='   Correct\n'; score++;
-    }else{
-      messageText+='   Wrong\n';
-    }
-
-    
+    messageText+=i+'. '+Earray[i-1]+'  your answer '+(Aarray[i-1]==='PASS'?'':Aarray[i-1])+'\n'; 
 
   }
 
