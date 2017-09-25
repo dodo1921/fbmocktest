@@ -320,7 +320,11 @@ function processMessageExamMode(recipientId, user, timeOfEvent){
 
 function processAnswer(recipientId, user, timeOfEvent, payload){
 
+    console.log('>>>'+payload);
+
     let ans = payload.split(',');
+
+    console.log('>>>'+ans.length);
 
     if(ans.length != 3)
       return;
