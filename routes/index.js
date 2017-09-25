@@ -694,7 +694,7 @@ function startTest(recipientId, user) {
 
               if(test_taken>=2){
 
-                tt = knex('users').where({ fbid: recipientId }).decrement('balance', 5).transacting(trx);
+                tt = knex('users').where({ fbid: recipientId }).increment('balance', -5.00).transacting(trx);
                 p.push(tt);
 
               }
