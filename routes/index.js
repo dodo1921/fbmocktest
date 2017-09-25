@@ -558,9 +558,9 @@ function startTest(recipientId, user) {
 
 
   let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 39, maxqb = 39, t, answer_queue='', question_queue='';
-  let question_one, testid, test_taken=0;;
+  let question_one, testid, test_taken=0;
 
-  knex('tests').where({user_id: recipientId}).count('user_id as i')
+  knex('tests').where({user_id: user.id}).count('user_id as i')
   .then(val => {
 
         test_taken = val[0].i;
