@@ -431,7 +431,7 @@ function sendNextQ( recipientId ,curr_test, qno, testid){
 
   query.then( question => {
 
-    sendTestQuestion(recipientId, question[0].q, testid, qno+1) {  
+    sendTestQuestion(recipientId, question[0].q, testid, qno+1);
 
   }).catch(err => {});
 
