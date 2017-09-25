@@ -48,9 +48,9 @@ router.post('/webhook', function (req, res) {
 
                   if( user && user.length>0 ){
                       if (event.message) {
-                        receivedMessage(event, user[0]);          
+                        receivedMessage(event, user[0], timeOfEvent);          
                       } else if (event.postback) {
-                        receivedPostback(event, user[0]);          
+                        receivedPostback(event, user[0], timeOfEvent);          
                       } else {
                         console.log("Webhook received unknown event: ", event);
                       }
@@ -60,9 +60,9 @@ router.post('/webhook', function (req, res) {
                       .then( id => {                
                           
                           if (event.message) {
-                            receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } );          
+                            receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } , timeOfEvent);          
                           } else if (event.postback) {
-                            receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } );          
+                            receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } , timeOfEvent);          
                           } else {
                             console.log("Webhook received unknown event: ", event);
                           }
@@ -90,7 +90,7 @@ router.post('/webhook', function (req, res) {
 
 
 // Incoming events handling
-function receivedMessage(event, user) {
+function receivedMessage(event, user, timeOfEvent) {
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
@@ -138,7 +138,7 @@ function receivedMessage(event, user) {
         default:{
 
             if(user.mode === 'E'){
-              //processAnswer(recipientId, user)
+              processAnswer(recipientId, user, timeOfEvent, message.quick_reply.payload );
               console.log('payload:'+message.quick_reply.payload);
             }
 
@@ -148,23 +148,13 @@ function receivedMessage(event, user) {
 
 
   } else if (messageText) {
-    
-    switch (messageText) {
 
-        case 'generic':{
-
-            break;
-        }
-
-        default:{   
-            if(user.mode === 'A'){
-              let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
-              sendMsgModeA(senderID, msgText);
-            }      
-            
-        }
-
-    }
+    if(user.mode === 'A'){
+      let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
+      sendMsgModeA(senderID, msgText);
+    }else if(user.mode === 'E'){
+        processMessageExamMode(senderID, user, timeOfEvent);
+    }   
 
   } else{
 
@@ -177,7 +167,7 @@ function receivedMessage(event, user) {
 
 }
 
-function receivedPostback(event, user) {
+function receivedPostback(event, user, timeOfEvent) {
 
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
@@ -229,7 +219,7 @@ function sendMsgModeA(recipientId, messageText) {
 }
 
 
-function sendTestQuestion(recipientId, imagename, testid) {
+function sendTestQuestion(recipientId, imagename, testid, qno) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -245,22 +235,22 @@ function sendTestQuestion(recipientId, imagename, testid) {
           {
             content_type:"text",
             title:"A",
-            payload: testid+",A"        
+            payload: testid+","+qno+",A"        
           },
           {
             content_type:"text",
             title:"B",
-            payload: testid+",B"         
+            payload: testid+","+qno+",B"         
           },          
           {
             content_type:"text",
             title:"C",
-            payload: testid+",C"         
+            payload: testid+","+qno+",C"         
           },
           {
             content_type:"text",
             title:"D",
-            payload: testid+",D"         
+            payload: testid+","+qno+",D"         
           }
       ]
     }
@@ -310,6 +300,152 @@ function sendPaymentLinkPasscode(recipientId, user) {
   }).catch(err => {});
   
   
+}
+
+function processMessageExamMode(recipientId, user, timeOfEvent){
+
+  let subquery = knex('tests').max('id').where({user_id: user.id});
+
+  knex('tests').whereIn('id', subquery).select()
+  .then(test => {
+
+    processAnswer(recipientId, user, timeOfEvent, test[0].id+','+test[0].current_qno+','+'PASS');
+
+  }).catch(err =>{});
+
+}
+
+
+function processAnswer(recipientId, user, timeOfEvent, payload){
+
+    let ans = payload.split(',');
+
+    if(ans.length != 3)
+      return;
+
+    let testid = ans[0];
+    let qno = ans[1];
+    let answer = ans[2];
+
+    let curr_test;
+
+    knex('tests').where({id: testid}).select()
+    .then(test =>{
+
+        if(test.length == 0)
+          throw new Error('Test Aborted');
+
+       curr_test = test[0];
+
+       if(test[0].end>=timeOfEvent){
+
+          let actual_answers;
+
+          if(test[0].actual_answers === '')
+            actual_answers = answer;
+          else
+            actual_answers = test[0].actual_answers+','+answer;
+
+          curr_test.actual_answers = actual_answers;
+
+          curr_test.current_qno++;
+
+          return knex('tests').where({id:testid}).update({actual_answers, current_qno: curr_test.current_qno });
+
+       }else{
+
+          let actual_answers = test[0].actual_answers;
+
+          for(let i=qno; i<=10;i++){
+            if(actual_answers === '')
+              actual_answers = 'PASS';
+            else
+              actual_answers = actual_answers+','+'PASS';
+          }
+
+          curr_test.actual_answers = actual_answers;
+
+          return knex('tests').where({id:testid}).update({actual_answers, current_qno:11});
+
+       } 
+
+
+    })
+    .then( () => {
+
+          if(curr_test.end>=timeOfEvent && qno<10){
+
+              sendNextQ( recipientId ,curr_test, qno, curr_test.id);
+
+           }else if(curr_test.end<timeOfEvent && qno<10){
+
+              sendRemainingQ(recipientId ,curr_test, curr_test.id );  
+              //sendReport(recipientId ,curr_test);
+
+           }else if(curr_test.end>=timeOfEvent && qno>=10){
+
+              sendReport(recipientId ,curr_test);
+               
+           }else{
+
+              sendReport(recipientId ,curr_test);
+               
+
+           } 
+
+
+    })
+    .catch(err => {
+
+      changeUserMode(recipientId, err.name);
+
+    });
+
+
+};
+
+
+function changeUserMode(recipientId, msgText){
+
+    knex('users').where({fbid:recipientId}).update({mode:'A'})
+      .then( () => {
+
+        sendMsgModeA(recipientId,msgText);
+
+      }).catch(err=>{});
+
+}
+
+function sendNextQ( recipientId ,curr_test, qno, testid){
+
+  let qlist = curr_test.questions;
+
+  qarray = qlist.split(',');
+
+  let query; question_no = qarray[qno].substring(2);
+
+  if(qarray[qno].substring(0,2) === 'qA' )
+    query = knex('qA').where({id:question_no}).select('q');
+  else 
+    query = knex('qB').where({id:question_no}).select('q');
+
+  query.then( question => {
+
+    sendTestQuestion(recipientId, question[0].q, testid, qno+1) {  
+
+  }).catch(err => {});
+
+}
+
+
+function sendRemainingQ(recipientId ,curr_test, qno){
+
+
+}
+
+
+function sendReport(recipientId ,curr_test){
+
 }
 
 
@@ -468,7 +604,7 @@ function startTest(recipientId, user) {
 
 
           }).then( () => {
-              sendTestQuestion(recipientId, question_one, testid);
+              sendTestQuestion(recipientId, question_one, testid, 1);
           }).catch( err => {
               console.log(err);
               sendMsgModeA(recipientId, err.name+' OMG');
