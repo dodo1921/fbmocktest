@@ -320,11 +320,9 @@ function processMessageExamMode(recipientId, user, timeOfEvent){
 
 function processAnswer(recipientId, user, timeOfEvent, payload){
 
-    console.log('>>>'+payload);
+    console.log('Timeofevent>>>'+timeOfEvent);
 
-    let ans = payload.split(',');
-
-    console.log('>>>'+ans.length);
+    let ans = payload.split(',');    
 
     if(ans.length != 3)
       return;
@@ -358,6 +356,8 @@ function processAnswer(recipientId, user, timeOfEvent, payload){
 
           curr_test.current_qno++;
 
+          console.log('here1');
+
           return knex('tests').where({id:testid}).update({actual_answers, current_qno: curr_test.current_qno });
 
        }else{
@@ -373,6 +373,8 @@ function processAnswer(recipientId, user, timeOfEvent, payload){
 
           curr_test.actual_answers = actual_answers;
 
+          console.log('here2');
+
           return knex('tests').where({id:testid}).update({actual_answers, current_qno:11});
 
        } 
@@ -383,10 +385,12 @@ function processAnswer(recipientId, user, timeOfEvent, payload){
 
           if(curr_test.end>=timeOfEvent && qno<10){
 
+              console.log('here3');
               sendNextQ( recipientId ,curr_test, qno, curr_test.id);
 
            }else if(curr_test.end<timeOfEvent && qno<10){
 
+              console.log('here4');
               sendRemainingQ(recipientId ,curr_test, curr_test.id );  
               //sendReport(recipientId ,curr_test);
 
