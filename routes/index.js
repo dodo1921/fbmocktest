@@ -391,7 +391,7 @@ function processAnswer(recipientId, user, timeOfEvent, payload){
            }else if(curr_test.end<timeOfEvent && qno<10){
 
               console.log('here4');
-              sendRemainingQ(recipientId ,curr_test, curr_test.id );  
+              sendRemainingQ(recipientId ,curr_test, qno ,curr_test.id );  
               //sendReport(recipientId ,curr_test);
 
            }else if(curr_test.end>=timeOfEvent && qno>=10){
@@ -422,7 +422,8 @@ function changeUserMode(recipientId, msgText){
     knex('users').where({fbid:recipientId}).update({mode:'A'})
       .then( () => {
 
-        sendMsgModeA(recipientId,msgText);
+        setTimeout(function(){ sendMsgModeA(recipientId,msgText); }, 2000);
+        
 
       }).catch(err=>{});
 
@@ -452,8 +453,52 @@ function sendNextQ( recipientId ,curr_test, qno, testid){
 }
 
 
-function sendRemainingQ(recipientId ,curr_test, qno){
+function sendRemainingQ(recipientId ,curr_test, qno, testid){
 
+  let qq = parseInt(qno);
+
+  let qlist = curr_test.questions;
+
+  qarray = qlist.split(',');
+
+  let query, question_no; 
+
+  for(let i=qno; i<10; i++){
+
+      question_no = qarray[i].substring(2);
+
+      if(qarray[i].substring(0,2) === 'qA' )
+        query = knex('qA').where({id:question_no}).select('q');
+      else 
+        query = knex('qB').where({id:question_no}).select('q');
+
+      query.then( question => {
+
+        //sendTestQuestion(recipientId, question[0].q, testid, qq+1);
+        let messageData = {
+          recipient: {
+            id: recipientId
+          },
+          message:{    
+            attachment:{
+              type:"image",
+              payload:{
+                url:"https://s3.ap-south-1.amazonaws.com/mayukhdemo/tests/"+question[0].q
+              }
+            }            
+          }
+        }; 
+
+        setTimeout(function(){ callSendAPI(messageData); }, 1000*(i-qno+1));
+
+        
+
+      }).catch(err => {});
+
+
+  }
+
+  setTimeout(function(){ sendReport(recipientId ,curr_test) }, 9000);    
 
 }
 
@@ -500,7 +545,7 @@ function sendReport(recipientId ,curr_test){
 
   callSendAPI(messageData);
 
-  //changeUserMode(recipientId, 'Share MockTest chatbot with your friends.')
+  changeUserMode(recipientId, 'Share MockTest chatbot with your friends.')
 
 }
 
