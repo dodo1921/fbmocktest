@@ -480,9 +480,11 @@ function sendReport(recipientId ,curr_test){
       messageText+='   Wrong\n';
     }
 
-    messageText+='Score:'+score+'/10';
+    
 
   }
+
+  messageText+='Score:'+score+'/10';
 
   console.log(messageText);
 
@@ -498,7 +500,7 @@ function sendReport(recipientId ,curr_test){
 
   callSendAPI(messageData);
 
-  changeUserMode(recipientId, 'Share MockTest chatbot with your friends.')
+  //changeUserMode(recipientId, 'Share MockTest chatbot with your friends.')
 
 }
 
