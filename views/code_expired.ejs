@@ -17,10 +17,10 @@
     border-radius: 8px;
   }
   .panel form {
-    padding: 40px;
+    padding: 35px;
   }
   .panel h3{
-    margin: 40px 0 0;
+    margin: 35px 0 0;
     color: #563d7c;
   }
   .btn-primary {
@@ -28,6 +28,29 @@
     background-color: #79589f;
     border:none;
   }
+
+  .btn-primary:hover {
+    color: #000;
+    background-color: #e6e6e6;
+    border:none;
+  }
+
+  .btn-primary:focus {
+    color: #fff;
+    background-color: #79589f;
+    border:none;
+  }
+
+  .form-control:focus {
+        border-color: #79589f;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(255, 100, 255, 0.5);
+  }
+
+  .amt.active{
+    background-color: #79589f;
+    color: white;
+  }
+
   </style>
   
 </head>
@@ -35,24 +58,20 @@
 
 <div class="container">  
   <div class="center-block" style="width:200px;margin-top:30px;">
-    <img src="https://fbmocktest.herokuapp.com/mocktestprofile.png" width="200" height="200"/>
+    <img src="./mocktestprofile.png" width="200" height="200"/>
   </div>
   <div class="content">
     <div class="panel">
-      <h3 class="text-center">Enter passcode</h3>
-      <form action="/login" method="post" role="form">
-          
-          <div class="form-group">              
-              <div class="input-icon icon-username"></div>
-              <input autofocus="true" class="form-control" id="email" name="passcode" placeholder="passcode" tabindex="1">
-          </div>
-          
-          <button class="btn btn-primary btn-lg btn-block" name="commit" tabindex="3" type="submit" value="Log In">Submit</button>
-      </form>
+      <h3 class="text-center"><span id="amount_display">Link has expired !!! </h3>      
     </div>
   </div>
 
-</div>    
+</div> 
+
+    
 
 </body>
+
+
+
 </html>

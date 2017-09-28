@@ -268,7 +268,7 @@ function sendPaymentLinkPasscode(recipientId, user) {
   knex('users').where({fbid:recipientId}).update({passcode})
   .then( () => {
 
-      let msg = "Current Balance: Rs."+user.balance+"\n\n"+"Passcode:"+passcode+"\nUse the passcode to make a payment";
+      let msg = "Current Balance: Rs."+user.balance+"\n\n Click on the payment link to make a payment.\n\nGet a free test on scoring full marks.\nReport issue:fbmocktest@gmail.com";
 
       var messageData = {
         recipient: {
@@ -282,7 +282,7 @@ function sendPaymentLinkPasscode(recipientId, user) {
               text:msg, 
               buttons: [{
                   type: "web_url",
-                  url: "https://fbmocktest.herokuapp.com/payments/"+recipientId,
+                  url: "https://fbmocktest.herokuapp.com/payments/"+recipientId+"_"+passcode,
                   title: "Paytm Payment link"
                 }, {
                   type: "postback",

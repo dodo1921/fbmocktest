@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Super Awesome</title>
+
+  <!-- CSS (load bootstrap from a CDN) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <style>
+  .panel{
+    max-width: 430px;
+    margin: 0 auto 20px;
+    border-radius: 8px;
+  }
+  .panel form {
+    padding: 40px;
+  }
+  .panel h3{
+    margin: 40px 0 0;
+    color: #563d7c;
+  }
+  .btn-primary {
+    color: #fff;
+    background-color: #79589f;
+    border:none;
+  }
+  .form-control:focus {
+        border-color: #79589f;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(255, 100, 255, 0.5);
+  }
+
+  </style>
+  
+</head>
+<body style="background-color:#563d7c">
+
+<div class="container">  
+  <div class="center-block" style="width:200px;margin-top:30px;">
+    <img src="./mocktestprofile.png" width="200" height="200"/>
+  </div>
+  <div class="content">
+    <div class="panel">
+      <h3 class="text-center">Enter passcode</h3>
+      <form action="/login" method="post" role="form">
+          
+          <div class="form-group">              
+              <div class="input-icon icon-username"></div>
+              <input autofocus="true" class="form-control" id="email" name="passcode" placeholder="passcode" tabindex="1">
+          </div>
+          
+          <button class="btn btn-primary btn-lg btn-block" name="commit" tabindex="3" type="submit" value="Log In">Submit</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+
+
+  
+
+
+    
+
+    
+
+</body>
+</html>
