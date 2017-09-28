@@ -268,7 +268,7 @@ function sendPaymentLinkPasscode(recipientId, user) {
   knex('users').where({fbid:recipientId}).update({passcode})
   .then( () => {
 
-      let msg = "Current Balance: Rs."+user.balance+"\n\n Click on the payment link to make a payment.\n\nGet a free test on scoring full marks.\nReport issue:fbmocktest@gmail.com";
+      let msg = "Current Balance: Rs."+user.balance+"\n\n Click on the payment link to make a payment.\n\nGet a free test on scoring full marks.\nReport issue:\nfbmocktest@gmail.com";
 
       var messageData = {
         recipient: {
