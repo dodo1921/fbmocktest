@@ -230,7 +230,7 @@ function sendTestQuestion(recipientId, imagename, testid, qno) {
       attachment:{
         type:"image",
         payload:{
-          url:"https://s3.ap-south-1.amazonaws.com/mayukhdemo/tests/"+imagename
+          url:"https://s3.ap-south-1.amazonaws.com/fbmock/"+imagename
         }
       },   
       quick_replies:[
