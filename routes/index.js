@@ -519,6 +519,9 @@ function sendReport(recipientId ,curr_test){
 
     messageText+=i+'. '+Earray[i-1]+'  your answer '+(Aarray[i-1]==='PASS'?'':Aarray[i-1])+'\n'; 
 
+    if(Earray[i-1] === Aarray[i-1])
+      score++;
+
   }
 
   messageText+='Score:'+score+'/10';
