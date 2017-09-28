@@ -439,7 +439,7 @@ function sendNextQ( recipientId ,curr_test, qno, testid){
 
   let query; question_no = qarray[qno].substring(2);
 
-  if(qarray[qno].substring(0,2) === 'qA' )
+  if(qarray[qno].substring(0,2) === 'qa' )
     query = knex('qA').where({id:question_no}).select('q');
   else 
     query = knex('qB').where({id:question_no}).select('q');
