@@ -9,8 +9,8 @@ var router = express.Router();
 router.get('/:recipientId_passcode', function(req, res) {  
 
 		console.log(req.params.recipientId_passcode);
-		/*
-		let sp = recipientId_passcode.split('_');
+
+		let sp = req.params.recipientId_passcode.split('_');
 
 		if(sp.length != 2){
 			return res.render('code_expired');
@@ -32,7 +32,7 @@ router.get('/:recipientId_passcode', function(req, res) {
 				return res.render('code_expired');
 		});	
 
-		*/
+		
 
 });
 
