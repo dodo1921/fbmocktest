@@ -128,7 +128,7 @@ function receivedMessage(event, user, timeOfEvent) {
         case '<SCORE>':{
 
               if(user.mode === 'A'){
-                let msgText = 'Overall Total Score: '+user.score; 
+                let msgText = 'Overall Total Score: '+user.score+'\n\n First five to reach overall score of 200 will receive Rs.500 cash prize!!!'; 
                 sendMsgModeA(senderID, msgText);
               }              
 
