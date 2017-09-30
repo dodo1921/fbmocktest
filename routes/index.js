@@ -268,7 +268,7 @@ function sendPaymentLinkPasscode(recipientId, user) {
   knex('users').where({fbid:recipientId}).update({passcode})
   .then( () => {
 
-      let msg = "Current Balance: Rs."+user.balance+"\n\n Click on the payment link to make a payment.\n\nGet a free test on scoring full marks.\nReport issue:\nfbmocktest@gmail.com";
+      let msg = "Current Balance: Rs."+user.balance+"\n\nClick on the payment link to make a payment.\n\nGet a free test on scoring full marks.\n\nReport issue:\nfbmocktest@gmail.com";
 
       var messageData = {
         recipient: {
@@ -391,17 +391,57 @@ function processAnswer(recipientId, user, timeOfEvent, payload){
            }else if(curr_test.end<timeOfEvent && qno<10){
 
               console.log('here4');
-              sendRemainingQ(recipientId ,curr_test, qno ,curr_test.id );  
-              //sendReport(recipientId ,curr_test);
+
+              let messageData = {
+                recipient: {
+                  id: recipientId
+                },
+                message: {
+                  text: 'Time is up...\nSending remaining questions...'
+                }
+              };
+
+              callSendAPI(messageData);
+
+              setTimeout(function(){ sendRemainingQ(recipientId ,curr_test, qno ,curr_test.id ); }, 3000);
+              
+              
+              
 
            }else if(curr_test.end>=timeOfEvent && qno>=10){
 
-              sendReport(recipientId ,curr_test);
+              let messageData = {
+                recipient: {
+                  id: recipientId
+                },
+                message: {
+                  text: 'Test Complete.\nGenerating solutions and report.'
+                }
+              };
+
+              callSendAPI(messageData);
+
+              setTimeout(function(){ sendShareAndSolutionMsg(recipientId, curr_test); }, 3000);
+
+              //sendReport(recipientId ,curr_test);
                
            }else{
 
-              sendReport(recipientId ,curr_test);
-               
+              let messageData = {
+                recipient: {
+                  id: recipientId
+                },
+                message: {
+                  text: 'Time is up...'
+                }
+              };
+
+              callSendAPI(messageData);
+
+              setTimeout(function(){ sendShareAndSolutionMsg(recipientId, curr_test); }, 3000);
+
+
+              //sendReport(recipientId ,curr_test);               
 
            } 
 
@@ -420,12 +460,12 @@ function processAnswer(recipientId, user, timeOfEvent, payload){
 function changeUserMode(recipientId, msgText){
 
     knex('users').where({fbid:recipientId}).update({mode:'A'})
-      .then( () => {
+    .then( () => {
 
-        setTimeout(function(){ sendMsgModeA(recipientId,msgText); }, 5000);
-        
+      setTimeout(function(){ sendMsgModeA(recipientId,msgText); }, 5000);
+      
 
-      }).catch(err=>{});
+    }).catch(err=>{});
 
 }
 
@@ -483,7 +523,7 @@ function sendRemainingQ(recipientId ,curr_test, qno, testid){
             attachment:{
               type:"image",
               payload:{
-                url:"https://s3.ap-south-1.amazonaws.com/mayukhdemo/tests/"+question[0].q
+                url:"https://s3.ap-south-1.amazonaws.com/fbmock/"+question[0].q
               }
             }            
           }
@@ -498,7 +538,14 @@ function sendRemainingQ(recipientId ,curr_test, qno, testid){
 
   }
 
-  setTimeout(function(){ sendReport(recipientId ,curr_test) }, 1000*(10-qno+5));    
+  setTimeout(function(){ sendShareAndSolutionMsg(recipientId ,curr_test) }, 1000*(10-qno+5));    
+
+}
+
+
+function sendShareAndSolutionMsg(recipientId, curr_test){
+
+  setTimeout(function(){ sendReport(recipientId ,curr_test) }, 5000);  
 
 }
 
@@ -515,36 +562,35 @@ function sendReport(recipientId ,curr_test){
 
   let score=0;
 
-  for(let i=1; i<=10; i++){
+  for(let i=1; i<=10; i++){    
 
-    messageText+=i+'. '+Earray[i-1]+'  your answer '+(Aarray[i-1]==='PASS'?'':Aarray[i-1])+'\n'; 
-
-    if(Earray[i-1] === Aarray[i-1])
+    if(Earray[i-1] === Aarray[i-1]){
+      messageText+=i+'. '+Earray[i-1]+'  your answer '+Aarray[i-1]+'\n'; 
       score++;
+    }else{
+      messageText+=i+'. '+Earray[i-1]+'  not answered\n'; 
+    }
 
   }
 
-  messageText+='Score:'+score+'/10';
+  messageText+='\nScore:'+score+'/10';
 
-  console.log(messageText);
-
-
-  let messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: messageText
-    }
-  };
-
-  callSendAPI(messageData);
+  console.log(messageText);  
 
   knex('users').where({fbid:recipientId}).increment('score', score)
   .then(()=>{})
   .catch(err=>{});
 
-  changeUserMode(recipientId, 'Share MockTest chatbot with your friends.')
+
+  knex('users').where({fbid:recipientId}).update({mode:'A'})
+    .then( () => {
+
+      sendMsgModeA(recipientId, messageText);
+      
+
+  }).catch(err=>{});
+
+  
 
 }
 
