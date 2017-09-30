@@ -260,14 +260,14 @@ function sendMsgModeA(recipientId, messageText) {
 
 function sendDetailedSolutionsList(senderID, testid){
 
-  knex('tests').where({id: testid}).select('q')
+  knex('tests').where({id: testid}).select('questions')
   .then( test => {
 
     if(test.length>0){
 
         console.log('Getting the test');
 
-        let qq = test[0].q.split(','); 
+        let qq = test[0].questions.split(','); 
         let solution_buttons = [];
 
         for(let i=0; i<qq.length; i++){
