@@ -272,28 +272,31 @@ function sendDetailedSolutionsList(senderID, testid){
 
         for(let i=0; i<qq.length; i++){
 
-          solution_buttons.push({
-            type: 'postback',
-            title: 'Solution '+(i+1),
-            payload: 'ds_'+qq[0]
+          solution_buttons.push({            
+            title: 'Solution',
+            buttons: [
+              type: 'postback',
+              title: '['+(i+1)+']',
+              payload: 'ds_'+qq[i]
+            ]
+            
           });
 
         }
 
         let msg = {
                     recipient:{
-                    id: senderID
-                  },
-                  message:{
-                    attachment:{
-                      type:'template',
-                      payload:{
-                        template_type:'button',
-                        text:'Detailed Solutions',
-                        buttons: solution_buttons
+                      id: senderID
+                    },
+                    message:{
+                      attachment:{
+                        type:'template',
+                        payload:{
+                          template_type:'generic',                        
+                          elements: solution_buttons
+                        }
                       }
                     }
-                  }
                 };
 
          callSendAPI(msg);
@@ -677,7 +680,7 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
                 },
                   {
                     type: 'postback',
-                    title: 'Test Solutions',
+                    title: 'Detailed Solutions',
                     payload:'Solutions_'+curr_test.id
                   }
               ]
