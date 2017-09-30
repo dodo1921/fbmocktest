@@ -581,11 +581,6 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
                                 type: 'web_url',
                                 url: 'https://m.me/mocktestchatbot?ref='+curr_test.user_id,
                                 title: 'Start Test'
-                              },
-                              {
-                                type: 'postback',
-                                title: 'Solutions',
-                                payload:'Solutions_'+curr_test.id
                               }
                             ]
                           }
@@ -593,7 +588,12 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
                       }
                     }
                   }
-                }
+                },
+                  {
+                    type: 'postback',
+                    title: 'Solutions',
+                    payload:'Solutions_'+curr_test.id
+                  }
               ]
             }
           ]
