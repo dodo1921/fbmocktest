@@ -179,8 +179,43 @@ function receivedPostback(event, user, timeOfEvent) {
     "at %d", senderID, recipientID, payload, timeOfPostback);
 
   if(user.mode === 'A'){
-    let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
-    sendMsgModeA(senderID, msgText);
+
+      if(event.postback.payload === '<GET_STARTED_PAYLOAD>' && event.postback.referral){
+
+        let refparam = event.postback.referral.ref;
+        console.log('Ref param:'+refparam);
+
+        if(event.postback.referral.source === 'SHORTLINK'){
+
+            knex('users').where({fbid:senderID}).whereNull('ref_id').update({ref_id: refparam})
+            .then(()=>{})
+            .catch(err=>{});
+
+        }  
+
+        let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
+        sendMsgModeA(senderID, msgText);
+
+      }else{
+
+        ley load = event.postback.payload;
+
+        let sp = load.split('_');
+
+        if(sp.length === 2 && sp[0] === 'Solutions'){
+
+            sendDetailedSolutionsList(senderID, sp[1]);
+
+
+        }else{
+            
+            let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
+            sendMsgModeA(senderID, msgText);    
+
+        }       
+
+      }   
+
   }
 
 }
@@ -216,6 +251,51 @@ function sendMsgModeA(recipientId, messageText) {
   }; 
 
   callSendAPI(messageData);
+}
+
+
+sendDetailedSolutionsList(senderID, testid){
+
+  knex('tests').where({id: testid}).select('q')
+  .then( test => {
+
+    if(test.length>0){
+
+        let qq = test[0].q.split(','); 
+        let solution_buttons = [];
+
+        for(let i=0; i<qq.length; i++){
+
+          solution_buttons.push({
+            type: 'postback',
+            title: 'Solution '+(i+1),
+            payload: 'ds_'+qq[0]
+          });
+
+        }
+
+        let msg = {
+                    recipient:{
+                    id: senderID
+                  },
+                  message:{
+                    attachment:{
+                      type:'template',
+                      payload:{
+                        template_type:'button',
+                        text:'Detailed Solutions',
+                        buttons: solution_buttons
+                      }
+                    }
+                  }
+                };
+
+         callSendAPI(msg);
+
+    }
+
+  }).catch(err => {});
+
 }
 
 
@@ -556,7 +636,7 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
           template_type:'generic',
           elements:[
             {
-              title: 'Mock Test',
+              title: 'Share Mock Test',
               subtitle: 'Get Rs1 added to your balance each time your referred friend completes a test.',
               image_url:'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
               buttons: [
@@ -591,7 +671,7 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
                 },
                   {
                     type: 'postback',
-                    title: 'Solutions',
+                    title: 'Test Solutions',
                     payload:'Solutions_'+curr_test.id
                   }
               ]
@@ -641,6 +721,30 @@ function sendReport(recipientId ,curr_test){
   knex('users').where({fbid:recipientId}).increment('score', score)
   .then(()=>{})
   .catch(err=>{});
+
+  if(score==10){
+    knex('users').where({fbid:recipientId}).increment('balance', 5.00)
+    .then(()=>{})
+    .catch(err=>{});
+  }
+
+  knex('users').where({fbid: recipientId}).select()
+  .then( user => {
+
+    if(user.length>0){
+
+      let ref_id = user[0].ref_id;
+      if(ref_id){
+
+        knex('users').where({id: ref_id}).increment('balance', 1.00)
+        .then(()=>{})
+        .catch(err=>{});
+
+      }
+
+    }
+
+  }).catch(err=>{}); 
 
 
   knex('users').where({fbid:recipientId}).update({mode:'A'})
