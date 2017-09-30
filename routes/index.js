@@ -206,7 +206,7 @@ function receivedPostback(event, user, timeOfEvent) {
 
         if(sp.length === 2 && sp[0] === 'Solutions'){
 
-            console.log('Solutions after split'+ load);
+            console.log('Solutions after split'+ sp[1]);
 
             sendDetailedSolutionsList(senderID, sp[1]);
 
@@ -264,6 +264,8 @@ function sendDetailedSolutionsList(senderID, testid){
   .then( test => {
 
     if(test.length>0){
+
+        console.log('Getting the test');
 
         let qq = test[0].q.split(','); 
         let solution_buttons = [];
