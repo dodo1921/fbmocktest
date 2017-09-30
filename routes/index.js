@@ -198,7 +198,7 @@ function receivedPostback(event, user, timeOfEvent) {
 
       }else{
 
-        ley load = event.postback.payload;
+        let load = event.postback.payload;
 
         let sp = load.split('_');
 
