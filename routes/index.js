@@ -545,6 +545,65 @@ function sendRemainingQ(recipientId ,curr_test, qno, testid){
 
 function sendShareAndSolutionMsg(recipientId, curr_test){
 
+  let shareandsolnmsg = {
+    recipient:{
+      id: recipientId
+    },
+    message:{
+      attachment:{
+        type:'template',
+        payload:{
+          template_type:'generic',
+          elements:[
+            {
+              title: 'Mock Test',
+              subtitle: 'Get Rs1 added to your balance each time your referred friend completes a test.',
+              image_url:'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
+              buttons: [
+                {
+                  type: 'element_share',
+                  share_contents: { 
+                    attachment: {
+                      type: 'template',
+                      payload: {
+                        template_type: 'generic',
+                        elements: [
+                          {
+                            title: 'Mock Test',
+                            subtitle: 'Prepare for CAT, XAT, SNAP, GMAT, GRE, campus placements etc. Practice mini mock tests on Facebook chat and messenger',
+                            image_url: 'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
+                            default_action: {
+                              type: web_url,
+                              url: 'https://m.me/mocktestchatbot?ref='+curr_test.user_id
+                            },
+                            buttons: [
+                              {
+                                type: web_url,
+                                url: 'https://m.me/mocktestchatbot?ref='+curr_test.user_id,
+                                title: 'Start Test'
+                              },
+                              {
+                                type: 'postback',
+                                title: 'Solutions',
+                                payload:'Solutions_'+curr_test.id
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  };
+
+  callSendAPI(shareandsolnmsg);
+
   setTimeout(function(){ sendReport(recipientId ,curr_test) }, 5000);  
 
 }
