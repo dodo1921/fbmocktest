@@ -254,7 +254,7 @@ function sendMsgModeA(recipientId, messageText) {
 }
 
 
-sendDetailedSolutionsList(senderID, testid){
+function sendDetailedSolutionsList(senderID, testid){
 
   knex('tests').where({id: testid}).select('q')
   .then( test => {
