@@ -206,6 +206,8 @@ function receivedPostback(event, user, timeOfEvent) {
 
         if(sp.length === 2 && sp[0] === 'Solutions'){
 
+            console.log('Solutions after split'+ load);
+
             sendDetailedSolutionsList(senderID, sp[1]);
 
 
