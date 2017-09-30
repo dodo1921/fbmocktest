@@ -274,11 +274,11 @@ function sendDetailedSolutionsList(senderID, testid){
 
           solution_buttons.push({            
             title: 'Solution',
-            buttons: [
+            buttons: [{
               type: 'postback',
               title: '['+(i+1)+']',
               payload: 'ds_'+qq[i]
-            ]
+            }]
             
           });
 
