@@ -198,6 +198,8 @@ function receivedPostback(event, user, timeOfEvent) {
 
       }else{
 
+        console.log('Solutions');
+
         let load = event.postback.payload;
 
         let sp = load.split('_');
