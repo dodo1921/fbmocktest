@@ -573,12 +573,12 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
                             subtitle: 'Prepare for CAT, XAT, SNAP, GMAT, GRE, campus placements etc. Practice mini mock tests on Facebook chat and messenger',
                             image_url: 'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
                             default_action: {
-                              type: web_url,
+                              type: 'web_url',
                               url: 'https://m.me/mocktestchatbot?ref='+curr_test.user_id
                             },
                             buttons: [
                               {
-                                type: web_url,
+                                type: 'web_url',
                                 url: 'https://m.me/mocktestchatbot?ref='+curr_test.user_id,
                                 title: 'Start Test'
                               },
