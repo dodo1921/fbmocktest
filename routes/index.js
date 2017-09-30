@@ -567,8 +567,10 @@ function sendReport(recipientId ,curr_test){
     if(Earray[i-1] === Aarray[i-1]){
       messageText+=i+'. '+Earray[i-1]+'  your answer '+Aarray[i-1]+'\n'; 
       score++;
-    }else{
+    }else if(Aarray[i-1] === 'PASS'){
       messageText+=i+'. '+Earray[i-1]+'  not answered\n'; 
+    }else{
+      messageText+=i+'. '+Earray[i-1]+'  your answer '+Aarray[i-1]+'\n';
     }
 
   }
