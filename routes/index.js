@@ -211,6 +211,56 @@ function receivedPostback(event, user, timeOfEvent) {
             sendDetailedSolutionsList(senderID, sp[1]);
 
 
+        }else if(sp.length === 2 && sp[0] === 'ds'){
+
+          let qid = sp[1].substring(2);
+          let query;
+
+          if(sp[1].substring(0,2) === 'qa'){
+            query = knex('qA').where({id: qid}).select('solution');
+          }else if(sp[1].substring(0,2) === 'qb'){
+            query = knex('qB').where({id: qid}).select('solution');
+          }
+
+          query.then( soln => {
+
+            let messageData = {
+                    recipient: {
+                      id: senderID
+                    },
+                    message:{    
+                      attachment:{
+                        type:"image",
+                        payload:{
+                          url:"https://s3.ap-south-1.amazonaws.com/fbmock/"+soln[0].solution
+                        }
+                      },   
+                      quick_replies:[
+                          {
+                            content_type:"text",
+                            title:"Start Test",
+                            payload:"<START TEST>"        
+                          },
+                          {
+                            content_type:"text",
+                            title:"Add Money",
+                            payload:"<ADD MONEY>"        
+                          },          
+                          {
+                            content_type:"text",
+                            title:"Score",
+                            payload:"<SCORE>"        
+                          } 
+                      ]
+                    }
+                  }; 
+
+                  callSendAPI(messageData);
+
+          }).catch(err=>{
+
+          });
+
         }else{
             
             let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
@@ -228,7 +278,7 @@ function receivedPostback(event, user, timeOfEvent) {
 // Sending helpers
 //////////////////////////
 function sendMsgModeA(recipientId, messageText) {
-  var messageData = {
+  let messageData = {
     recipient: {
       id: recipientId
     },
