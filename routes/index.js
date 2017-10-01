@@ -407,7 +407,7 @@ function sendPaymentLinkPasscode(recipientId, user) {
   knex('users').where({fbid:recipientId}).update({passcode})
   .then( () => {
 
-      let msg = "Current Balance: Rs."+user.balance+"\n\nClick on the payment link to make a payment.\n\nGet a free test on scoring full marks.\n\nReport issue:\nfbmocktest@gmail.com";
+      let msg = "Current Balance: Rs."+user.balance+"\n\nClick on the payment link to make a payment.\n\nGet a free test on scoring full marks.\n\nReport issue:\nfbmocktest@gmail.com\nUserId:"+user.id;
 
       var messageData = {
         recipient: {
@@ -486,14 +486,34 @@ function processAnswer(recipientId, user, timeOfEvent, payload){
 
           let actual_answers;
 
-          if(test[0].actual_answers === '')
+          if(test[0].actual_answers === ''){
             actual_answers = answer;
-          else
-            actual_answers = test[0].actual_answers+','+answer;
+            curr_test.actual_answers = actual_answers;
+            curr_test.current_qno++;
+          }
+          else{
 
-          curr_test.actual_answers = actual_answers;
+              let sp = test[0].actual_answers.split(',');
+              if(sp.length>=qno){
+                sp[qno-1] = answer;
+                actual_answers = sp[0];
 
-          curr_test.current_qno++;
+                for(let i=1; i<sp.length; i++){
+
+                  actual_answers = actual_answers+','+sp[i];
+
+                }
+
+                curr_test.actual_answers = actual_answers;
+                //curr_test.current_qno++;
+              }else{
+                actual_answers = test[0].actual_answers+','+answer;
+                curr_test.actual_answers = actual_answers;
+                curr_test.current_qno++;
+              }           
+
+            
+          }          
 
           console.log('here1');
 
