@@ -161,7 +161,9 @@ function receivedMessage(event, user, timeOfEvent) {
           if(user.mode === 'A'){
             let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
             sendMsgModeA(senderID, msgText);
-          } 
+          }else if(user.mode === 'E'){
+              processMessageExamMode(senderID, user, timeOfEvent);
+          }  
 
   }
 
