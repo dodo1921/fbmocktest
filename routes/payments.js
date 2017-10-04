@@ -51,21 +51,19 @@ router.post('/submitAmount', function(req, res, next) {
 
 		let params = {};
 		params.MID = process.env.MERCHANT_ID;
-		params.ORDER_ID = payment[0];
-
-		console.log('Orderid:'+payment[0]);
-		params.CUST_ID = fbid;
+		params.ORDER_ID = payment[0];		
 		params.INDUSTRY_TYPE_ID = process.env.INDUSTRY_TYPE;
     params.CHANNEL_ID = process.env.CHANNEL_ID;
     params.TXN_AMOUNT = amount;
     params.WEBSITE = process.env.WEBSITE;
     params.MOBILE_NO = 911010101010;
-    params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com'
+    params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
 
 
     ck.genchecksum(params, process.env.MERCHANT_KEY, function(undefined, params ){
 
     	console.log(params.CHECKSUMHASH);
+    	params.CUST_ID = fbid;
     	return res.json(params);
 
     });
@@ -81,11 +79,25 @@ router.post('/submitAmount', function(req, res, next) {
 });
 
 
-router.post('/paytmAck', function(req, res) {
+router.post('/paytmAck', function(req, res) {	
 
-	let ck = req.body.CHECKSUMHASH;
+	let params = {};
+	params.MID = req.body.MID;
+	params.ORDER_ID = req.body.ORDER_ID;
+	params.INDUSTRY_TYPE_ID = process.env.INDUSTRY_TYPE;
+  params.CHANNEL_ID = process.env.CHANNEL_ID;
+  params.TXN_AMOUNT = req.body.TXNAMOUNT;
+  params.WEBSITE = process.env.WEBSITE;
+  params.MOBILE_NO = 911010101010;
+  params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
+	params.CHECKSUMHASH = req.body.CHECKSUMHASH
 
-	console.log(ck);
+	if(ck.verifychecksum(params, process.env.MERCHANT_KEY)){
+		console.log('Checksum right');
+	}else{
+		console.log('Checksum wrong');
+	}
+
 
 	return res.render('code_expired');
 
