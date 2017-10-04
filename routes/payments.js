@@ -39,7 +39,7 @@ router.get('/:recipientId_passcode', function(req, res) {
 });
 
 
-router.post('/submitAmount', function(req, res) {
+router.post('/submitAmount', function(req, res, next) {
 
 	//paytm stuff
 
@@ -63,13 +63,14 @@ router.post('/submitAmount', function(req, res) {
 
     ck.genchecksum(params, process.env.MERCHANT_KEY, function(undefined, params ){
 
+    	console.log(params.CHECKSUMHASH);
     	return res.json(params);
 
     });
 
 	}).catch(err => {
 
-		return next(err);
+		next(err);
 
 	});
 
