@@ -52,6 +52,8 @@ router.post('/submitAmount', function(req, res, next) {
 		let params = {};
 		params.MID = process.env.MERCHANT_ID;
 		params.ORDER_ID = payment[0].id;
+
+		console.log('Orderid:'+payment[0].id);
 		params.CUST_ID = fbid;
 		params.INDUSTRY_TYPE_ID = process.env.INDUSTRY_TYPE;
     params.CHANNEL_ID = process.env.CHANNEL_ID;
