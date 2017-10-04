@@ -3,6 +3,8 @@ var express = require('express');
 let knex = require('../db/knex');
 let Promise = require('bluebird');
 
+let ck = require('../paytm_utils/checksum');
+
 var router = express.Router();
 
 /* GET users listing. */
@@ -41,16 +43,48 @@ router.post('/submitAmount', function(req, res) {
 
 	//paytm stuff
 
-	return res.json({});
+	let fbid = req.body.fbid;
+	let amount = req.body.amount;
+
+	knex('payments').returning('id').insert({fbid, money: amount})
+	.then( payment => {
+
+		let params = {};
+		params.MID = process.env.MERCHANT_ID;
+		params.ORDER_ID = payment[0].id;
+		params.CUST_ID = fbid;
+		params.INDUSTRY_TYPE_ID = process.env.INDUSTRY_TYPE;
+    params.CHANNEL_ID = process.env.CHANNEL_ID;
+    params.TXN_AMOUNT = amount;
+    params.WEBSITE = process.env.WEBSITE;
+    params.MOBILE_NO = 911010101010;
+    params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com'
+
+
+    ck.genchecksum(params, process.env.MERCHANT_KEY, function(undefined, params ){
+
+    	return res.json(params);
+
+    });
+
+	}).catch(err => {
+
+		return next(err);
+
+	});
+
+	
 
 });
 
 
 router.post('/paytmAck', function(req, res) {
 
-	//paytm stuff
+	let ck = req.body.CHECKSUMHASH;
 
-	return res.json({});
+	console.log(ck);
+
+	return res.render('code_expired');
 
 });
 
