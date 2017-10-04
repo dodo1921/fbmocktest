@@ -56,7 +56,7 @@ router.post('/submitAmount', function(req, res, next) {
     params.CHANNEL_ID = process.env.CHANNEL_ID;
     params.TXN_AMOUNT = amount;
     params.WEBSITE = process.env.WEBSITE;
-    params.MOBILE_NO = 911010101010;
+    params.MOBILE_NO = 919005835708;
     params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
 
 
