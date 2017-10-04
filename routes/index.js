@@ -9,12 +9,12 @@ let speakeasy = require('speakeasy');
 
 const request = require('request');
 
-/* GET home page. */
+/* GET home page. 
 router.get('/', function(req, res, next) {
   res.json({ message : 'hellohello'});
 });
 
-
+*/
 router.get('/webhook', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === 'mayukh_mocktest') {
