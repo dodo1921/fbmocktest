@@ -94,12 +94,120 @@ router.post('/paytmAck', function(req, res) {
 
 	if(ck.verifychecksum(params, process.env.MERCHANT_KEY)){
 		console.log('Checksum right');
+
+		knex('payments').where({id: req.body.ORDER_ID}).select()
+		.then(payment => {
+
+				if(payment.length>0 && payment[0].money === req.body.TXNAMOUNT){
+					 if(req.body.STATUS === 'TXN_STATUS'){
+					 		//success
+
+					 		knex.transaction( trx => {
+
+		              let p = [];
+		              let tt;              
+
+		              tt = knex('payments').where({id:req.body.ORDER_ID}).update({
+							 			done:1,
+							 			STATUS: req.body.STATUS,
+							 			TXNID: req.body.TXNID,
+							 			TXNDATE: req.body.TXNDATE,
+							 			RESPMSG: req.body.RESPMSG,
+							 			RESPCODE: req.body.RESPCODE,
+							 			PAYMENTMODE: req.body.PAYMENTMODE,
+							 			GATEWAYNAME: req.body.GATEWAYNAME,
+							 			CURRENCY: req.body.CURRENCY,
+							 			CHECKSUMHASH: req.body.CHECKSUMHASH,
+							 			BANKNAME: req.body.BANKNAME,
+							 			BANKTXNID: req.body.BANKTXNID
+							 		}).transacting(trx);
+		              p.push(tt);
+
+		              tt = knex('users').where({ fbid: payment[0].fbid }).increment('balance', req.body.TXNAMOUNT).transacting(trx);
+		              p.push(tt);         
+
+		                
+
+		              Promise.all(p)
+		              .then( values => {
+
+		                for( let i=0; i<values.length; i++ ){
+		                  console.log('Promise>>>>>>>'+values[i]);                  
+		                  if(values[i] == 0 ){                  
+		                    throw new Error('Transaction failed');
+		                  }
+		                }
+		                             
+
+		              })
+		              .then(trx.commit)
+		              .catch(trx.rollback)
+
+
+		          }).then( () => {
+					 				res.render('txn_success');
+					 		}).catch(err => {
+					 				res.render('txn_failure', {
+					 					error: 'Error '+err,
+					 					order_id: req.body.ORDER_ID
+					 				});
+					 		});
+
+
+					 		
+
+					 }else if(req.body.STATUS === 'TXN_FAILURE'){
+					 		//failure
+					 		knex('payments').where({id:req.body.ORDER_ID}).update({					 			
+					 			STATUS: req.body.STATUS,
+					 			TXNID: req.body.TXNID,
+					 			TXNDATE: req.body.TXNDATE,
+					 			RESPMSG: req.body.RESPMSG,
+					 			RESPCODE: req.body.RESPCODE,
+					 			PAYMENTMODE: req.body.PAYMENTMODE,
+					 			GATEWAYNAME: req.body.GATEWAYNAME,
+					 			CURRENCY: req.body.CURRENCY,
+					 			CHECKSUMHASH: req.body.CHECKSUMHASH,
+					 			BANKNAME: req.body.BANKNAME,
+					 			BANKTXNID: req.body.BANKTXNID
+					 		}).then( () => {
+					 				res.render('txn_failure', {
+					 					error: req.body.RESPMSG
+					 					order_id: req.body.ORDER_ID
+					 				});
+					 		}).catch(err => {
+					 				res.render('txn_failure', {
+					 					error: 'Database error',
+					 					order_id: req.body.ORDER_ID
+					 				});
+					 		});
+
+					 }else if (req.body.STATUS === 'PENDING' || req.body.STATUS === 'OPEN' ){
+					 		// try again to get conformation
+					 		res.render('txn_pending', {
+					 			status: req.body.STATUS
+					 		});
+					 		
+					 }
+
+				}else{
+
+					//transaction fail
+
+				}
+
+		}).catch(err => {
+
+
+		})
+
 	}else{
 		console.log('Checksum wrong');
+
 	}
 
 
-	return res.render('code_expired');
+	
 
 });
 
