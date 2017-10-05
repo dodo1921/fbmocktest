@@ -172,7 +172,7 @@ router.post('/paytmAck', function(req, res) {
 					 			BANKTXNID: req.body.BANKTXNID
 					 		}).then( () => {
 					 				res.render('txn_failure', {
-					 					error: req.body.RESPMSG
+					 					error: req.body.RESPMSG,
 					 					order_id: req.body.ORDER_ID
 					 				});
 					 		}).catch(err => {
@@ -187,7 +187,7 @@ router.post('/paytmAck', function(req, res) {
 					 		res.render('txn_pending', {
 					 			status: req.body.STATUS
 					 		});
-					 		
+
 					 }
 
 				}else{
