@@ -9,7 +9,7 @@ let speakeasy = require('speakeasy');
 
 const request = require('request');
 
-GET home page. 
+//GET home page. 
 router.get('/', function(req, res, next) {
   res.render('index');
 });
