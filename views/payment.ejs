@@ -107,7 +107,7 @@
           <input type="hidden" id="fbid" value="<%= recipientId %>">
 
           
-          <button style="margin-top:20px" class="btn btn-primary btn-lg btn-block" name="commit" tabindex="3" type="submit">Pay</button>
+          <button style="margin-top:20px" id="pay" class="btn btn-primary btn-lg btn-block" name="commit" tabindex="3" type="submit">Pay</button>
       </form>
     </div>
   </div>
@@ -135,6 +135,8 @@
 
                 $('#paymentform').submit(function(event) {
                     event.preventDefault();
+
+                    $('#pay').prop('disabled', true);
                     
                     var formData = {                        
                         'fbid'   : $('#fbid').val(),
@@ -151,6 +153,7 @@
                         encode      : true,
                         error       : function(xhr, status, error){                           
                                 console.log('Error');    
+                                $('#pay').prop('disabled', false);
                         }                      
                     }).done(function(data) {
 
