@@ -8,6 +8,17 @@ let ck = require('../paytm_utils/checksum');
 var router = express.Router();
 
 /* GET users listing. */
+
+router.get('/login', function(req, res) {  
+
+		console.log('Password:'+req.body.password);
+
+		return res.render('payment',{recipientId: 19841984 });
+
+		
+
+});
+
 router.get('/:recipientId_passcode', function(req, res) {  
 
 		console.log(req.params.recipientId_passcode);
