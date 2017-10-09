@@ -13,8 +13,10 @@ router.post('/login', function(req, res) {
 
 		console.log('Password:'+req.body.password);
 
-		return res.render('payment',{recipientId: 19841984 });
-
+		if(req.body.password === 'mocktest')
+			return res.render('payment',{recipientId: 19841984 });
+		else
+			return res.render('index');
 		
 
 });
