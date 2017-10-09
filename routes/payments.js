@@ -9,7 +9,7 @@ var router = express.Router();
 
 /* GET users listing. */
 
-router.get('/login', function(req, res) {  
+router.post('/login', function(req, res) {  
 
 		console.log('Password:'+req.body.password);
 
