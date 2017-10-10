@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Super Awesome</title>
+  <title>Mock Test</title>
 
   <!-- CSS (load bootstrap from a CDN) -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,14 +15,14 @@
     max-width: 430px;
     margin: 0 auto 20px;
     border-radius: 8px;
-    height:350px;
+    height:400px;
     overflow-y:scroll;
   }
   .panel form {
     padding: 35px;     
   }
   .panel h3{
-    margin: 35px 0;
+    margin: 35px 0 15px 0;
     color: #563d7c;
   }
   .btn-primary {
@@ -97,19 +97,39 @@
   </div>
   <div class="content">
     <div class="panel">
-      <a class="btn btn-primary btn-lg btn-block" href="https://m.me/mocktestchatbot">Start Test</a>
-      <h3 class="text-center">Login</h3>
-      <form action="/payments/login" method="post" role="form">
-          
-          <div class="form-group"> 
+      <ul class="nav nav-tabs">
+        <li id="mocktesttab" class="active" style="cursor:pointer"><a>MockTest</a></li>
+        <li id="paymenttab"  style="cursor:pointer"  ><a>Payment</a></li>   
+      </ul>
+      <div id="main_panel">
+        <div style="padding: 10px; height: 275px;">
+          <p>Welcome to Mock Test chatbot.
+          Mock test is a facebook chatbot which helps students preparing for competitive exams like CAT, GRE, GMAT, 
+          SNAP, XAT etc etc to sharpen there aptitude.</p> 
+          <p>Mock test chatbot conducts mini mock tests on facebook chat or on facebook messenger. Each mock test contains 
+          10 questions and it needs to be solved in 15mins. Each test costs just rupees 5. The tests can be taken from 
+          anywhere anytime at the users convinience. The first two tests are provide free of charge. A student also gets a 
+          free test on scoring full marks in a test.</p>
+          <p>Press the Start Test button to take your first test.</p>
 
-              <input style="margin-bottom:10px;" autofocus="true" class="form-control" id="userid" name="userid" placeholder="userid" tabindex="1">
+        </div>
+        <a class="btn btn-primary btn-lg btn-block" style="width:300px; margin: 20px auto 0px auto;" href="https://m.me/mocktestchatbot">Start Test</a>
+        
+      </div>
+      <div id="payment_panel" style="display:none;">
+        <h3 class="text-center">Login for Payment</h3>
+        <form action="/payments/login" method="post" role="form">
+            
+            <div class="form-group"> 
 
-              <input autofocus="false" class="form-control" id="password" name="password" placeholder="password" tabindex="1" type="password">
-          </div>
-          
-          <button class="btn btn-primary btn-lg btn-block" name="commit" tabindex="3" type="submit" value="Log In">Submit</button>
-      </form>
+                <input style="margin-bottom:10px;" autofocus="true" class="form-control" id="userid" name="userid" placeholder="userid" tabindex="1">
+
+                <input autofocus="false" class="form-control" id="password" name="password" placeholder="password" tabindex="1" type="password">
+            </div>
+            
+            <button class="btn btn-primary btn-lg btn-block" name="commit" tabindex="3" type="submit" value="Log In">Submit</button>
+        </form>
+      </div>  
     </div>
   </div>
 
@@ -120,8 +140,6 @@
       <li><a href="https://fbmocktest.herokuapp.com/terms-and-condition.html">Terms of Service</a></li>
       <li><a href="https://fbmocktest.herokuapp.com/privacy-policy.html">Privacy</a></li><li><a href="https://fbmocktest.herokuapp.com/about-us.html">About Us</a></li>
       <li><a href="https://fbmocktest.herokuapp.com/contact-us.html">Contact Us</a></li>
-      
-      
     </ul>
     <ul class="legal">
         <li>© 2017 Kushilav Technical Institute</li>
@@ -130,6 +148,38 @@
     
 
 </body>
+
+<script type="text/javascript">
+  
+$(document).ready(function(){
+
+  
+  $('#mocktesttab').click(function(event){                  
+                  $('#mocktesttab').removeClass('active');
+                  $('#paymenttab').removeClass('active');
+
+                  $('#mocktesttab').addClass('active');
+
+                  $('#main_panel').show();
+                  $('#payment_panel').hide();
+  });
+
+
+  $('#paymenttab').click(function(event){                  
+                  $('#mocktesttab').removeClass('active');
+                  $('#paymenttab').removeClass('active');
+
+                  $('#paymenttab').addClass('active');
+
+                  $('#main_panel').hide();
+                  $('#payment_panel').show();
+  });
+
+
+
+});   
+
+</script>
 
 
 
