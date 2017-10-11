@@ -12,7 +12,7 @@ var router = express.Router();
 router.post('/mocktest', function(req, res) {  
 
 		console.log('Password:'+req.body.password);		
-		return res.render('mocktest/mocktest');
+		return res.render('mocktest/main');
 		
 
 });
