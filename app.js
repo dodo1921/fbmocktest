@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var payments = require('./routes/payments');
+var mocktest = require('./routes/mocktest');
 
 var app = express();
 
@@ -19,6 +20,7 @@ app.disable('x-powered-by');
 
 app.use('/', index);
 app.use('/payments', payments);
+app.use('/mocktest', mocktest);
 
 app.use(express.static(path.join(__dirname, 'public')));
 

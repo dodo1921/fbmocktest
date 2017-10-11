@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Super Awesome</title>
+  <title>Mock Test</title>
 
   <!-- CSS (load bootstrap from a CDN) -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="https://s3.ap-south-1.amazonaws.com/fbmock/mocktestprofile_favicon.jpg" type="image/gif" sizes="16x16">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -15,14 +16,14 @@
     max-width: 430px;
     margin: 0 auto 20px;
     border-radius: 8px;
-    height:350px;
+    height:450px;
     overflow-y:scroll;
   }
   .panel form {
     padding: 35px;     
   }
   .panel h3{
-    margin: 35px 0;
+    margin: 35px 0 15px 0;
     color: #563d7c;
   }
   .btn-primary {
@@ -92,32 +93,28 @@
 <body style="background-color:#563d7c">
 
 <div class="container">  
-  <div class="center-block" style="width:200px;margin-top:30px;">
-    <a href="https://fbmocktest.herokuapp.com/">
-      <img src="https://s3.ap-south-1.amazonaws.com/fbmock/mocktestprofile.png" width="200" height="200"/>
-    </a>
+  <div class="center-block" style="width:200px;margin-top:30px;">    
+    <img src="https://s3.ap-south-1.amazonaws.com/fbmock/mocktestprofile.png" width="200" height="200"/>    
   </div>
   <div class="content">
-    <div class="panel">
-      <h2 class="text-center"><span style="color:#563d7c;">About Us</h2>
-      <div style="padding:10px">
+    <div class="panel">     
+        <h3 class="text-center">Signup</h3>
+        <form action="/mocktest/mocktest" method="post" role="form">
+            
+            <div class="form-group"> 
 
-        
-      <p>We are a group of IIT Kanpur alumni trying to add value to Indian students life.
-      The first product that we are launching is that of a chatbot which helps students prepare 
-      for aptitude tests. We provide mini mock test on the facebook chat and messenger. 
-      Aptitude tests are common test format and is used starting from MBA entrance to campus placements to many other exams. Our test consists of 10 questions and the student needs to solve them in 15 mins. A single test costs just Rs5. After the test, score of the student is communicated with detailed solution to each question.
-      This is a innovative way to prepare for aptitude exams and sharpen once skills.
+                <input style="margin-bottom:10px;" autofocus="true" class="form-control" id="name" name="name" placeholder="name" tabindex="1">
 
+                <input style="margin-bottom:10px;" autofocus="false" class="form-control" id="phone" name="phone" placeholder="phone" tabindex="1">
 
-      We are also entering the skill building space. We are also offering classroom and workshop coaching for 10 class pass studnts in the field of fire safety, welding and electric fitter job. We provide jobs for these students in their respective fields. Please contact us to know more about these courses.
+                <input style="margin-bottom:10px;" autofocus="false" class="form-control" id="password" name="password" placeholder="password" tabindex="1">
 
+                <input style="margin-bottom:10px;" autofocus="false" class="form-control" id="password" name="password" placeholder="confirm password" tabindex="1" type="password" >
 
-      </p>
-       
-
-        
-      </div>      
+            </div>
+            
+            <button class="btn btn-primary btn-lg btn-block" name="commit" tabindex="3" type="submit" value="Sign Up">Sign Up</button>
+        </form>
     </div>
   </div>
 
@@ -128,8 +125,6 @@
       <li><a href="https://fbmocktest.herokuapp.com/terms-and-condition.html">Terms of Service</a></li>
       <li><a href="https://fbmocktest.herokuapp.com/privacy-policy.html">Privacy</a></li><li><a href="https://fbmocktest.herokuapp.com/about-us.html">About Us</a></li>
       <li><a href="https://fbmocktest.herokuapp.com/contact-us.html">Contact Us</a></li>
-      
-      
     </ul>
     <ul class="legal">
         <li>© 2017 Kushilav Technical Institute</li>
@@ -138,6 +133,38 @@
     
 
 </body>
+
+<script type="text/javascript">
+  
+$(document).ready(function(){
+
+  
+  $('#mocktesttab').click(function(event){                  
+                  $('#mocktesttab').removeClass('active');
+                  $('#paymenttab').removeClass('active');
+
+                  $('#mocktesttab').addClass('active');
+
+                  $('#main_panel').show();
+                  $('#payment_panel').hide();
+  });
+
+
+  $('#paymenttab').click(function(event){                  
+                  $('#mocktesttab').removeClass('active');
+                  $('#paymenttab').removeClass('active');
+
+                  $('#paymenttab').addClass('active');
+
+                  $('#main_panel').hide();
+                  $('#payment_panel').show();
+  });
+
+
+
+});   
+
+</script>
 
 
 
