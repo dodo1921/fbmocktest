@@ -44,7 +44,7 @@ router.post('/report', function(req, res) {
 });
 
 
-router.post('/pay', function(req, res) {  
+router.post('/profile', function(req, res) {  
 
 		//console.log('Password:'+req.body.password);		
 		return res.render('mocktest/profile');
