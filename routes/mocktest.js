@@ -27,7 +27,7 @@ router.post('/signup', function(req, res) {
 });
 
 
-router.post('/test', function(req, res) {  
+router.get('/test', function(req, res) {  
 
 		//console.log('Password:'+req.body.password);		
 		return res.render('mocktest/test');
