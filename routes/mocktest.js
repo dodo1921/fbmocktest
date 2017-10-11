@@ -18,6 +18,14 @@ router.post('/main', function(req, res) {
 });
 
 
+router.get('/signup', function(req, res) {  
+
+		//console.log('Password:'+req.body.password);		
+		return res.render('mocktest/signup');
+		
+
+});
+
 router.post('/signup', function(req, res) {  
 
 		//console.log('Password:'+req.body.password);		
