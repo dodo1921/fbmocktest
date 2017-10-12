@@ -1046,6 +1046,7 @@ function startTest(recipientId, user) {
               let test_end = new Date(curr_time.getTime() + 15*60000);
 
               let week = moment.week();
+              console.log('Week'+week);
 
               let test = {
                 user_id: user.id,
@@ -1054,7 +1055,7 @@ function startTest(recipientId, user) {
                 current_qno: 1,
                 questions: question_queue,
                 expected_answers: answer_queue,
-                week: moment.week(),
+                week: week,
                 year: curr_time.getFullYear(),
                 month: curr_time.getMonth()+1
               }
