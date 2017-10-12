@@ -62,7 +62,7 @@ router.post('/submitAmount', function(req, res, next) {
 	knex('payments').returning('id').insert({fbid, money: amount})
 	.then( payment => {
 
-		let params = {};
+		let params = {};		
 		params.MID = process.env.MERCHANT_ID;
 		params.ORDER_ID = payment[0];		
 		params.INDUSTRY_TYPE_ID = process.env.INDUSTRY_TYPE;
@@ -77,6 +77,7 @@ router.post('/submitAmount', function(req, res, next) {
 
     	console.log(params.CHECKSUMHASH);
     	params.CUST_ID = fbid;
+    	params.REQUEST_TYPE = 'DEFAULT';
     	return res.json(params);
 
     });
