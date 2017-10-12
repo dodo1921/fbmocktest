@@ -140,7 +140,7 @@
                     
                     var formData = {                        
                         'fbid'   : $('#fbid').val(),
-                        'amount'    : 1 //$('#amount').val()
+                        'amount'    : $('#amount').val()
                     };
 
                     console.log('Here');  
@@ -159,7 +159,7 @@
 
                             var postData = data;
                             var form = document.createElement("form");
-                            form.method = "POST";
+                            form.method = "GET";
                             form.action = "https://pguat.paytm.com/oltp-web/processTransaction";
                             postData = JSON.parse(JSON.stringify(postData));
                             for (var key in postData) {
