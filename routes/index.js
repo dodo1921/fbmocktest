@@ -62,6 +62,7 @@ router.post('/webhook', function (req, res) {
                         method: 'GET'
                       }, function (error, response, body) {
                         if (!error && response.statusCode == 200) {
+                          console.log('Here I am ');
                           firstTimeUserComes(event, body.first_name, body.last_name, body.profile_pic);
                         } else {
 
@@ -70,11 +71,7 @@ router.post('/webhook', function (req, res) {
                           //console.error(response);
                           console.error(error);
                         }
-                      });
-
-
-
-                            
+                      });                           
 
                   }
 
