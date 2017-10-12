@@ -56,20 +56,25 @@ router.post('/webhook', function (req, res) {
                       }
                   }else if(user.length == 0) {
 
-                      knex('users').returning('id').insert({fbid: event.sender.id})
-                      .then( id => {                
-                          
-                          if (event.message) {
-                            receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } , timeOfEvent);          
-                          } else if (event.postback) {
-                            receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } , timeOfEvent);          
-                          } else {
-                            console.log("Webhook received unknown event: ", event);
-                          }
 
-                      }).catch(err => {
+                      request({
+                        uri: 'https://graph.facebook.com/v2.6/'+event.sender.id+'?fields=first_name,last_name,profile_pic&access_token='+process.env.PAGE_ACCESS_TOKEN,                        
+                        method: 'GET'
+                      }, function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                          firstTimeUserComes(event, body.first_name, body.last_name, body.profile_pic);
+                        } else {
 
+                          firstTimeUserComes(event, null, null, null);
+                          console.error("Unable to send message.");
+                          //console.error(response);
+                          console.error(error);
+                        }
                       });
+
+
+
+                            
 
                   }
 
@@ -87,6 +92,27 @@ router.post('/webhook', function (req, res) {
     res.sendStatus(200);
   }
 });
+
+
+
+function firstTimeUserComes(event, first_name, last_name, profile_pic){
+
+    knex('users').returning('id').insert({fbid: event.sender.id, first_name, last_name, profile_pic})
+    .then( id => {                
+        
+        if (event.message) {
+          receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } , timeOfEvent);          
+        } else if (event.postback) {
+          receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } , timeOfEvent);          
+        } else {
+          console.log("Webhook received unknown event: ", event);
+        }
+
+    }).catch(err => {
+
+    });
+
+}
 
 
 // Incoming events handling
