@@ -1045,7 +1045,7 @@ function startTest(recipientId, user) {
               let curr_time = new Date();
               let test_end = new Date(curr_time.getTime() + 15*60000);
 
-              let week = moment.week();
+              let week = moment().week();
               console.log('Week'+week);
 
               let test = {
