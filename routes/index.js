@@ -62,7 +62,7 @@ router.post('/webhook', function (req, res) {
                         method: 'GET'
                       }, function (error, response, body) {
                         if (!error && response.statusCode == 200) {
-                          console.log('Here I am ');
+                          console.log('Here I am '+body);
                           firstTimeUserComes(event, body.first_name, body.last_name, body.profile_pic);
                         } else {
 
@@ -98,8 +98,10 @@ function firstTimeUserComes(event, first_name, last_name, profile_pic){
     .then( id => {                
         
         if (event.message) {
+          console.log('Here1');
           receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } , timeOfEvent);          
         } else if (event.postback) {
+          console.log('Here1');
           receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } , timeOfEvent);          
         } else {
           console.log("Webhook received unknown event: ", event);
