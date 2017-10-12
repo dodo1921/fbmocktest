@@ -96,6 +96,17 @@ router.post('/webhook', function (req, res) {
 
 function firstTimeUserComes(event, first_name, last_name, profile_pic, timeOfEvent){
 
+    let messageData = {
+      recipient: {
+        id: event.sender.id
+      },
+      message:{    
+        text: 'Welcome '+first_name
+      }
+    }; 
+
+    callSendAPI(messageData);
+
     knex('users').returning('id').insert({fbid: event.sender.id, first_name, last_name, profile_pic})
     .then( id => {                
         
