@@ -166,8 +166,9 @@ function receivedMessage(event, user, timeOfEvent) {
         case '<SCORE>':{
 
               if(user.mode === 'A'){
-                let msgText = 'Overall Total Score: '+user.score+'\n\n First five to reach overall score of 200 will receive Rs.500 cash prize!!!'; 
-                sendMsgModeA(senderID, msgText);
+                //let msgText = 'Overall Total Score: '+user.score+'\n\n First five to reach overall score of 200 will receive Rs.500 cash prize!!!'; 
+                //sendMsgModeA(senderID, msgText);
+                sendLeaderBoardLink(senderID, user);
               }              
 
             break;
@@ -438,6 +439,41 @@ function sendTestQuestion(recipientId, imagename, testid, qno) {
   }; 
 
   callSendAPI(messageData);
+}
+
+
+function sendLeaderBoardLink(recipientId, user) {                          
+  
+  let msg = 'Overall Total Score: '+user.score+'\n\n10 Top scorers of a week will each receive 100 rupees CASH prize. Minimum score to qualify is 75.'; ;
+
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          attachment: {
+            type: "template",
+            payload: {
+              template_type: "button",
+              text:msg, 
+              buttons: [{
+                  type: "web_url",
+                  url: "https://fbmocktest.herokuapp.com/leaderboard/"+recipientId,
+                  title: "Leader Board"
+                }, {
+                  type: "postback",
+                  title: "back",
+                  payload: "<BACK>",
+              }]              
+            }
+          }
+        }
+      };  
+
+
+      callSendAPI(messageData); 
+  
+  
 }
 
 
