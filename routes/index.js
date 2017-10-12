@@ -62,11 +62,13 @@ router.post('/webhook', function (req, res) {
                         method: 'GET'
                       }, function (error, response, body) {
                         if (!error && response.statusCode == 200) {
-                          console.log('Here I am '+body+'>>>>>>'+body.first_name);
-                          firstTimeUserComes(event, body.first_name, body.last_name, body.profile_pic);
+                          
+                          let bodyp = JSON.parse(body);
+                          console.log('Here I am '+body+'>>>>>>'+bodyp.first_name);
+                          firstTimeUserComes(event, bodyp.first_name, bodyp.last_name, bodyp.profile_pic, timeOfEvent);
                         } else {
 
-                          firstTimeUserComes(event, null, null, null);
+                          firstTimeUserComes(event, null, null, null, timeOfEvent);
                           console.error("Unable to send message.");
                           //console.error(response);
                           console.error(error);
@@ -92,7 +94,7 @@ router.post('/webhook', function (req, res) {
 
 
 
-function firstTimeUserComes(event, first_name, last_name, profile_pic){
+function firstTimeUserComes(event, first_name, last_name, profile_pic, timeOfEvent){
 
     knex('users').returning('id').insert({fbid: event.sender.id, first_name, last_name, profile_pic})
     .then( id => {                
