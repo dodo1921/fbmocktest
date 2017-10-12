@@ -4,6 +4,8 @@ var router = express.Router();
 let knex = require('../db/knex');
 let Promise = require('bluebird');
 
+let moment = require('moment');
+
 
 let speakeasy = require('speakeasy');
 
@@ -873,6 +875,11 @@ function sendReport(recipientId ,curr_test){
 
   console.log(messageText);  
 
+
+  knex('tests').where({id: curr_test.id}).update('score', score)
+  .then(()=>{})
+  .catch(err=>{});
+
   knex('users').where({fbid:recipientId}).increment('score', score)
   .then(()=>{})
   .catch(err=>{});
@@ -1038,13 +1045,18 @@ function startTest(recipientId, user) {
               let curr_time = new Date();
               let test_end = new Date(curr_time.getTime() + 15*60000);
 
+              let week = moment.week();
+
               let test = {
                 user_id: user.id,
                 start: curr_time.getTime(),
                 end: test_end.getTime(),
                 current_qno: 1,
                 questions: question_queue,
-                expected_answers: answer_queue
+                expected_answers: answer_queue,
+                week: moment.week(),
+                year: curr_time.getFullYear(),
+                month: curr_time.getMonth()+1
               }
 
               tt = knex('tests').returning('id').insert(test).transacting(trx);

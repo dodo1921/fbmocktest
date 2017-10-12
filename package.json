@@ -15,6 +15,7 @@
     "knex": "*",
     "mysql": "^2.13.0",
     "mysql2": "*",
-    "speakeasy": "*"  
+    "speakeasy": "*",
+    "moment": "*"  
   }
 }
