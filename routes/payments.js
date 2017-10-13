@@ -69,15 +69,15 @@ router.post('/submitAmount', function(req, res, next) {
     params.CHANNEL_ID = process.env.CHANNEL_ID;
     params.TXN_AMOUNT = amount;
     params.WEBSITE = process.env.WEBSITE;
+    params.CUST_ID = fbid;
     //params.MOBILE_NO = 919005835708;
     //params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
 
 
     ck.genchecksum(params, process.env.MERCHANT_KEY, function(undefined, params ){
 
-    	console.log(params.CHECKSUMHASH);
-    	params.CUST_ID = fbid;
-    	params.REQUEST_TYPE = 'DEFAULT';
+    	console.log(params.CHECKSUMHASH);    	
+    	//params.REQUEST_TYPE = 'DEFAULT';
     	return res.json(params);
 
     });
