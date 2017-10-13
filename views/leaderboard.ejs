@@ -104,27 +104,27 @@
       </ul>
       <div id="leaderboard_panel">
         <div style="padding: 10px; height: 300px; overflow-y:scroll;">
-          <h4>Answers ( Your Score: 4/10 )</h4>
+          
             <table class="table table-striped">             
             <% top.forEach(function(user) { %>
               <tr>
-                 <td><img src="<%= user.profile_pic %>" width="50" height="50" /></td>
-                 <td><%= user.first_name %></td>
-                 <td><%= user.score %></td>
+                 <td><img style="border: 2px solid purple" src="<%= user.profile_pic %>" width="50" height="50" /></td>
+                 <td style="padding-top:20px;"><%= user.first_name %></td>
+                 <td style="padding-top:20px;"><%= user.score %></td>
               </tr>                
             <% }); %>
             <% me.forEach(function(user) { %>
               <tr style="background-color:#79589f; color: white">
-                 <td><img src="<%= user.profile_pic %>" width="50" height="50" /></td>
-                 <td><%= user.first_name %></td>
-                 <td><%= user.score %></td>
+                 <td><img style="border: 2px solid purple"  src="<%= user.profile_pic %>" width="50" height="50" /></td>
+                 <td style="padding-top:20px;"><%= user.first_name %></td>
+                 <td style="padding-top:20px;"><%= user.score %></td>
               </tr>                
             <% }); %>
             <% down.forEach(function(user) { %>
               <tr>
-                 <td><img src="<%= user.profile_pic %>" width="50" height="50" /></td>
-                 <td><%= user.first_name %></td>
-                 <td><%= user.score %></td>
+                 <td><img style="border: 2px solid purple"  src="<%= user.profile_pic %>" width="50" height="50" /></td>
+                 <td style="padding-top:20px;"><%= user.first_name %></td>
+                 <td style="padding-top:20px;"><%= user.score %></td>
               </tr>                
             <% }); %>              
            </table> 
