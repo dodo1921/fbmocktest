@@ -75,6 +75,8 @@ router.post('/submitAmount', function(req, res, next) {
 
 
     ck.genchecksum(params, process.env.MERCHANT_KEY, function(undefined, params ){
+
+    	console.log('ck:'+params.CHECKSUMHASH); 
     	/*
     	console.log('ck:'+params.CHECKSUMHASH); 
     	console.log('MID:'+params.MID); 
@@ -117,6 +119,8 @@ router.post('/paytmAck', function(req, res) {
   //params.MOBILE_NO = 911010101010;
   //params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
 	params.CHECKSUMHASH = req.body.CHECKSUMHASH;
+
+	console.log('kk:'+params.CHECKSUMHASH); 
 	/*
 	console.log('ck:'+params.CHECKSUMHASH); 
 	console.log('MID:'+params.MID); 
