@@ -11,6 +11,8 @@ var router = express.Router();
 
 router.get('/:recipientId', function(req, res) {  
 
+			let recipientId = req.params.recipientId;
+
 			knex('users').where({fbid: recipientId}).select()
 			.then( user => {
 
