@@ -307,44 +307,130 @@ function txnFailure(res, code, msg, req_body, body, fbid){
 function txnPending(res, orderid){
 
 		console.log('Here19');
+
+		setTimeout(function(){ 
+			txnPoll(orderid); 
+		}, 5000); 
+
 		return res.render('txn_pending', {
 			error: 'Pending',
 			order_id: orderid
 		});
-		
+
 }
 
-/*
 
-function afterPaymentStatusCheck(){
+function txnPoll(orderid){
+
+	knex('payments').where({id: orderid}).select()
+	.then(payment => {
+
+			if(payment.length>0){
+
+						let params = {};
+						params.MID = process.env.MERCHANT_ID; 
+						params.ORDERID = payment[0].id;
+
+						ck.genchecksum(params, process.env.MERCHANT_KEY, function(err, params){
+
+									
+
+									request({
+								    uri: 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus',								    
+								    method: 'POST',
+								    json: params								    
+								  }, function (error, response, body) {
+								  		console.log('Herep1');
+									    if (!error && response.statusCode == 200) {
+									      console.log('Herep2');
+									      if( body.STATUS === 'TXN_SUCCESS'){
+									      	//txn success
+									      	console.log('Herep3');
+									      	txnSuccessAfterPending(body, payment[0].fbid);
+									      }else if(body.STATUS === 'TXN_FAILURE'){
+									      	//txn failure
+									      	console.log('Herep4');
+									      	txnFailureAfterPending(body, payment[0].fbid);
+									      }else{
+									      	//txn pending
+									      	console.log('Herep5');
+									      	let c = payment[0].retry;
+									      	c++;
+									      	if(c<10){
+										      	setTimeout(function(){ 
+															txnPoll(orderid); 
+														}, 5000*Math.pow(2, c ));
+													}	
+
+													knex('payments').where({id: orderid}).increment('retry', 1).then(()=>{}).catch(err=>{});
+
+									      }
 
 
-		if(req.body.STATUS === 'TXN_SUCCESS'){
-		 		//success
-		 		console.log('TXN_SUCCESS');
+									    } else {
+									    	
+									    	console.log('Here6');
+									    	let c = payment[0].retry;
+								      	c++;
+								      	if(c<10){
+									      	setTimeout(function(){ 
+														txnPoll(orderid); 
+													}, 5000*Math.pow(2, c ));
+												}	
 
-		 		knex.transaction( trx => {
+												knex('payments').where({id: orderid}).increment('retry', 1).then(()=>{}).catch(err=>{});
+									    }
+
+								  });
+
+
+				    });
+
+			}
+
+					
+
+			
+
+	})
+	.catch(err => {
+
+			let c = payment[0].retry;
+    	c++;
+
+    	if(c<10){
+	    	setTimeout(function(){ 
+					txnPoll(orderid); 
+				}, 500000);
+	    }	
+			knex('payments').where({id: orderid}).increment('retry', 1).then(()=>{}).catch(err=>{});
+
+	});
+
+}
+
+
+function txnSuccessAfterPending(body, fbid){
+		console.log('Herep11');
+		knex.transaction( trx => {
 
             let p = [];
             let tt;              
 
-            tt = knex('payments').where({id:req.body.ORDERID}).update({
+            tt = knex('payments').where({id:body.ORDERID}).update({
 				 			done:1,
-				 			STATUS: req.body.STATUS,
-				 			TXNID: req.body.TXNID,
-				 			TXNDATE: req.body.TXNDATE,
-				 			RESPMSG: req.body.RESPMSG,
-				 			RESPCODE: req.body.RESPCODE,
-				 			PAYMENTMODE: req.body.PAYMENTMODE,
-				 			GATEWAYNAME: req.body.GATEWAYNAME,
-				 			CURRENCY: req.body.CURRENCY,
-				 			CHECKSUMHASH: req.body.CHECKSUMHASH,
-				 			BANKNAME: req.body.BANKNAME,
-				 			BANKTXNID: req.body.BANKTXNID
+				 			STATUS: body.STATUS,
+				 			TXNID: body.TXNID,
+				 			TXNDATE: body.TXNDATE,
+				 			RESPMSG: body.RESPMSG,				 			
+				 			PAYMENTMODE: body.PAYMENTMODE,
+				 			GATEWAYNAME: body.GATEWAYNAME,			 			
+				 			BANKNAME: body.BANKNAME,
+				 			BANKTXNID: body.BANKTXNID
 				 		}).transacting(trx);
             p.push(tt);
 
-            tt = knex('users').where({ fbid: payment[0].fbid }).increment('balance', req.body.TXNAMOUNT).transacting(trx);
+            tt = knex('users').where({ fbid }).increment('balance', body.TXNAMOUNT).transacting(trx);
             p.push(tt);         
 
               
@@ -365,59 +451,37 @@ function afterPaymentStatusCheck(){
             .catch(trx.rollback)
 
 
-        }).then( () => {
-		 				res.render('txn_success');
-		 		}).catch(err => {
-		 				res.render('txn_failure', {
-		 					error: 'Error '+err,
-		 					order_id: req.body.ORDER_ID
-		 				});
-		 		});
+	  }).then( () => {
+	  			
+					//send message to messenger
 
-
-		 		
-
-		 }else if(req.body.STATUS === 'TXN_FAILURE'){
-		 		//failure
-		 		console.log('TXN_FAILURE');
-		 		knex('payments').where({id:req.body.ORDERID}).update({					 			
-		 			STATUS: req.body.STATUS,
-		 			TXNID: req.body.TXNID,
-		 			TXNDATE: req.body.TXNDATE,
-		 			RESPMSG: req.body.RESPMSG,
-		 			RESPCODE: req.body.RESPCODE,
-		 			PAYMENTMODE: req.body.PAYMENTMODE,
-		 			GATEWAYNAME: req.body.GATEWAYNAME,
-		 			CURRENCY: req.body.CURRENCY,
-		 			CHECKSUMHASH: req.body.CHECKSUMHASH,
-		 			BANKNAME: req.body.BANKNAME,
-		 			BANKTXNID: req.body.BANKTXNID
-		 		}).then( () => {
-		 				res.render('txn_failure', {
-		 					error: req.body.RESPMSG,
-		 					order_id: req.body.ORDER_ID
-		 				});
-		 		}).catch(err => {
-		 				res.render('txn_failure', {
-		 					error: 'Database error',
-		 					order_id: req.body.ORDER_ID
-		 				});
-		 		});
-
-		 }else if (req.body.STATUS === 'PENDING' || req.body.STATUS === 'OPEN' ){
-		 		// try again to get conformation
-		 		res.render('txn_pending', {
-		 			status: req.body.STATUS
-		 		});
-
-		 }
-
-
+		}).catch(err => {
+				
+		});
 
 }
 
-*/
 
+function txnFailureAfterPending(body, fbid){
+
+		console.log('Herep16');
+		knex('payments').where({id:body.ORDERID}).update({					 			
+ 			STATUS: body.STATUS,
+ 			TXNID: body.TXNID,
+ 			TXNDATE: body.TXNDATE,
+ 			RESPMSG: body.RESPMSG, 			
+ 			PAYMENTMODE: body.PAYMENTMODE,
+ 			GATEWAYNAME: body.GATEWAYNAME, 			
+ 			BANKNAME: body.BANKNAME,
+ 			BANKTXNID: body.BANKTXNID
+ 		}).then( () => {
+ 				
+ 				// send msg
+ 		}).catch(err => {
+ 				
+ 		});
+
+}
 
 
 
