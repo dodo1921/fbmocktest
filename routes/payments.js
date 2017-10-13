@@ -69,7 +69,7 @@ router.post('/submitAmount', function(req, res, next) {
     params.CHANNEL_ID = process.env.CHANNEL_ID;
     params.TXN_AMOUNT = amount;
     params.WEBSITE = process.env.WEBSITE;
-    params.CUST_ID = fbid;
+    params.CUST_ID = fbid;    
     //params.MOBILE_NO = 919005835708;
     //params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
 
@@ -102,8 +102,11 @@ router.post('/paytmAck', function(req, res) {
   params.CHANNEL_ID = process.env.CHANNEL_ID;
   params.TXN_AMOUNT = req.body.TXNAMOUNT;
   params.WEBSITE = process.env.WEBSITE;
-  params.MOBILE_NO = 911010101010;
-  params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
+  params.CUST_ID = 1780356611992751;
+
+  console.log('Customer id:'+req.body.CUST_ID);
+  //params.MOBILE_NO = 911010101010;
+  //params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
 	params.CHECKSUMHASH = req.body.CHECKSUMHASH
 
 	if(ck.verifychecksum(params, process.env.MERCHANT_KEY)){
