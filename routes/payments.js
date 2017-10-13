@@ -107,6 +107,7 @@ router.post('/submitAmount', function(req, res, next) {
 router.post('/paytmAck', function(req, res) {	
 
 	let params = {};
+	/*
 	params.MID = req.body.MID;
 	params.ORDER_ID = req.body.ORDERID;
 	params.INDUSTRY_TYPE_ID = process.env.INDUSTRY_TYPE;
@@ -115,23 +116,27 @@ router.post('/paytmAck', function(req, res) {
   params.WEBSITE = process.env.WEBSITE;
   params.CUST_ID = '1780356611992751';
 
-  //console.log('Customer id:'+req.body.CUST_ID);
-  //params.MOBILE_NO = 911010101010;
-  //params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
+  */
+
+  /*
+  params.MID = req.body.MID;
+  params.TXNID = req.body.TXNID;
+	params.ORDERID = req.body.ORDERID;
+	params.BANKTXNID = req.body.BANKTXNID;	
+  params.TXNAMOUNT = req.body.TXNAMOUNT;
+  params.CURRENCY = req.body.CURRENCY;
+  params.STATUS = req.body.STATUS;
+  params.RESPCODE = req.body.RESPCODE;
+  params.RESPMSG = req.body.RESPMSG;
+  params.WEBSITE = process.env.WEBSITE;
+  params.CUST_ID = '1780356611992751';
+
 	params.CHECKSUMHASH = req.body.CHECKSUMHASH;
 
 	console.log('kk:'+params.CHECKSUMHASH); 
-	/*
-	console.log('ck:'+params.CHECKSUMHASH); 
-	console.log('MID:'+params.MID); 
-	console.log('orderid:'+params.ORDER_ID); 
-	console.log('industry:'+params.INDUSTRY_TYPE_ID); 
-	console.log('Channel:'+params.CHANNEL_ID); 
-	console.log('txnamt:'+params.TXN_AMOUNT); 
-	console.log('website:'+params.WEBSITE); 
-	console.log('custid:'+params.CUST_ID); */
+	*/
 
-	if(ck.verifychecksum(params, process.env.MERCHANT_KEY)){
+	if(ck.verifychecksum(req.body, process.env.MERCHANT_KEY)){
 		console.log('Checksum right');
 
 		knex('payments').where({id: req.body.ORDER_ID}).select()
