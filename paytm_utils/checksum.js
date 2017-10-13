@@ -15,6 +15,7 @@ function paramsToString(params) {
           data += (params[key] + '|');     
       }
   });
+  console.log('Data:'+data);
   return data;
 }
 
