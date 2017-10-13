@@ -128,7 +128,7 @@ router.post('/paytmAck', function(req, res) {
 		              let p = [];
 		              let tt;              
 
-		              tt = knex('payments').where({id:req.body.ORDER_ID}).update({
+		              tt = knex('payments').where({id:req.body.ORDERID}).update({
 							 			done:1,
 							 			STATUS: req.body.STATUS,
 							 			TXNID: req.body.TXNID,
@@ -180,7 +180,7 @@ router.post('/paytmAck', function(req, res) {
 					 }else if(req.body.STATUS === 'TXN_FAILURE'){
 					 		//failure
 					 		console.log('TXN_FAILURE');
-					 		knex('payments').where({id:req.body.ORDER_ID}).update({					 			
+					 		knex('payments').where({id:req.body.ORDERID}).update({					 			
 					 			STATUS: req.body.STATUS,
 					 			TXNID: req.body.TXNID,
 					 			TXNDATE: req.body.TXNDATE,
