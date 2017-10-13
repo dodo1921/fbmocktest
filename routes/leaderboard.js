@@ -32,8 +32,8 @@ router.get('/:recipientId', function(req, res) {
 							return res.render('leaderboard.ejs', {
 								top: t,
 								me: user,
-								down,
-								recipientId: recipientId
+								down
+								//recipientId: recipientId
 							});
 
 						})

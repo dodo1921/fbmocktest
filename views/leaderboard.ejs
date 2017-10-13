@@ -151,68 +151,7 @@
 
 </body>
 
-<script type="text/javascript">
-  
-$(document).ready(function(){
 
-
-  //let winners;
-
-  
-  $('#leaderboard_tab').click(function(event){                  
-                  $('#leaderboard_tab').removeClass('active');
-                  $('#winners_tab').removeClass('active');                
-
-                  $('#leaderboard_tab').addClass('active');
-
-                  $('#leaderboard_panel').show();
-                  $('#winners_panel').hide();
-                  
-  });
-
-
-  $('#winners_tab').click(function(event){                  
-                  $('#leaderboard_tab').removeClass('active');
-                  $('#winners_tab').removeClass('active');
-                  
-                  $('#winners_tab').addClass('active');
-
-                  $('#leaderboard_panel').hide();
-                  $('#winners_panel').show();
-
-                  //if(!winners)
-                    //loadWinners();
-                  
-  });
-
-/*
-
-  function loadWinners(){
-
-          $.ajax({
-              type        : 'GET',
-              url         : 'https://fbmocktest.herokuapp.com/leaderboard/winners/'+<% = recipientId %>,              
-              dataType    : 'json',
-              encode      : true,
-              error       : function(xhr, status, error){                           
-                      console.log('Error');                      
-              }                      
-          }).done(function(data) {
-
-                  winners = data;                           
-
-          });
-
-  }
-*/
-
-  
-
-
-
-});   
-
-</script>
 
 
 
