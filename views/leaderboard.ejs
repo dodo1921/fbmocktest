@@ -151,7 +151,38 @@
 
 </body>
 
+<script type="text/javascript">
+  
+$(document).ready(function(){  
 
+  
+          $('#leaderboard_tab').click(function(event){                  
+                          $('#leaderboard_tab').removeClass('active');
+                          $('#winners_tab').removeClass('active');                
+
+                          $('#leaderboard_tab').addClass('active');
+
+                          $('#leaderboard_panel').show();
+                          $('#winners_panel').hide();
+                          
+          });
+
+
+          $('#winners_tab').click(function(event){                  
+                          $('#leaderboard_tab').removeClass('active');
+                          $('#winners_tab').removeClass('active');
+                          
+                          $('#winners_tab').addClass('active');
+
+                          $('#leaderboard_panel').hide();
+                          $('#winners_panel').show();
+                          
+                          
+          });
+
+});   
+
+</script>
 
 
 
