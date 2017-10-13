@@ -9,6 +9,8 @@ let ck = require('../paytm_utils/checksum');
 
 let retrytime = 300000;
 
+let request_status_uri = 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus';
+
 var router = express.Router();
 
 /* GET users listing. */
@@ -133,7 +135,7 @@ router.post('/paytmAck', function(req, res) {
 									
 
 									request({
-								    uri: 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus',								    
+								    uri: request_status_uri,								    
 								    method: 'POST',
 								    json: params								    
 								  }, function (error, response, body) {
@@ -361,7 +363,7 @@ function txnPoll(orderid){
 									
 
 									request({
-								    uri: 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus',								    
+								    uri: request_status_uri,								    
 								    method: 'POST',
 								    json: params								    
 								  }, function (error, response, body) {

@@ -191,7 +191,7 @@ function receivedMessage(event, user, timeOfEvent) {
   } else if (messageText) {
 
     if(user.mode === 'A'){
-      let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
+      let msgText = "Practice mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
       sendMsgModeA(senderID, msgText);
     }else if(user.mode === 'E'){
         processMessageExamMode(senderID, user, timeOfEvent);
@@ -200,7 +200,7 @@ function receivedMessage(event, user, timeOfEvent) {
   } else{
 
           if(user.mode === 'A'){
-            let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
+            let msgText = "Practice mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
             sendMsgModeA(senderID, msgText);
           }else if(user.mode === 'E'){
               processMessageExamMode(senderID, user, timeOfEvent);
@@ -236,7 +236,7 @@ function receivedPostback(event, user, timeOfEvent) {
 
         }  
 
-        let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
+        let msgText = "Practice mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
         sendMsgModeA(senderID, msgText);
 
       }else{
@@ -306,7 +306,7 @@ function receivedPostback(event, user, timeOfEvent) {
 
         }else{
             
-            let msgText = "Practice mini mock tests from your facebook messenger. 10 questions 15 minutes. Each test cost just Rs 5. Get a test free on scoring full marks. First two tests free.";
+            let msgText = "Practice mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
             sendMsgModeA(senderID, msgText);    
 
         }       
@@ -935,7 +935,7 @@ function startTest(recipientId, user) {
 
         if(val[0].i >= 2 && user.balance < 5 ){
 
-          throw new Error('Not enough balance. Please add money to start test.');          
+          throw new Error('Not enough balance. Please add money to start test.\nA test costs just Rs5.');          
           
         }else{
 
