@@ -287,7 +287,7 @@ function txnFailure(res, code, msg, req_body, body, fbid){
 		 				console.log('Here17');
 		 				return res.render('txn_failure', {
 		 					error: req_body.RESPMSG,
-		 					order_id: req_body.ORDER_ID
+		 					order_id: req_body.ORDERID
 		 				});
 		 				// send msg
 		 		}).catch(err => {

@@ -16,6 +16,11 @@
     margin: 0 auto 20px;
     border-radius: 8px;
   }
+
+  .panel p{
+    padding: 2px 20px;
+  }
+
   .panel form {
     padding: 35px;
   }
@@ -95,7 +100,10 @@
   </div>
   <div class="content">
     <div class="panel">
-      <h3 class="text-center"><span id="amount_display">Transaction Pending</h3>      
+      <h3 class="text-center"><span id="amount_display">Transaction Pending</h3>
+      <p>Transaction Id: <%=order_id %></p>
+      <p>You will be notified on facebook messenger once the transaction completes.</p> 
+      <p>Report issue: fbmocktest@gmail.com</p>     
     </div>
   </div>
 
