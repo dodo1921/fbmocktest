@@ -134,10 +134,9 @@ router.post('/paytmAck', function(req, res) {
 									//console.log('Txn status request:  ' + url);
 
 									request({
-								    uri: 'https://graph.facebook.com/v2.6/me/messages',
-								    qs: { JsonData: params },
-								    method: 'GET',
-								    json: true
+								    uri: 'https://graph.facebook.com/v2.6/me/messages',								    
+								    method: 'POST',
+								    json: params								    
 								  }, function (error, response, body) {
 
 									    if (!error && response.statusCode == 200) {
@@ -145,7 +144,7 @@ router.post('/paytmAck', function(req, res) {
 									      //let pbody = JSON.parse(body);	      
 									      res.render('txn_success');
 									    } else {
-									    	console.log('Error');
+									    	console.log('Error:'+error);
 									      res.render('txn_success');
 									    }
 
