@@ -369,7 +369,7 @@ function txnPoll(orderid){
 
 									    } else {
 									    	
-									    	console.log('Here6');
+									    	console.log('Herep6'+error);
 									    	let c = payment[0].retry;
 								      	c++;
 								      	if(c<10){
