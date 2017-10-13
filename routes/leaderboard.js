@@ -31,7 +31,7 @@ router.get('/:recipientId', function(req, res) {
 
 							return res.render('leaderboard.ejs', {
 								top: t,
-								me: user[0],
+								me: user,
 								down,
 								week: moment().week(),
 								year: new Date().getFullYear()
