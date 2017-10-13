@@ -9,7 +9,7 @@ var router = express.Router();
 
 /* GET users listing. */
 
-router.post('/:recipientId', function(req, res) {  
+router.get('/:recipientId', function(req, res) {  
 
 			knex('users').where({fbid: recipientId}).select()
 			.then( user => {
