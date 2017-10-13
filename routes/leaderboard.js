@@ -33,8 +33,7 @@ router.get('/:recipientId', function(req, res) {
 								top: t,
 								me: user,
 								down,
-								week: moment().week(),
-								year: new Date().getFullYear()
+								recipientId: recipientId
 							});
 
 						})
@@ -50,6 +49,25 @@ router.get('/:recipientId', function(req, res) {
 			});
 
 		
+			
+		
+
+});
+
+
+router.get('/winners/:recipientId', function(req, res, next) {  
+
+			let recipientId = req.params.recipientId;
+
+			knex('users').where({fbid: recipientId}).select()
+			.then( user => {
+
+				return res.json(user);	
+				
+
+			}).catch( err => {
+				return next(err);
+			});	
 			
 		
 

@@ -155,86 +155,58 @@
   
 $(document).ready(function(){
 
+
+  let winners;
+
   
-  $('#mocktesttab').click(function(event){                  
-                  $('#mocktesttab').removeClass('active');
-                  $('#paymenttab').removeClass('active');
-                  $('#profiletab').removeClass('active');
+  $('#leaderboard_tab').click(function(event){                  
+                  $('#leaderboard_tab').removeClass('active');
+                  $('#winners_tab').removeClass('active');                
 
-                  $('#mocktesttab').addClass('active');
+                  $('#leaderboard_tab').addClass('active');
 
-                  $('#main_panel').show();
-                  $('#payment_panel').hide();
-                  $('#profile_panel').hide();
+                  $('#leaderboard_panel').show();
+                  $('#winners_panel').hide();
+                  
   });
 
 
-  $('#paymenttab').click(function(event){                  
-                  $('#mocktesttab').removeClass('active');
-                  $('#paymenttab').removeClass('active');
-                  $('#profiletab').removeClass('active');
-                  $('#paymenttab').addClass('active');
+  $('#winners_tab').click(function(event){                  
+                  $('#leaderboard_tab').removeClass('active');
+                  $('#winners_tab').removeClass('active');
+                  
+                  $('#winners_tab').addClass('active');
 
-                  $('#main_panel').hide();
-                  $('#payment_panel').show();
-                  $('#profile_panel').hide();
+                  $('#leaderboard_panel').hide();
+                  $('#winners_panel').show();
+
+                  if(!winners)
+                    loadWinners();
+                  
   });
 
 
-  $('#profiletab').click(function(event){                  
-                  $('#mocktesttab').removeClass('active');
-                  $('#paymenttab').removeClass('active');
-                  $('#profiletab').removeClass('active');
-                  $('#profiletab').addClass('active');
 
-                  $('#main_panel').hide();
-                  $('#payment_panel').hide();
-                  $('#profile_panel').show();
-  });
+  function loadWinners(){
 
+          $.ajax({
+              type        : 'GET',
+              url         : 'https://fbmocktest.herokuapp.com/leaderboard/winners/'+<% = recipientId %>,              
+              dataType    : 'json',
+              encode      : true,
+              error       : function(xhr, status, error){                           
+                      console.log('Error');                      
+              }                      
+          }).done(function(data) {
 
-                $('#btn25').click(function(event){
-                  $('#btn25').removeClass('active');
-                  $('#btn50').removeClass('active');
-                  $('#btn100').removeClass('active');
+                  winners = data;                           
 
-                  $('#btn25').addClass('active');
+          });
 
-                  $('#amount_display').text('Rs. 25');
-                  $('#tests').text(' for 5 tests');
-                  $('#amount').val("25");
+  }
 
 
-                });
-
-
-                $('#btn50').click(function(event){
-                  $('#btn25').removeClass('active');
-                  $('#btn50').removeClass('active');
-                  $('#btn100').removeClass('active');
-
-                  $('#btn50').addClass('active');
-
-                  $('#amount_display').text('Rs. 50');
-                  $('#tests').text(' for 10 tests');
-                  $('#amount').val("50");
-
-
-                });
-
-                $('#btn100').click(function(event){
-                  $('#btn25').removeClass('active');
-                  $('#btn50').removeClass('active');
-                  $('#btn100').removeClass('active');
-
-                  $('#btn100').addClass('active');
-
-                  $('#amount_display').text('Rs. 100');
-                  $('#tests').text(' for 20 tests');
-                  $('#amount').val("100");
-
-
-                });
+  
 
 
 
