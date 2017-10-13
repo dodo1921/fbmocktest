@@ -152,6 +152,9 @@
 </body>
 
 <script type="text/javascript">
+
+
+let winners;
   
 $(document).ready(function(){  
 
@@ -177,10 +180,31 @@ $(document).ready(function(){
                           $('#leaderboard_panel').hide();
                           $('#winners_panel').show();
                           
+                          if(!winners)
+                            loadWinners();
                           
           });
 
 });   
+
+
+function loadWinners(){
+
+          $.ajax({
+              type        : 'GET',
+              url         : 'https://fbmocktest.herokuapp.com/leaderboard/winners/'+<%= recipientId %>,              
+              dataType    : 'json',
+              encode      : true,
+              error       : function(xhr, status, error){                           
+                      console.log('Error');                      
+              }                      
+          }).done(function(data) {
+
+                  winners = data;                           
+
+          });
+
+}
 
 </script>
 
