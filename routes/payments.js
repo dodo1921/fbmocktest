@@ -102,7 +102,7 @@ router.post('/paytmAck', function(req, res) {
   params.CHANNEL_ID = process.env.CHANNEL_ID;
   params.TXN_AMOUNT = req.body.TXNAMOUNT;
   params.WEBSITE = process.env.WEBSITE;
-  params.CUST_ID = '1780356611992751';
+  //params.CUST_ID = '1780356611992751';
 
   console.log('Customer id:'+req.body.CUST_ID);
   //params.MOBILE_NO = 911010101010;
