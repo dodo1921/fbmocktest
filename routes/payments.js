@@ -109,7 +109,7 @@ router.post('/paytmAck', function(req, res) {
 	params.ORDER_ID = req.body.ORDERID;
 	params.INDUSTRY_TYPE_ID = process.env.INDUSTRY_TYPE;
   params.CHANNEL_ID = process.env.CHANNEL_ID;
-  params.TXN_AMOUNT = req.body.TXNAMOUNT;
+  params.TXN_AMOUNT = parseInt(req.body.TXNAMOUNT);
   params.WEBSITE = process.env.WEBSITE;
   params.CUST_ID = '1780356611992751';
 
