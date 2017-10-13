@@ -128,19 +128,27 @@ router.post('/paytmAck', function(req, res) {
 
 						ck.genchecksum(params, process.env.MERCHANT_KEY, function(err, params){
 
-									let JsonData = encodeURIComponent(JSON.stringify(params));
-									let url = 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus?JsonData='+JsonData;
+									//let JsonData = encodeURIComponent(JSON.stringify(params));
+									//let url = 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus?JsonData='+JsonData;
 
 									console.log('Txn status request:  ' + url);
 
-									request( url, function (error, response, body) {
-								    if (!error && response.statusCode == 200) {
-								      console.log('TXN response: '+body);
-								      let pbody = JSON.parse(body);	      
+									request({
+								    uri: 'https://graph.facebook.com/v2.6/me/messages',
+								    qs: { JsonData: params },
+								    method: 'GET',
+								    json: true
+								  }, function (error, response, body) {
 
-								    } else {
-								      
-								    }
+									    if (!error && response.statusCode == 200) {
+									      console.log('TXN response: '+body);
+									      //let pbody = JSON.parse(body);	      
+									      res.render('txn_success');
+									    } else {
+									    	console.log('Error');
+									      res.render('txn_success');
+									    }
+
 								  });
 
 
@@ -180,6 +188,7 @@ router.post('/paytmAck', function(req, res) {
 });
 
 /*
+
 function afterPaymentStatusCheck(){
 
 
