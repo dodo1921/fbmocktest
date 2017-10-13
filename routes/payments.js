@@ -135,23 +135,27 @@ router.post('/paytmAck', function(req, res) {
 								    method: 'POST',
 								    json: params								    
 								  }, function (error, response, body) {
-
+								  		console.log('Here1');
 									    if (!error && response.statusCode == 200) {
-									      
+									      console.log('Here2');
 									      if( body.STATUS === 'TXN_SUCCESS'){
 									      	//txn success
+									      	console.log('Here3');
 									      	txnSuccess(req.body, body, payment[0].fbid);
 									      }else if(body.STATUS === 'TXN_FAILURE'){
 									      	//txn failure
+									      	console.log('Here4');
 									      	txnFailure(1, 'Failure' ,req.body, body, payment[0].fbid);
 									      }else{
 									      	//txn pending
+									      	console.log('Here5');
 									      	txnPending(req.body.ORDERID);
 									      }
 
 
 									    } else {
 									    	//txn pending
+									    	console.log('Here6');
 									    	txnPending(req.body.ORDERID);
 									    }
 
@@ -164,9 +168,11 @@ router.post('/paytmAck', function(req, res) {
 					//transaction fail
 					if(payment.length == 0){
 						// no such transaction id
+						console.log('Here7');
 						txnFailure(0, 'Illegal Transaction Number');
 					}else{
 						//possible tampering....amount not matching
+						console.log('Here8');
 						txnFailure(0, 'Received transaction amount does not match');
 					}
 				}
@@ -174,6 +180,7 @@ router.post('/paytmAck', function(req, res) {
 		}).catch(err => {
 
 				// txn pending
+				console.log('Here9');
 				txnPending(req.body.ORDERID);
 		})
 
@@ -181,6 +188,7 @@ router.post('/paytmAck', function(req, res) {
 			
 		// txn fail
 		// possible tampering....checksum fail
+		console.log('Here10');
 		txnFailure(0, 'Checksum mismatch');
 	}
 
@@ -191,6 +199,8 @@ router.post('/paytmAck', function(req, res) {
 
 
 function txnSuccess( req_body, body, fbid){
+
+		console.log('Here11');
 
 		knex.transaction( trx => {
 
@@ -235,10 +245,12 @@ function txnSuccess( req_body, body, fbid){
 
 
 	  }).then( () => {
+	  			console.log('Here12');
 					return res.render('txn_success');
 					//send message to messenger
 
 		}).catch(err => {
+				console.log('Here13');
 				return res.render('txn_failure', {
 					error: 'Error:'+err,
 					order_id: req_body.ORDERID
@@ -249,16 +261,16 @@ function txnSuccess( req_body, body, fbid){
 
 
 function txnFailure(code, msg, req_body, body, fbid){
-
+		console.log('Here14');
 		if(code == 0){
-
+			console.log('Here15');	
 			res.render('txn_failure', {
 					error: msg,
 					order_id: undefined
 			});
 
 		}else if(code == 1){
-
+				console.log('Here16');
 				knex('payments').where({id:req_body.ORDERID}).update({					 			
 		 			STATUS: body.STATUS,
 		 			TXNID: req_body.TXNID,
@@ -272,12 +284,14 @@ function txnFailure(code, msg, req_body, body, fbid){
 		 			BANKNAME: req_body.BANKNAME,
 		 			BANKTXNID: req_body.BANKTXNID
 		 		}).then( () => {
+		 				console.log('Here17');
 		 				return res.render('txn_failure', {
 		 					error: req_body.RESPMSG,
 		 					order_id: req_body.ORDER_ID
 		 				});
 		 				// send msg
 		 		}).catch(err => {
+		 				console.log('Here18');
 		 				return res.render('txn_failure', {
 		 					error: 'Error:'+err,
 		 					order_id: req_body.ORDERID
@@ -292,10 +306,12 @@ function txnFailure(code, msg, req_body, body, fbid){
 
 function txnPending(orderid){
 
-
-	
-
-
+		console.log('Here19');
+		return res.render('txn_pending', {
+			error: 'Pending',
+			order_id: orderid
+		});
+		
 }
 
 /*
