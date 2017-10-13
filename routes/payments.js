@@ -114,7 +114,10 @@ router.post('/paytmAck', function(req, res) {
 		knex('payments').where({id: req.body.ORDERID}).select()
 		.then(payment => {
 
-				if(payment.length>0 && payment[0].money === req.body.TXNAMOUNT){
+				let m = Number(payment[0].money);
+				let tm = Number(req.body.TXNAMOUNT);
+
+				if(payment.length>0 && m === tm ){
 						console.log('Here');
 					 if(req.body.STATUS === 'TXN_SUCCESS'){
 					 		//success
