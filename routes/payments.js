@@ -106,40 +106,12 @@ router.post('/submitAmount', function(req, res, next) {
 
 router.post('/paytmAck', function(req, res) {	
 
-	let params = {};
-	/*
-	params.MID = req.body.MID;
-	params.ORDER_ID = req.body.ORDERID;
-	params.INDUSTRY_TYPE_ID = process.env.INDUSTRY_TYPE;
-  params.CHANNEL_ID = process.env.CHANNEL_ID;
-  params.TXN_AMOUNT = req.body.TXNAMOUNT;
-  params.WEBSITE = process.env.WEBSITE;
-  params.CUST_ID = '1780356611992751';
-
-  */
-
-  /*
-  params.MID = req.body.MID;
-  params.TXNID = req.body.TXNID;
-	params.ORDERID = req.body.ORDERID;
-	params.BANKTXNID = req.body.BANKTXNID;	
-  params.TXNAMOUNT = req.body.TXNAMOUNT;
-  params.CURRENCY = req.body.CURRENCY;
-  params.STATUS = req.body.STATUS;
-  params.RESPCODE = req.body.RESPCODE;
-  params.RESPMSG = req.body.RESPMSG;
-  params.WEBSITE = process.env.WEBSITE;
-  params.CUST_ID = '1780356611992751';
-
-	params.CHECKSUMHASH = req.body.CHECKSUMHASH;
-
-	console.log('kk:'+params.CHECKSUMHASH); 
-	*/
+	
 
 	if(ck.verifychecksum(req.body, process.env.MERCHANT_KEY)){
 		console.log('Checksum right');
 
-		knex('payments').where({id: req.body.ORDER_ID}).select()
+		knex('payments').where({id: req.body.ORDERID}).select()
 		.then(payment => {
 
 				if(payment.length>0 && payment[0].money === req.body.TXNAMOUNT){
