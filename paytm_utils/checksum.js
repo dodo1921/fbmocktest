@@ -24,6 +24,7 @@ function genchecksum(params, key, cb) {
   var data = paramsToString(params);
 crypt.gen_salt(4, function (err, salt) {
     var sha256 = crypto.createHash('sha256').update(data + salt).digest('hex');
+    console.log('salt:'+salt);
     var check_sum = sha256 + salt;
     var encrypted = crypt.encrypt(check_sum, key);
       params.CHECKSUMHASH = encrypted;
@@ -53,6 +54,7 @@ function verifychecksum(params, key) {
     var temp = decodeURIComponent(params.CHECKSUMHASH);
     var checksum = crypt.decrypt(temp, key);
     var salt = checksum.substr(checksum.length - 4);
+    console.log('salt:'+salt);
     var sha256 = checksum.substr(0, checksum.length - 4);
     var hash = crypto.createHash('sha256').update(data + salt).digest('hex');
     if (hash === sha256) {
