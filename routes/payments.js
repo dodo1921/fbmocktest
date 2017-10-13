@@ -246,8 +246,20 @@ function txnSuccess( res, req_body, body, fbid){
 
 	  }).then( () => {
 	  			console.log('Here12');
-					return res.render('txn_success');
+					return res.render('txn_success', {
+						order_id: req_body.ORDERID
+					});
 					//send message to messenger
+					let messageData = {
+				    recipient: {
+				      id: fbid
+				    },
+				    message:{    
+				      text: 'Transaction Successful.\nTransaction ID: '+req_body.ORDERID+'\nBalance updated.';				      
+				    }
+				  }; 
+
+				  callSendAPI(messageData);
 
 		}).catch(err => {
 				console.log('Here13');
@@ -290,6 +302,17 @@ function txnFailure(res, code, msg, req_body, body, fbid){
 		 					order_id: req_body.ORDERID
 		 				});
 		 				// send msg
+		 				let messageData = {
+					    recipient: {
+					      id: fbid
+					    },
+					    message:{    
+					      text: 'Transaction Failed.\nTransaction ID: '+req_body.ORDERID;				      
+					    }
+					  }; 
+
+					  callSendAPI(messageData);
+
 		 		}).catch(err => {
 		 				console.log('Here18');
 		 				return res.render('txn_failure', {
@@ -455,6 +478,17 @@ function txnSuccessAfterPending(body, fbid){
 	  			
 					//send message to messenger
 
+					let messageData = {
+				    recipient: {
+				      id: fbid
+				    },
+				    message:{    
+				      text: 'Transaction Successful.\nTransaction ID: '+body.ORDERID+'\nBalance updated.';				      
+				    }
+				  }; 
+
+				  callSendAPI(messageData);
+
 		}).catch(err => {
 				
 		});
@@ -477,10 +511,43 @@ function txnFailureAfterPending(body, fbid){
  		}).then( () => {
  				
  				// send msg
+ 				let messageData = {
+				    recipient: {
+				      id: fbid
+				    },
+				    message:{    
+				      text: 'Transaction Failed.\nTransaction ID: '+body.ORDERID;				      
+				    }
+				  }; 
+
+				  callSendAPI(messageData);
+
  		}).catch(err => {
  				
  		});
 
+}
+
+
+function callSendAPI(messageData) {
+  request({
+    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+    method: 'POST',
+    json: messageData
+
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var recipientId = body.recipient_id;
+      var messageId = body.message_id;
+
+      console.log("Successfully sent generic message with id %s to recipient %s", messageId, recipientId);
+    } else {
+      console.error("Unable to send message.");
+      //console.error(response);
+      console.error(error);
+    }
+  });  
 }
 
 
