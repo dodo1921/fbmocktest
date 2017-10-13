@@ -141,22 +141,22 @@ router.post('/paytmAck', function(req, res) {
 									      if( body.STATUS === 'TXN_SUCCESS'){
 									      	//txn success
 									      	console.log('Here3');
-									      	txnSuccess(req.body, body, payment[0].fbid);
+									      	txnSuccess(res, req.body, body, payment[0].fbid);
 									      }else if(body.STATUS === 'TXN_FAILURE'){
 									      	//txn failure
 									      	console.log('Here4');
-									      	txnFailure(1, 'Failure' ,req.body, body, payment[0].fbid);
+									      	txnFailure(res, 1, 'Failure' ,req.body, body, payment[0].fbid);
 									      }else{
 									      	//txn pending
 									      	console.log('Here5');
-									      	txnPending(req.body.ORDERID);
+									      	txnPending(res, req.body.ORDERID);
 									      }
 
 
 									    } else {
 									    	//txn pending
 									    	console.log('Here6');
-									    	txnPending(req.body.ORDERID);
+									    	txnPending(res, req.body.ORDERID);
 									    }
 
 								  });
@@ -169,11 +169,11 @@ router.post('/paytmAck', function(req, res) {
 					if(payment.length == 0){
 						// no such transaction id
 						console.log('Here7');
-						txnFailure(0, 'Illegal Transaction Number');
+						txnFailure(res, 0, 'Illegal Transaction Number');
 					}else{
 						//possible tampering....amount not matching
 						console.log('Here8');
-						txnFailure(0, 'Received transaction amount does not match');
+						txnFailure(res, 0, 'Received transaction amount does not match');
 					}
 				}
 
@@ -181,7 +181,7 @@ router.post('/paytmAck', function(req, res) {
 
 				// txn pending
 				console.log('Here9');
-				txnPending(req.body.ORDERID);
+				txnPending(res, req.body.ORDERID);
 		})
 
 	}else{
@@ -189,7 +189,7 @@ router.post('/paytmAck', function(req, res) {
 		// txn fail
 		// possible tampering....checksum fail
 		console.log('Here10');
-		txnFailure(0, 'Checksum mismatch');
+		txnFailure(res, 0, 'Checksum mismatch');
 	}
 
 
@@ -198,7 +198,7 @@ router.post('/paytmAck', function(req, res) {
 });
 
 
-function txnSuccess( req_body, body, fbid){
+function txnSuccess( res, req_body, body, fbid){
 
 		console.log('Here11');
 
@@ -260,7 +260,7 @@ function txnSuccess( req_body, body, fbid){
 }
 
 
-function txnFailure(code, msg, req_body, body, fbid){
+function txnFailure(res, code, msg, req_body, body, fbid){
 		console.log('Here14');
 		if(code == 0){
 			console.log('Here15');	
@@ -304,7 +304,7 @@ function txnFailure(code, msg, req_body, body, fbid){
 }
 
 
-function txnPending(orderid){
+function txnPending(res, orderid){
 
 		console.log('Here19');
 		return res.render('txn_pending', {
