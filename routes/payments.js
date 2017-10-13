@@ -129,9 +129,9 @@ router.post('/paytmAck', function(req, res) {
 						ck.genchecksum(params, process.env.MERCHANT_KEY, function(err, params){
 
 									//let JsonData = encodeURIComponent(JSON.stringify(params));
-									//let url = 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus?JsonData='+JsonData;
+									//let url = 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus';
 
-									console.log('Txn status request:  ' + url);
+									//console.log('Txn status request:  ' + url);
 
 									request({
 								    uri: 'https://graph.facebook.com/v2.6/me/messages',
