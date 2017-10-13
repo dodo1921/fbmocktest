@@ -7,6 +7,8 @@ const request = require('request');
 
 let ck = require('../paytm_utils/checksum');
 
+let retrytime = 300000;
+
 var router = express.Router();
 
 /* GET users listing. */
@@ -333,7 +335,7 @@ function txnPending(res, orderid){
 
 		setTimeout(function(){ 
 			txnPoll(orderid); 
-		}, 5000); 
+		}, retrytime); 
 
 		return res.render('txn_pending', {
 			error: 'Pending',
@@ -382,7 +384,7 @@ function txnPoll(orderid){
 									      	if(c<10){
 										      	setTimeout(function(){ 
 															txnPoll(orderid); 
-														}, 5000*Math.pow(2, c ));
+														}, retrytime*Math.pow(2, c ));
 													}	
 
 													knex('payments').where({id: orderid}).increment('retry', 1).then(()=>{}).catch(err=>{});
@@ -398,7 +400,7 @@ function txnPoll(orderid){
 								      	if(c<10){
 									      	setTimeout(function(){ 
 														txnPoll(orderid); 
-													}, 5000*Math.pow(2, c ));
+													}, retrytime*Math.pow(2, c ));
 												}	
 
 												knex('payments').where({id: orderid}).increment('retry', 1).then(()=>{}).catch(err=>{});
@@ -424,7 +426,7 @@ function txnPoll(orderid){
     	if(c<10){
 	    	setTimeout(function(){ 
 					txnPoll(orderid); 
-				}, 500000);
+				}, retrytime);
 	    }	
 			knex('payments').where({id: orderid}).increment('retry', 1).then(()=>{}).catch(err=>{});
 
