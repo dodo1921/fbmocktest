@@ -63,7 +63,7 @@ router.post('/submitAmount', function(req, res, next) {
 	.then( payment => {
 
 		let params = {};		
-		params.MID = process.env.MERCHANT_ID;
+		params.MID = process.env.MERCHANT_ID; 
 		params.ORDER_ID = payment[0];		
 		params.INDUSTRY_TYPE_ID = process.env.INDUSTRY_TYPE;
     params.CHANNEL_ID = process.env.CHANNEL_ID;
@@ -76,7 +76,16 @@ router.post('/submitAmount', function(req, res, next) {
 
     ck.genchecksum(params, process.env.MERCHANT_KEY, function(undefined, params ){
 
-    	console.log(params.CHECKSUMHASH);    	
+    	console.log('ck:'+params.CHECKSUMHASH); 
+    	console.log('MID:'+params.MID); 
+    	console.log('orderid:'+params.ORDER_ID); 
+    	console.log('industry:'+params.INDUSTRY_TYPE_ID); 
+    	console.log('Channel:'+params.CHANNEL_ID); 
+    	console.log('txnamt:'+params.TXN_AMOUNT); 
+    	console.log('website:'+params.WEBSITE); 
+    	console.log('custid:'+params.CUST_ID); 
+    	
+
     	//params.REQUEST_TYPE = 'DEFAULT';
     	return res.json(params);
 
@@ -102,12 +111,21 @@ router.post('/paytmAck', function(req, res) {
   params.CHANNEL_ID = process.env.CHANNEL_ID;
   params.TXN_AMOUNT = req.body.TXNAMOUNT;
   params.WEBSITE = process.env.WEBSITE;
-  //params.CUST_ID = '1780356611992751';
+  params.CUST_ID = '1780356611992751';
 
-  console.log('Customer id:'+req.body.CUST_ID);
+  //console.log('Customer id:'+req.body.CUST_ID);
   //params.MOBILE_NO = 911010101010;
   //params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
-	params.CHECKSUMHASH = req.body.CHECKSUMHASH
+	params.CHECKSUMHASH = req.body.CHECKSUMHASH;
+
+	console.log('ck:'+params.CHECKSUMHASH); 
+	console.log('MID:'+params.MID); 
+	console.log('orderid:'+params.ORDER_ID); 
+	console.log('industry:'+params.INDUSTRY_TYPE_ID); 
+	console.log('Channel:'+params.CHANNEL_ID); 
+	console.log('txnamt:'+params.TXN_AMOUNT); 
+	console.log('website:'+params.WEBSITE); 
+	console.log('custid:'+params.CUST_ID); 
 
 	if(ck.verifychecksum(params, process.env.MERCHANT_KEY)){
 		console.log('Checksum right');
