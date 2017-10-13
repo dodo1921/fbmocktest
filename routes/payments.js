@@ -134,7 +134,7 @@ router.post('/paytmAck', function(req, res) {
 									//console.log('Txn status request:  ' + url);
 
 									request({
-								    uri: 'https://graph.facebook.com/v2.6/me/messages',								    
+								    uri: 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus',								    
 								    method: 'POST',
 								    json: params								    
 								  }, function (error, response, body) {
@@ -145,7 +145,7 @@ router.post('/paytmAck', function(req, res) {
 									      res.render('txn_success');
 									    } else {
 									    	console.log('Error:'+error);
-									      res.render('txn_success');
+									      res.render('txn_failure', {});
 									    }
 
 								  });
