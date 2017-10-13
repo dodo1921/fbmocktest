@@ -115,8 +115,10 @@ router.post('/paytmAck', function(req, res) {
 		.then(payment => {
 
 				if(payment.length>0 && payment[0].money === req.body.TXNAMOUNT){
-					 if(req.body.STATUS === 'TXN_STATUS'){
+						console.log('Here');
+					 if(req.body.STATUS === 'TXN_SUCCESS'){
 					 		//success
+					 		console.log('TXN_SUCCESS');
 
 					 		knex.transaction( trx => {
 
@@ -174,6 +176,7 @@ router.post('/paytmAck', function(req, res) {
 
 					 }else if(req.body.STATUS === 'TXN_FAILURE'){
 					 		//failure
+					 		console.log('TXN_FAILURE');
 					 		knex('payments').where({id:req.body.ORDER_ID}).update({					 			
 					 			STATUS: req.body.STATUS,
 					 			TXNID: req.body.TXNID,
@@ -209,6 +212,12 @@ router.post('/paytmAck', function(req, res) {
 				}else{
 
 					//transaction fail
+
+					console.log('TXN_FAILURE2');
+					res.render('txn_failure', {
+					 					error: 'Database error',
+					 					order_id: req.body.ORDER_ID
+					 				});
 
 				}
 
