@@ -77,8 +77,8 @@ router.post('/submitAmount', function(req, res, next) {
     params.TXN_AMOUNT = amount+'.00';
     params.WEBSITE = process.env.WEBSITE;
     params.CUST_ID = fbid;    
-    //params.MOBILE_NO = 919005835708;
-    //params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
+    params.MOBILE_NO = 919005835708;
+    params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
 
 
     ck.genchecksum(params, process.env.MERCHANT_KEY, function(undefined, params ){
