@@ -9,7 +9,8 @@ let ck = require('../paytm_utils/checksum');
 
 let retrytime = 300000;
 
-let request_status_uri = 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus';
+//let request_status_uri = 'https://pguat.paytm.com/oltp/HANDLER_INTERNAL/getTxnStatus';
+let request_status_uri = 'https://secure.paytm.in/oltp/HANDLER_INTERNAL/getTxnStatus';
 
 var router = express.Router();
 
