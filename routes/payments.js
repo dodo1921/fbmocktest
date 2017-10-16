@@ -360,17 +360,15 @@ function txnPoll(orderid){
 
 						ck.genchecksum(params, process.env.MERCHANT_KEY, function(err, params){
 
-									
+									let u = request_status_uri+'?JsonData='+encodeURIComponent(JSON.stringify(params)); 
+									console.log('>>>>'+u);	
 
-									request({
-								    uri: request_status_uri,								    
-								    method: 'GET',
-								    json: params								    
-								  }, function (error, response, body) {
+									request(u, function (error, response, body) {
 								  		console.log('Herep1');
+
 									    if (!error && response.statusCode == 200) {
-									      console.log('Herep2:'+body);
-									      //body = JSON.parse(body);
+									    	console.log('Herep2:'+body+':::error'+error);
+									      body = JSON.parse(body);									      
 									      if( body.STATUS === 'TXN_SUCCESS'){
 									      	//txn success
 									      	console.log('Herep3');
