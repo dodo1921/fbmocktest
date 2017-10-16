@@ -250,11 +250,8 @@ function txnSuccess( res, req_body, body, fbid){
 
 	  }).then( () => {
 	  			console.log('Here12');
-					return res.render('txn_success', {
-						order_id: req_body.ORDERID
-					});
-					//send message to messenger
-					let messageData = {
+
+	  			let messageData = {
 				    recipient: {
 				      id: fbid
 				    },
@@ -264,6 +261,13 @@ function txnSuccess( res, req_body, body, fbid){
 				  }; 
 
 				  callSendAPI(messageData);
+
+
+					return res.render('txn_success', {
+						order_id: req_body.ORDERID
+					});
+					//send message to messenger
+					
 
 		}).catch(err => {
 				console.log('Here13');
@@ -301,11 +305,7 @@ function txnFailure(res, code, msg, req_body, body, fbid){
 		 			BANKTXNID: req_body.BANKTXNID
 		 		}).then( () => {
 		 				console.log('Here17');
-		 				return res.render('txn_failure', {
-		 					error: req_body.RESPMSG,
-		 					order_id: req_body.ORDERID
-		 				});
-		 				// send msg
+
 		 				let messageData = {
 					    recipient: {
 					      id: fbid
@@ -316,6 +316,13 @@ function txnFailure(res, code, msg, req_body, body, fbid){
 					  }; 
 
 					  callSendAPI(messageData);
+		 				
+		 				return res.render('txn_failure', {
+		 					error: req_body.RESPMSG,
+		 					order_id: req_body.ORDERID
+		 				});
+		 				// send msg
+		 				
 
 		 		}).catch(err => {
 		 				console.log('Here18');
