@@ -221,7 +221,7 @@ function txnSuccess( res, req_body, body, fbid){
 				 			PAYMENTMODE: req_body.PAYMENTMODE,
 				 			GATEWAYNAME: req_body.GATEWAYNAME,
 				 			CURRENCY: req_body.CURRENCY,
-				 			CHECKSUMHASH: req_body.CHECKSUMHASH,
+				 			//CHECKSUMHASH: req_body.CHECKSUMHASH,
 				 			BANKNAME: req_body.BANKNAME,
 				 			BANKTXNID: req_body.BANKTXNID
 				 		}).transacting(trx);
@@ -300,7 +300,7 @@ function txnFailure(res, code, msg, req_body, body, fbid){
 		 			PAYMENTMODE: req_body.PAYMENTMODE,
 		 			GATEWAYNAME: req_body.GATEWAYNAME,
 		 			CURRENCY: req_body.CURRENCY,
-		 			CHECKSUMHASH: req_body.CHECKSUMHASH,
+		 			//CHECKSUMHASH: req_body.CHECKSUMHASH,
 		 			BANKNAME: req_body.BANKNAME,
 		 			BANKTXNID: req_body.BANKTXNID
 		 		}).then( () => {
@@ -316,7 +316,7 @@ function txnFailure(res, code, msg, req_body, body, fbid){
 					  }; 
 
 					  callSendAPI(messageData);
-		 				
+
 		 				return res.render('txn_failure', {
 		 					error: req_body.RESPMSG,
 		 					order_id: req_body.ORDERID
