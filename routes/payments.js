@@ -135,7 +135,7 @@ router.post('/paytmAck', function(req, res) {
 						ck.genchecksum(params, process.env.MERCHANT_KEY, function(err, params){
 
 									
-									let u = request_status_uri+'?JsonData='+JSON.stringify(params); 
+									let u = request_status_uri+'?JsonData='+encodeURIComponent(JSON.stringify(params)); 
 									console.log('>>>>'+u);	
 									request( u , function (error, response, body) {
 								  		console.log('Here1');
