@@ -79,6 +79,7 @@ router.post('/submitAmount', function(req, res, next) {
     params.CUST_ID = fbid;    
     params.MOBILE_NO = 919005835708;
     params.EMAIL = 'nvjkfjnvjdfn@nvfvnfn.com';
+    params.CALLBACK_URL = 'https://fbmocktest.herokuapp.com/payments/paytmAck';
 
 
     ck.genchecksum(params, process.env.MERCHANT_KEY, function(undefined, params ){
