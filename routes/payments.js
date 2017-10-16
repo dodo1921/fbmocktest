@@ -143,8 +143,8 @@ router.post('/paytmAck', function(req, res) {
 								  }, function (error, response, body) {
 								  		console.log('Here1');
 									    if (!error && response.statusCode == 200) {
-									      console.log('Here2:'+body);
-									      body = JSON.parse(body);
+									      console.log('Here2:'+JSON.stringify(body));
+									      //body = JSON.parse(body);
 									      if( body.STATUS === 'TXN_SUCCESS'){
 									      	//txn success
 									      	console.log('Here3');
@@ -373,7 +373,7 @@ function txnPoll(orderid){
 								  		console.log('Herep1');
 									    if (!error && response.statusCode == 200) {
 									      console.log('Herep2:'+body);
-									      body = JSON.parse(body);
+									      //body = JSON.parse(body);
 									      if( body.STATUS === 'TXN_SUCCESS'){
 									      	//txn success
 									      	console.log('Herep3');
