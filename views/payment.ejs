@@ -160,8 +160,8 @@
                             var postData = data;
                             var form = document.createElement("form");
                             form.method = 'POST';
-                            //form.action = "https://pguat.paytm.com/oltp-web/processTransaction";
-                            form.action = "https://secure.paytm.in/oltp-web/processTransaction";
+                            form.action = "https://pguat.paytm.com/oltp-web/processTransaction";
+                            //form.action = "https://secure.paytm.in/oltp-web/processTransaction";
                             postData = JSON.parse(JSON.stringify(postData));
                             for (var key in postData) {
                                 var element1 = document.createElement("input");
