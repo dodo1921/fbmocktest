@@ -135,15 +135,15 @@ router.post('/paytmAck', function(req, res) {
 						ck.genchecksum(params, process.env.MERCHANT_KEY, function(err, params){
 
 									
-
+									let u = request_status_uri+'?JsonData='+JSON.stringify(params); 	
 									request({
 								    uri: request_status_uri,								    
-								    method: 'POST',
-								    json: params								    
+								    method: 'GET'
+								    //json: params								    
 								  }, function (error, response, body) {
 								  		console.log('Here1');
 									    if (!error && response.statusCode == 200) {
-									      console.log('Here2:'+JSON.stringify(body));
+									      console.log('Here2:'+body);
 									      //body = JSON.parse(body);
 									      if( body.STATUS === 'TXN_SUCCESS'){
 									      	//txn success
@@ -367,7 +367,7 @@ function txnPoll(orderid){
 
 									request({
 								    uri: request_status_uri,								    
-								    method: 'POST',
+								    method: 'GET',
 								    json: params								    
 								  }, function (error, response, body) {
 								  		console.log('Herep1');
