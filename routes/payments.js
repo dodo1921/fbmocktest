@@ -137,11 +137,7 @@ router.post('/paytmAck', function(req, res) {
 									
 									let u = request_status_uri+'?JsonData='+encodeURIComponent(JSON.stringify(params)); 
 									console.log('>>>>'+u);	
-									request({
-								    uri: u,								    
-								    method: 'GET'
-								    //json: params								    
-								  }, function (error, response, body) {
+									request( u , function (error, response, body) {
 								  		console.log('Here1');
 									    if (!error && response.statusCode == 200) {
 									      console.log('Here2:'+body);
