@@ -535,6 +535,7 @@ function txnFailureAfterPending(body, fbid){
 
 
 function callSendAPI(messageData) {
+	console.log('callSendAPI');
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
