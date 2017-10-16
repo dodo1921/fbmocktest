@@ -141,7 +141,7 @@ router.post('/paytmAck', function(req, res) {
 								  		console.log('Here1');
 									    if (!error && response.statusCode == 200) {
 									      console.log('Here2:'+body);
-									      //body = JSON.parse(body);
+									      body = JSON.parse(body);
 									      if( body.STATUS === 'TXN_SUCCESS'){
 									      	//txn success
 									      	console.log('Here3');
