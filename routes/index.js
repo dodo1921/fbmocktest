@@ -925,7 +925,7 @@ function sendReport(recipientId ,curr_test){
 function startTest(recipientId, user) {
 
 
-  let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 81, maxqb = 185, t, answer_queue='', question_queue='';
+  let qacount = 5, qbcount = 5, qa = [], qb = [], maxqa = 181, maxqb = 185, t, answer_queue='', question_queue='';
   let question_one, testid, test_taken=0;
 
   knex('tests').where({user_id: user.id}).count('user_id as i')
