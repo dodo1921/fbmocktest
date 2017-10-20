@@ -191,7 +191,7 @@ function receivedMessage(event, user, timeOfEvent) {
   } else if (messageText) {
 
     if(user.mode === 'A'){
-      let msgText = "Practice mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
+      let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
       sendMsgModeA(senderID, msgText);
     }else if(user.mode === 'E'){
         processMessageExamMode(senderID, user, timeOfEvent);
@@ -200,7 +200,7 @@ function receivedMessage(event, user, timeOfEvent) {
   } else{
 
           if(user.mode === 'A'){
-            let msgText = "Practice mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
+            let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
             sendMsgModeA(senderID, msgText);
           }else if(user.mode === 'E'){
               processMessageExamMode(senderID, user, timeOfEvent);
@@ -236,7 +236,7 @@ function receivedPostback(event, user, timeOfEvent) {
 
         }  
 
-        let msgText = "Practice mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
+        let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
         sendMsgModeA(senderID, msgText);
 
       }else{
@@ -306,7 +306,7 @@ function receivedPostback(event, user, timeOfEvent) {
 
         }else{
             
-            let msgText = "Practice mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
+            let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
             sendMsgModeA(senderID, msgText);    
 
         }       
@@ -807,7 +807,7 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
                         elements: [
                           {
                             title: 'Mock Test',
-                            subtitle: 'Prepare for CAT, XAT, SNAP, GMAT, GRE, campus placements etc. Practice mini mock tests on Facebook chat and messenger',
+                            subtitle: 'Prepare for CAT, XAT, SNAP, GMAT, GRE, campus placements etc. Practise mini mock tests on Facebook chat and messenger',
                             image_url: 'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
                             default_action: {
                               type: 'web_url',
