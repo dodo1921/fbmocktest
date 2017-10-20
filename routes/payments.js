@@ -256,7 +256,24 @@ function txnSuccess( res, req_body, body, fbid){
 				      id: fbid
 				    },
 				    message:{    
-				      text: 'Transaction Successful.\nTransaction ID: '+req_body.ORDERID+'\nBalance updated.'				      
+				      text: 'Transaction Successful.\nTransaction ID: '+req_body.ORDERID+'\nBalance updated.',
+				      quick_replies:[
+				          {
+				            content_type:"text",
+				            title:"Start Test",
+				            payload:"<START TEST>"        
+				          },
+				          {
+				            content_type:"text",
+				            title:"Add Money",
+				            payload:"<ADD MONEY>"        
+				          },          
+				          {
+				            content_type:"text",
+				            title:"Score",
+				            payload:"<SCORE>"        
+				          }
+				      ]					      
 				    }
 				  }; 
 
@@ -311,7 +328,24 @@ function txnFailure(res, code, msg, req_body, body, fbid){
 					      id: fbid
 					    },
 					    message:{    
-					      text: 'Transaction Failed.\nTransaction ID: '+req_body.ORDERID		      
+					      text: 'Transaction Failed.\nTransaction ID: '+req_body.ORDERID,
+					      quick_replies:[
+					          {
+					            content_type:"text",
+					            title:"Start Test",
+					            payload:"<START TEST>"        
+					          },
+					          {
+					            content_type:"text",
+					            title:"Add Money",
+					            payload:"<ADD MONEY>"        
+					          },          
+					          {
+					            content_type:"text",
+					            title:"Score",
+					            payload:"<SCORE>"        
+					          }
+					      ]			      
 					    }
 					  }; 
 
@@ -493,7 +527,24 @@ function txnSuccessAfterPending(body, fbid){
 				      id: fbid
 				    },
 				    message:{    
-				      text: 'Transaction Successful.\nTransaction ID: '+body.ORDERID+'\nBalance updated.'				      
+				      text: 'Transaction Successful.\nTransaction ID: '+body.ORDERID+'\nBalance updated.',
+				      quick_replies:[
+				          {
+				            content_type:"text",
+				            title:"Start Test",
+				            payload:"<START TEST>"        
+				          },
+				          {
+				            content_type:"text",
+				            title:"Add Money",
+				            payload:"<ADD MONEY>"        
+				          },          
+				          {
+				            content_type:"text",
+				            title:"Score",
+				            payload:"<SCORE>"        
+				          }
+				      ]				      
 				    }
 				  }; 
 
