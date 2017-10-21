@@ -53,6 +53,8 @@ router.post('/webhook', function (req, res) {
                         receivedMessage(event, user[0], timeOfEvent);          
                       } else if (event.postback) {
                         receivedPostback(event, user[0], timeOfEvent);          
+                      }else if (event.referral) {
+                        receivedMessage(event, user[0], timeOfEvent);         
                       } else {
                         console.log("Webhook received unknown event: ", event);
                       }
@@ -118,6 +120,8 @@ function firstTimeUserComes(event, first_name, last_name, profile_pic, timeOfEve
         } else if (event.postback) {
           console.log('Here2');
           receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } , timeOfEvent);          
+        }else if (event.referral) {
+          receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 }, timeOfEvent);         
         } else {
           console.log("Webhook received unknown event: ", event);
         }
