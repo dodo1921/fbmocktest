@@ -528,6 +528,8 @@ function sendPaymentLinkPasscode(recipientId, user) {
 
 function processMessageExamMode(recipientId, user, timeOfEvent){
 
+  console.log('processMessageExamMode');
+
   let subquery = knex('tests').max('id').where({user_id: user.id});
 
   knex('tests').whereIn('id', subquery).select()
