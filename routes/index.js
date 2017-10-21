@@ -744,7 +744,7 @@ function sendRemainingQ(recipientId ,curr_test, qno, testid){
 
       question_no = qarray[i].substring(2);
 
-      if(qarray[i].substring(0,2) === 'qA' )
+      if(qarray[i].substring(0,2) === 'qa' )
         query = knex('qA').where({id:question_no}).select('q');
       else 
         query = knex('qB').where({id:question_no}).select('q');
