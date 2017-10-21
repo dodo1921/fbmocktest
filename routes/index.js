@@ -54,6 +54,7 @@ router.post('/webhook', function (req, res) {
                       } else if (event.postback) {
                         receivedPostback(event, user[0], timeOfEvent);          
                       }else if (event.referral) {
+                        console.log('Referral Ad');
                         receivedMessage(event, user[0], timeOfEvent);         
                       } else {
                         console.log("Webhook received unknown event: ", event);
