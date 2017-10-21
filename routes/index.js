@@ -147,6 +147,7 @@ function receivedReferral(event, user, timeOfEvent) {
     sendMsgModeA(senderID, msgText);
   }else if(user.mode === 'E'){
       processMessageExamMode(senderID, user, timeOfEvent);
+  }    
 
 }
 
