@@ -55,7 +55,7 @@ router.post('/webhook', function (req, res) {
                         receivedPostback(event, user[0], timeOfEvent);          
                       }else if (event.referral) {
                         console.log('Referral Ad');
-                        receivedMessage(event, user[0], timeOfEvent);         
+                        receivedReferral(event, user[0], timeOfEvent);         
                       } else {
                         console.log("Webhook received unknown event: ", event);
                       }
@@ -122,7 +122,7 @@ function firstTimeUserComes(event, first_name, last_name, profile_pic, timeOfEve
           console.log('Here2');
           receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 } , timeOfEvent);          
         }else if (event.referral) {
-          receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 }, timeOfEvent);         
+          receivedReferral(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 0.00 }, timeOfEvent);         
         } else {
           console.log("Webhook received unknown event: ", event);
         }
@@ -134,6 +134,23 @@ function firstTimeUserComes(event, first_name, last_name, profile_pic, timeOfEve
 }
 
 
+function receivedReferral(event, user, timeOfEvent) {
+
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfMessage = event.timestamp;
+
+  console.log("Received Referral for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
+  console.log('Here in else');
+  if(user.mode === 'A'){
+    let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
+    sendMsgModeA(senderID, msgText);
+  }else if(user.mode === 'E'){
+      processMessageExamMode(senderID, user, timeOfEvent);
+
+}
+
+
 // Incoming events handling
 function receivedMessage(event, user, timeOfEvent) {
   var senderID = event.sender.id;
@@ -141,9 +158,8 @@ function receivedMessage(event, user, timeOfEvent) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
-  console.log("Received message for user %d and page %d at %d with message:", 
-    senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
+  console.log("Received message for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
+  //console.log(JSON.stringify(message));
 
   var messageId = message.mid;
 
