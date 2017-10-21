@@ -194,7 +194,7 @@ function receivedMessage(event, user, timeOfEvent) {
 
 
   } else if (messageText) {
-
+    console.log('Here in else messageText');
     if(user.mode === 'A'){
       let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
       sendMsgModeA(senderID, msgText);
