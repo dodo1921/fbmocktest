@@ -442,7 +442,7 @@ function sendQuestionsList(senderID, testid){
         let qq = test[0].questions.split(','); 
         let questions_buttons = [];
 
-        for(let i=0; i<qq.length; i++){
+        for(let i=9; i>=0; i--){
 
           questions_buttons.push({            
             title: 'Questions',
@@ -771,8 +771,8 @@ function processAnswer(recipientId, user, timeOfEvent, payload){
 
               callSendAPI(messageData);
 
-              setTimeout(function(){ sendRemainingQ(recipientId ,curr_test, qno ,curr_test.id ); }, 3000);
-              
+              //setTimeout(function(){ sendRemainingQ(recipientId ,curr_test, qno ,curr_test.id ); }, 3000);
+              setTimeout(function(){ sendShareAndSolutionMsg(recipientId, curr_test); }, 3000);
               
               
 
