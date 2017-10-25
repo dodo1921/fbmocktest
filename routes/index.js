@@ -328,6 +328,10 @@ function receivedPostback(event, user, timeOfEvent) {
 
                   callSendAPI(messageData);
 
+
+          }).catch(err=>{});      
+
+
         }else if(sp.length === 2 && sp[0] === 'ds'){
 
           let qid = sp[1].substring(2);
