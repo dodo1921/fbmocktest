@@ -143,7 +143,7 @@ function receivedReferral(event, user, timeOfEvent) {
   console.log("Received Referral for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
   console.log('Here in else');
   if(user.mode === 'A'){
-    let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
+    let msgText = "10 questions 15 minutes. Each test costs just Rs5.\nGet a test free on scoring full marks.\nFirst two tests are free.\nWin CASH prize every week.";
     sendMsgModeA(senderID, msgText);
   }else if(user.mode === 'E'){
       processMessageExamMode(senderID, user, timeOfEvent);
@@ -276,6 +276,58 @@ function receivedPostback(event, user, timeOfEvent) {
             sendDetailedSolutionsList(senderID, sp[1]);
 
 
+        }else if(sp.length === 2 && sp[0] === 'Questions'){
+
+          console.log('Questions after split'+ sp[1]);
+
+          sendQuestionsList(senderID, sp[1]);
+
+        }else if(sp.length === 2 && sp[0] === 'qs'){
+
+          let qid = sp[1].substring(2);
+          let query;
+
+          if(sp[1].substring(0,2) === 'qa'){
+            query = knex('qA').where({id: qid}).select('q');
+          }else if(sp[1].substring(0,2) === 'qb'){
+            query = knex('qB').where({id: qid}).select('q');
+          }
+
+          query.then( questions => {
+
+            let messageData = {
+                    recipient: {
+                      id: senderID
+                    },
+                    message:{    
+                      attachment:{
+                        type:"image",
+                        payload:{
+                          url:"https://s3.ap-south-1.amazonaws.com/fbmock/"+questions[0].q
+                        }
+                      },   
+                      quick_replies:[
+                          {
+                            content_type:"text",
+                            title:"Start Test",
+                            payload:"<START TEST>"        
+                          },
+                          {
+                            content_type:"text",
+                            title:"Add Money",
+                            payload:"<ADD MONEY>"        
+                          },          
+                          {
+                            content_type:"text",
+                            title:"Score",
+                            payload:"<SCORE>"        
+                          } 
+                      ]
+                    }
+                  }; 
+
+                  callSendAPI(messageData);
+
         }else if(sp.length === 2 && sp[0] === 'ds'){
 
           let qid = sp[1].substring(2);
@@ -370,6 +422,57 @@ function sendMsgModeA(recipientId, messageText) {
   }; 
 
   callSendAPI(messageData);
+}
+
+
+
+function sendQuestionsList(senderID, testid){
+
+  knex('tests').where({id: testid}).select('questions')
+  .then( test => {
+
+    if(test.length>0){
+
+        console.log('Getting the test');
+
+        let qq = test[0].questions.split(','); 
+        let questions_buttons = [];
+
+        for(let i=0; i<qq.length; i++){
+
+          questions_buttons.push({            
+            title: 'Questions',
+            buttons: [{
+              type: 'postback',
+              title: '['+(i+1)+']',
+              payload: 'qs_'+qq[i]
+            }]
+            
+          });
+
+        }
+
+        let msg = {
+                    recipient:{
+                      id: senderID
+                    },
+                    message:{
+                      attachment:{
+                        type:'template',
+                        payload:{
+                          template_type:'generic',                        
+                          elements: questions_buttons
+                        }
+                      }
+                    }
+                };
+
+         callSendAPI(msg);
+
+    }
+
+  }).catch(err => {});
+
 }
 
 
@@ -850,6 +953,11 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
                     }
                   }
                 },
+                  {
+                    type: 'postback',
+                    title: 'Questions',
+                    payload:'Questions_'+curr_test.id
+                  },
                   {
                     type: 'postback',
                     title: 'Detailed Solutions',
