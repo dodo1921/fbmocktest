@@ -587,7 +587,7 @@ function sendLeaderBoardLink(recipientId, user) {
     +'\nSuccessful referrals:'+ val[0].i
     +'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
     +'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
-    +'\n\n5 Top scorers of a year will each receive 1000 rupees CASH prize.'
+    +'\n\n5 Top scorers of a month will each receive 1000 rupees CASH prize.'
     +'\n\nWin 100 rupees for 50 successful referral. Refer using the Share link below.'
     +'\n\nTo redeem prize go to the LeaderBoard.'; 
 
@@ -1062,7 +1062,7 @@ function sendReport(recipientId ,curr_test){
   messageText+='\nScore:'+score+'/10'
   +'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
   +'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
-  +'\n\n5 Top scorers of a year will each receive 1000 rupees CASH prize.';
+  +'\n\n5 Top scorers of a month will each receive 1000 rupees CASH prize.';
 
   console.log(messageText);  
 
