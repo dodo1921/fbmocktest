@@ -576,9 +576,12 @@ function sendTestQuestion(recipientId, imagename, testid, qno) {
 function sendLeaderBoardLink(recipientId, user) {   
 
   let msg = '';
+  console.log('Here:'+user.id);
 
   knex('users').where({ref_id: user.id}).count('ref_id as i')
   .then( val =>{
+
+    console.log('VAl'+val[0].i);
 
     msg = 'Overall Total Score: '+user.score
     +'\n Successful referrals:'+ val[0].i
@@ -631,10 +634,6 @@ function sendLeaderBoardLink(recipientId, user) {
                   }
                 }, 
                 {
-                  type: "web_url",
-                  url: "https://fbmocktest.herokuapp.com/prize/"+recipientId,
-                  title: "Redeem Prize"
-                },{
                   type: "postback",
                   title: "back",
                   payload: "<BACK>",
@@ -647,7 +646,7 @@ function sendLeaderBoardLink(recipientId, user) {
 
       callSendAPI(messageData); 
 
-    
+
 
   })
   .catch(err => {
