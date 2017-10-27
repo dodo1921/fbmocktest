@@ -584,14 +584,15 @@ function sendLeaderBoardLink(recipientId, user) {
     console.log('VAl'+val[0].i);
 
     msg = 'Overall Total Score: '+user.score
-    +'\n Successful referrals:'+ val[0].i
+    +'\nSuccessful referrals:'+ val[0].i
     +'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
     +'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
     +'\n\n5 Top scorers of a year will each receive 1000 rupees CASH prize.'
-    +'\n\nWin 100 rupees for 50 successful referral.'; 
+    +'\n\nWin 100 rupees for 50 successful referral. Refer using the Share link below.'
+    +'\n\nTo redeem prize go to the LeaderBoard.'; 
 
     var messageData = {
-        recipient: {
+        recipient: { 
           id: recipientId
         },
         message: {
@@ -976,7 +977,7 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
           elements:[
             {
               title: 'Share Mock Test',
-              subtitle: 'Get Rs1 added to your balance each time your referred friend completes a test.',
+              subtitle: 'Get 100 rupees for 50 successful referrals. Use the share link below to refer. Redeem prize from Leaderboard.',
               image_url:'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
               buttons: [
                 {
