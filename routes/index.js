@@ -1296,7 +1296,9 @@ function startTest(recipientId, user) {
           }).then( () => {
               sendTestQuestion(recipientId, question_one, testid, 1);
               let d = new Date(); let t = d.getTime()+1200000;
-              setTimeout(processMessageExamMode(recipientId, user, t ), 1200000);
+              setTimeout(function(){
+                processMessageExamMode(recipientId, user, t );
+              }, 1200000);
           }).catch( err => {
               console.log(err);
               sendMsgModeA(recipientId, err.name+' OMG');
