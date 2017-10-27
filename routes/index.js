@@ -1059,51 +1059,61 @@ function sendReport(recipientId ,curr_test){
 
   }
 
-  messageText+='\nScore:'+score+'/10';
+  messageText+='\nScore:'+score+'/10'
+  +'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
+  +'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
+  +'\n\n5 Top scorers of a year will each receive 1000 rupees CASH prize.';
 
   console.log(messageText);  
 
+  knex.transaction( trx => {
 
-  knex('tests').where({id: curr_test.id}).update('score', score)
-  .then(()=>{})
-  .catch(err=>{});
+        let p = [];
 
-  knex('users').where({fbid:recipientId}).increment('score', score)
-  .then(()=>{})
-  .catch(err=>{});
+        let tt;
 
-  if(score==10){
-    knex('users').where({fbid:recipientId}).increment('balance', 5.00)
-    .then(()=>{})
-    .catch(err=>{});
-  }
+        tt = knex('tests').where({id: curr_test.id}).update({ score, done: 1 }).transacting(trx);
+        p.push(tt);
 
-  knex('users').where({fbid: recipientId}).select()
-  .then( user => {
+        knex('users').where({fbid:recipientId}).increment('score', score).transacting(trx);
+        p.push(tt);
 
-    if(user.length>0){
+        if(score==10){
+          knex('users').where({fbid:recipientId}).increment('balance', 5.00).transacting(trx);
+          p.push(tt);
+        }       
 
-      let ref_id = user[0].ref_id;
-      if(ref_id){
-
-        knex('users').where({id: ref_id}).increment('balance', 1.00)
-        .then(()=>{})
-        .catch(err=>{});
-
-      }
-
-    }
-
-  }).catch(err=>{}); 
+        knex('users').where({fbid:recipientId}).update({mode:'A'}).transacting(trx);
+        p.push(tt);
 
 
-  knex('users').where({fbid:recipientId}).update({mode:'A'})
-  .then( () => {
+        Promise.all(p)
+        .then( values => {
 
+          for( let i=0; i<values.length; i++ ){
+            console.log('Promise>>>>>>>'+values[i]);
+            if(i==0)
+              testid = values[i];
+            if(values[i] == 0 ){                  
+              throw new Error('Transaction failed');
+            }
+          }
+                       
+
+        })
+        .then(trx.commit)
+        .catch(trx.rollback);
+
+
+  
+  }).then( () => {
       sendMsgModeA(recipientId, messageText);
-      
+  }).catch( err => {
+      console.log(err);
+      sendMsgModeA(recipientId, err.name+' OMG');
+  });      
 
-  }).catch(err=>{});
+
 
   
 
