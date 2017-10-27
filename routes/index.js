@@ -1075,15 +1075,15 @@ function sendReport(recipientId ,curr_test){
         tt = knex('tests').where({id: curr_test.id}).update({ score, done: 1 }).transacting(trx);
         p.push(tt);
 
-        knex('users').where({fbid:recipientId}).increment('score', score).transacting(trx);
+        tt = knex('users').where({fbid:recipientId}).increment('score', score).transacting(trx);
         p.push(tt);
 
         if(score==10){
-          knex('users').where({fbid:recipientId}).increment('balance', 5.00).transacting(trx);
+          tt = knex('users').where({fbid:recipientId}).increment('balance', 5.00).transacting(trx);
           p.push(tt);
         }       
 
-        knex('users').where({fbid:recipientId}).update({mode:'A'}).transacting(trx);
+        tt = knex('users').where({fbid:recipientId}).update({mode:'A'}).transacting(trx);
         p.push(tt);
 
 
