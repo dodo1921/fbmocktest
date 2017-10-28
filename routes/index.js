@@ -1300,7 +1300,15 @@ function startTest(recipientId, user) {
               sendTestQuestion(recipientId, question_one, testid, 1);
               let d = new Date(); let t = d.getTime()+1200000;
               setTimeout(function(){
-                processMessageExamMode(recipientId, user, t );
+                knex('tests').where({id: testid}).select('done as d')
+                .then(val => {
+
+                  if(val.length>0 && val[0].d === 0)
+                    processMessageExamMode(recipientId, user, t );
+                  
+                })
+                .catch(err=>{})
+                
               }, 1200000);
           }).catch( err => {
               console.log(err);
