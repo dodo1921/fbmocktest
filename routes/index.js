@@ -1165,7 +1165,7 @@ function startTest(recipientId, user) {
 
                 while(flag){
 
-                  if(test_taken == 1)
+                  if(test_taken < 2)
                     t = Math.floor(Math.random() * (216 - 186 + 1)) + 186;
                   else
                     t = Math.floor(Math.random() * (maxqb - 1 + 1)) + 1;
