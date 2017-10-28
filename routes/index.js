@@ -1165,7 +1165,10 @@ function startTest(recipientId, user) {
 
                 while(flag){
 
-                  t = Math.floor(Math.random() * (maxqb - 1 + 1)) + 1;
+                  if(test_taken == 1)
+                    t = Math.floor(Math.random() * (216 - 186 + 1)) + 186;
+                  else
+                    t = Math.floor(Math.random() * (maxqb - 1 + 1)) + 1;
                   flag=false;
                   for(let j=0; j<qb.length; j++){
                     if(qb[j] == t){
