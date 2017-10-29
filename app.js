@@ -7,6 +7,7 @@ var index = require('./routes/index');
 var payments = require('./routes/payments');
 var mocktest = require('./routes/mocktest');
 var leaderboard = require('./routes/leaderboard');
+var prize = require('./routes/prize');
 
 var app = express();
 
@@ -23,6 +24,7 @@ app.use('/', index);
 app.use('/payments', payments);
 app.use('/mocktest', mocktest);
 app.use('/leaderboard', leaderboard);
+app.use('/prize', prize);
 
 app.use(express.static(path.join(__dirname, 'public')));
 

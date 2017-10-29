@@ -112,17 +112,17 @@ function firstTimeUserComes(event, first_name, last_name, profile_pic, timeOfEve
 
     callSendAPI(messageData);
 
-    knex('users').returning('id').insert({fbid: event.sender.id, first_name, last_name, profile_pic, balance: 55.00 })
+    knex('users').returning('id').insert({fbid: event.sender.id, first_name, last_name, profile_pic, balance: 5.50 })
     .then( id => {                
         
         if (event.message) {
           console.log('Here1');
-          receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 55.00 } , timeOfEvent);          
+          receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 5.50 } , timeOfEvent);          
         } else if (event.postback) {
           console.log('Here2');
-          receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 55.00 } , timeOfEvent);          
+          receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 5.50 } , timeOfEvent);          
         }else if (event.referral) {
-          receivedReferral(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 55.00 }, timeOfEvent);         
+          receivedReferral(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 5.50 }, timeOfEvent);         
         } else {
           console.log("Webhook received unknown event: ", event);
         }
@@ -143,7 +143,7 @@ function receivedReferral(event, user, timeOfEvent) {
   console.log("Received Referral for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
   console.log('Here in else');
   if(user.mode === 'A'){
-    let msgText = "10 questions 15 minutes. \nGet a test free on scoring full marks.\nFirst eleven tests are free.\nWin CASH prize every day, every week and every month.";
+    let msgText = "10 questions 15 minutes. \nGet a test free on scoring full marks.\nFirst eleven tests are free.";
     sendMsgModeA(senderID, msgText);
   }else if(user.mode === 'E'){
       processMessageExamMode(senderID, user, timeOfEvent);
@@ -173,7 +173,8 @@ function receivedMessage(event, user, timeOfEvent) {
       switch (message.quick_reply.payload) {
         case '<START TEST>':{
               if(user.mode === 'A'){      
-                console.log('Start test');          
+                console.log('Start test');
+
                 startTest(senderID, user);
               }
           break;
@@ -213,7 +214,7 @@ function receivedMessage(event, user, timeOfEvent) {
   } else if (messageText) {
     console.log('Here in else messageText');
     if(user.mode === 'A'){
-      let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes. \nGet a test free on scoring full marks.\nFirst eleven tests are free.\nWin CASH prize every day, every week and every month.";
+      let msgText = "Practise mini aptitude tests from your facebook messenger.\n10 questions 15 minutes. \nGet a test free on scoring full marks.\nFirst eleven tests are free.";
       sendMsgModeA(senderID, msgText);
     }else if(user.mode === 'E'){
         processMessageExamMode(senderID, user, timeOfEvent);
@@ -222,7 +223,7 @@ function receivedMessage(event, user, timeOfEvent) {
   } else{
         console.log('Here in else');
           if(user.mode === 'A'){
-            let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes.\nGet a test free on scoring full marks.\nFirst eleven tests are free.\nWin CASH prize every day, every week and every month.";
+            let msgText = "Practise mini aptitude tests from your facebook messenger.\n10 questions 15 minutes.\nGet a test free on scoring full marks.\nFirst eleven tests are free.";
             sendMsgModeA(senderID, msgText);
           }else if(user.mode === 'E'){
               processMessageExamMode(senderID, user, timeOfEvent);
@@ -258,7 +259,7 @@ function receivedPostback(event, user, timeOfEvent) {
 
         }  
 
-        let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes.\nGet a test free on scoring full marks.\nFirst eleven tests are free.\nWin CASH prize every day, every week and every month.";
+        let msgText = "Practise mini aptitude tests from your facebook messenger.\n10 questions 15 minutes.\nGet a test free on scoring full marks.\nFirst eleven tests are free.";
         sendMsgModeA(senderID, msgText);
 
       }else{
@@ -384,7 +385,7 @@ function receivedPostback(event, user, timeOfEvent) {
 
         }else{
             
-            let msgText = "Practise mini mock tests from your facebook messenger.\n10 questions 15 minutes.\nGet a test free on scoring full marks.\nFirst eleven tests are free.\nWin CASH prize every day, every week and every month.";
+            let msgText = "Practise mini aptitude tests from your facebook messenger.\n10 questions 15 minutes.\nGet a test free on scoring full marks.\nFirst eleven tests are free.";
             sendMsgModeA(senderID, msgText);    
 
         }       
@@ -584,12 +585,12 @@ function sendLeaderBoardLink(recipientId, user) {
     console.log('VAl'+val[0].i);
 
     msg = 'Overall Total Score: '+user.score
-    +'\nSuccessful referrals:'+ val[0].i
-    +'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
-    +'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
-    +'\n\n5 Top scorers of a month will each receive 1000 rupees CASH prize.'
-    +'\n\nWin 100 rupees for 50 successful referral. Refer using the Share link below.'
-    +'\n\nTo redeem prize go to the LeaderBoard.'; 
+    +'\n\nSuccessful referrals:'+ val[0].i
+    //+'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
+    //+'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
+    //+'\n\n5 Top scorers of a month will each receive 1000 rupees CASH prize.'
+    +'\n\nWin 100 rupees for 25 successful referral. Refer using the Share link.';
+    //+'\n\nTo redeem prize go to the Score>Referral Prize.'; 
 
     var messageData = {
         recipient: { 
@@ -614,8 +615,8 @@ function sendLeaderBoardLink(recipientId, user) {
                         template_type: 'generic',
                         elements: [
                           {
-                            title: 'Mock Test',
-                            subtitle: 'Prepare for CAT, XAT, SNAP, GMAT, GRE, campus placements etc. Practise mini mock tests on Facebook chat and messenger',
+                            title: 'Mock Test Chatbot',
+                            subtitle: 'Prepare for CAT, XAT, SNAP, GMAT, GRE, campus placements, bank exams etc. Practise mini aptitude tests on Facebook chat and messenger',
                             image_url: 'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
                             default_action: {
                               type: 'web_url',
@@ -635,9 +636,9 @@ function sendLeaderBoardLink(recipientId, user) {
                   }
                 }, 
                 {
-                  type: "postback",
-                  title: "back",
-                  payload: "<BACK>",
+                  type: "web_url",
+                  url: "https://fbmocktest.herokuapp.com/prize/"+recipientId,
+                  title: "Referral Prize"                  
               }]              
             }
           }
@@ -977,7 +978,7 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
           elements:[
             {
               title: 'Share Mock Test',
-              subtitle: 'Get 100 rupees for 50 successful referrals. Use the share link below to refer. Redeem prize from Leaderboard.',
+              subtitle: 'Win 100 rupees for 25 successful referrals. Use the share link below to refer.',
               image_url:'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
               buttons: [
                 {
@@ -989,8 +990,8 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
                         template_type: 'generic',
                         elements: [
                           {
-                            title: 'Mock Test',
-                            subtitle: 'Prepare for CAT, XAT, SNAP, GMAT, GRE, campus placements etc. Practise mini mock tests on Facebook chat and messenger',
+                            title: 'Mock Test Chatbot',
+                            subtitle: 'Prepare for CAT, XAT, SNAP, GMAT, GRE, campus placements, bank exams etc. Practise mini aptitude tests on Facebook chat and messenger',
                             image_url: 'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
                             default_action: {
                               type: 'web_url',
@@ -1060,9 +1061,10 @@ function sendReport(recipientId ,curr_test){
   }
 
   messageText+='\nScore:'+score+'/10'
-  +'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
-  +'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
-  +'\n\n5 Top scorers of a month will each receive 1000 rupees CASH prize.';
+  +'\n\nWin 100 rupees for 25 successful referral. Refer using the Share link.';
+  //+'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
+  //+'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
+  //+'\n\n5 Top scorers of a month will each receive 1000 rupees CASH prize.';
 
   console.log(messageText);  
 
@@ -1079,7 +1081,7 @@ function sendReport(recipientId ,curr_test){
         p.push(tt);
 
         if(score==10){
-          tt = knex('users').where({fbid:recipientId}).increment('balance', 5.00).transacting(trx);
+          tt = knex('users').where({fbid:recipientId}).increment('balance', 0.50 ).transacting(trx);
           p.push(tt);
         }       
 
@@ -1133,7 +1135,7 @@ function startTest(recipientId, user) {
 
         if( user.balance < 5 ){
 
-          throw new Error('Not enough balance. Please add money to start test.\nA test costs just Rs5.');          
+          throw new Error('Not enough balance. Please add money to start test.\nA test costs just 50 paisa.');          
           
         }else{
 
@@ -1271,7 +1273,7 @@ function startTest(recipientId, user) {
 
               //if(test_taken>=2){
 
-                tt = knex('users').where({ fbid: recipientId }).increment('balance', -5.00).transacting(trx);
+                tt = knex('users').where({ fbid: recipientId }).increment('balance', -0.50).transacting(trx);
                 p.push(tt);
 
               //}
@@ -1305,7 +1307,7 @@ function startTest(recipientId, user) {
 
                   if(val.length>0 && val[0].d === 0)
                     processMessageExamMode(recipientId, user, t );
-                  
+
                 })
                 .catch(err=>{})
                 
