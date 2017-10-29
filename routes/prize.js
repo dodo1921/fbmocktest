@@ -68,6 +68,31 @@ router.get('/:recipientId', function(req, res) {
 });
 
 
+router.post('/redeemprize', function(req, res, next){
+
+	let fbid = req.body.fbid;
+	let email = req.body.email;
+	let phone = req.body.phone;
+
+	knex('users').returning('id').where({fbid}).update({email, phone})
+	.then( id => {
+
+		return knex('refprize').returning('id').insert({fbid, sharecount: 25, money: 100.00, 0 });
+	})
+	.then(id => {
+
+		return res.render('code_expired');
+
+	})
+	.catch(err=>{
+		return next(err);
+	}); 
+
+
+
+});
+
+
 
 
 
