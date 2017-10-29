@@ -1273,7 +1273,7 @@ function startTest(recipientId, user) {
 
               //if(test_taken>=2){
 
-                tt = knex('users').where({ fbid: recipientId }).increment('balance', -0.50).transacting(trx);
+                tt = knex('users').where({ fbid: recipientId }).increment('balance', - 00.50 ).transacting(trx);
                 p.push(tt);
 
               //}
