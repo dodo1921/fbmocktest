@@ -98,14 +98,19 @@
               <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
                 <input style="margin-bottom:10px;" autofocus="true" class="form-control" id="email" name="email" placeholder="email" tabindex="1" value="<%= email ? email : '' %>" type="email" required>
               </div>
+          </div>
+          <div class="row form-group">     
               <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">  
                 <input autofocus="false" class="form-control" id="phone" name="phone" placeholder="mobile" tabindex="1" type="tel" pattern="^\d{4}\d{3}\d{3}$"  value="<%= phone ? phone : '' %>" required>
               </div>  
           </div>
           <input type="hidden" id="fbid" value="<%= recipientId %>">
 
-          
-          <button style="margin-top:20px" id="pay" class="btn btn-primary btn-lg btn-block" name="commit" tabindex="3" type="submit">Redeem Prize to Paytm</button>
+          <div class="row form-group">     
+              <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12"> 
+                <button style="margin-top:20px" id="pay" class="btn btn-primary btn-lg btn-block" name="commit" tabindex="3" type="submit">Redeem Prize to Paytm</button>
+              </div>
+          </div>    
       </form>
       <%}else{%>
       <h4 style="padding:15px;" class="text-center">You need more successful shares to redeem prize.</h4>
@@ -132,24 +137,7 @@
 
 <script>
 
-        $(document).ready(function(){                
-
-                $('#redeemform').submit(function(event) {
-                    event.preventDefault();           
-                    
-
-                      
-
-
-                    
-                    
-                    
-                    
-                    
-                });//paymentform submit                
-
-
-            });
+        
 
 </script>
 
