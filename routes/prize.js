@@ -47,7 +47,7 @@ router.get('/:recipientId', function(req, res) {
 						pending_share -= records[i].sharecount;
 					}
 
-					if(pending_share>=2)
+					if(pending_share>=25)
 						eligible = true;
 
 
