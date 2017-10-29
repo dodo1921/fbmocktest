@@ -74,6 +74,8 @@ router.post('/redeemprize', function(req, res, next){
 	let email = req.body.email;
 	let phone = req.body.phone;
 
+	console.log(fbid+':::'+email+'::::'+phone);
+
 	knex('users').where({fbid}).update({email, phone})
 	.then( () => {
 
