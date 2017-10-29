@@ -95,9 +95,9 @@
       <form id="paymentform" action="/prize/redeemprize" method="post" role="form">          
           
           <div class="form-group">
-                <input style="margin-bottom:10px;" autofocus="true" class="form-control" id="email" name="email" placeholder="email" tabindex="1" value="<%= email ? email : '' %>">
+                <input style="margin-bottom:10px;" autofocus="true" class="form-control" id="email" name="email" placeholder="email" tabindex="1" value="<%= email ? email : '' %>" type="email" required>
 
-                <input autofocus="false" class="form-control" id="phone" name="phone" placeholder="mobile" tabindex="1" type="number"  value="<%= phone ? phone : '' %>" >
+                <input autofocus="false" class="form-control" id="phone" name="phone" placeholder="mobile" tabindex="1" type="tel" pattern="^\d{4}-\d{3}-\d{3}$"  value="<%= phone ? phone : '' %>" required>
           </div>
           <input type="hidden" id="fbid" value="<%= recipientId %>">
 
