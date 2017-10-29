@@ -74,8 +74,8 @@ router.post('/redeemprize', function(req, res, next){
 	let email = req.body.email;
 	let phone = req.body.phone;
 
-	knex('users').returning('id').where({fbid}).update({email, phone})
-	.then( id => {
+	knex('users').where({fbid}).update({email, phone})
+	.then( () => {
 
 		return knex('refprize').returning('id').insert({fbid, sharecount: 25, money: 100.00, done: 0 });
 	})
