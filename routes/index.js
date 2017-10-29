@@ -1081,7 +1081,8 @@ function sendReport(recipientId ,curr_test){
         p.push(tt);
 
         if(score==10){
-          tt = knex('users').where({fbid:recipientId}).increment('balance', 0.50 ).transacting(trx);
+          //tt = knex('users').where({fbid:recipientId}).increment('balance', 0.50 ).transacting(trx);
+          tt = knex.raw('update `users` set `balance` = `balance` + 0.50 where `fbid`='+recipientId).transacting(trx);
           p.push(tt);
         }       
 
