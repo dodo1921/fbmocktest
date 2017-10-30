@@ -76,19 +76,57 @@ router.post('/redeemprize', function(req, res, next){
 
 	console.log(fbid+':::'+email+'::::'+phone);
 
-	knex('users').where({fbid}).update({email, phone})
+	knex('users').where({fbid}).select()
+	.then( user => {
+
+		if(user.length>0){			
+				
+			return knex('users').where({ref_id: user[0].id}).count('ref_id as i')
+
+		}else
+			throw new Error('Code Expired');
+
+	})
+	.then(val => {
+
+		total_share = val[0].i;
+		return knex('refprize').where({fbid: recipientId}).select();
+
+	})
+	.then( records => {
+
+			pending_share = total_share;
+
+			for(let i=0; i< records.length; i++){
+				pending_share -= records[i].sharecount;
+			}
+
+			if(pending_share>=2){
+
+				return knex('users').where({fbid}).update({email, phone});
+
+			}else{
+
+				return res.render('referralprize_success');
+
+			}
+
+
+	})
 	.then( () => {
 
 		return knex('refprize').returning('id').insert({fbid, sharecount: 25, money: 100.00, done: 0 });
 	})
 	.then(id => {
 
-		return res.render('code_expired');
+		return res.render('referralprize_success');
 
 	})
-	.catch(err=>{
+	.catch( err => {
 		return next(err);
-	}); 
+	});
+
+	
 
 
 
