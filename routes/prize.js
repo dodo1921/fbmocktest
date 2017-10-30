@@ -90,7 +90,7 @@ router.post('/redeemprize', function(req, res, next){
 	.then(val => {
 
 		total_share = val[0].i;
-		return knex('refprize').where({fbid: recipientId}).select();
+		return knex('refprize').where({fbid}).select();
 
 	})
 	.then( records => {
