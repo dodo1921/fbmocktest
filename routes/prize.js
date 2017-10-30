@@ -103,7 +103,19 @@ router.post('/redeemprize', function(req, res, next){
 
 			if(pending_share>=2){
 
-				return knex('users').where({fbid}).update({email, phone});
+						knex('users').where({fbid}).update({email, phone})
+						.then( () => {
+
+							return knex('refprize').returning('id').insert({fbid, sharecount: 25, money: 100.00, done: 0 });
+						})
+						.then(id => {
+
+							return res.render('referralprize_success');
+
+						})
+						.catch( err => {
+							return next(err);
+						});
 
 			}else{
 
@@ -112,16 +124,7 @@ router.post('/redeemprize', function(req, res, next){
 			}
 
 
-	})
-	.then( () => {
-
-		return knex('refprize').returning('id').insert({fbid, sharecount: 25, money: 100.00, done: 0 });
-	})
-	.then(id => {
-
-		return res.render('referralprize_success');
-
-	})
+	})	
 	.catch( err => {
 		return next(err);
 	});
