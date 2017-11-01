@@ -1146,7 +1146,10 @@ function startTest(recipientId, user) {
 
                 while(flag){
 
-                  t = Math.floor(Math.random() * (maxqa - 1 + 1)) + 1;
+                  if(test_taken < 2)
+                    t = Math.floor(Math.random() * (202 - 182 + 1)) + 182;
+                  else
+                    t = Math.floor(Math.random() * (maxqa - 1 + 1)) + 1;
                   flag=false;
                   for(let j=0; j<qa.length; j++){
                     if(qa[j] == t){
