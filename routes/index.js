@@ -1152,7 +1152,7 @@ function startTest(recipientId, user) {
 
         test_taken = val[0].i;
 
-        if( user.balance < 5 ){
+        if( user.balance < 0.5 ){
 
           throw new Error('Not enough balance. Please add money to start test.\nA test costs just 50 paisa.');          
           
