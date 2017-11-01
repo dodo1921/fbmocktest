@@ -110,26 +110,44 @@ function firstTimeUserComes(event, first_name, last_name, profile_pic, timeOfEve
       }
     }; 
 
-    callSendAPI(messageData);
+    //callSendAPI(messageData);
 
-    knex('users').returning('id').insert({fbid: event.sender.id, first_name, last_name, profile_pic, balance: 5.50 })
-    .then( id => {                
-        
-        if (event.message) {
-          console.log('Here1');
-          receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 5.50 } , timeOfEvent);          
-        } else if (event.postback) {
-          console.log('Here2');
-          receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 5.50 } , timeOfEvent);          
-        }else if (event.referral) {
-          receivedReferral(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 5.50 }, timeOfEvent);         
-        } else {
-          console.log("Webhook received unknown event: ", event);
-        }
+    request({
+      uri: 'https://graph.facebook.com/v2.6/me/messages',
+      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+      method: 'POST',
+      json: messageData
 
-    }).catch(err => {
+    }, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+          
+            knex('users').returning('id').insert({fbid: event.sender.id, first_name, last_name, profile_pic, balance: 5.50 })
+            .then( id => {                
+                
+                if (event.message) {
+                  console.log('Here1');
+                  receivedMessage(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 5.50 } , timeOfEvent);          
+                } else if (event.postback) {
+                  console.log('Here2');
+                  receivedPostback(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 5.50 } , timeOfEvent);          
+                }else if (event.referral) {
+                  receivedReferral(event, { id: id[0], fbid: event.sender.id, mode: 'A', score: 0 , balance: 5.50 }, timeOfEvent);         
+                } else {
+                  console.log("Webhook received unknown event: ", event);
+                }
 
+            }).catch(err => {
+
+            });
+
+      } else {
+        console.error("Unable to send message.");
+        //console.error(response);
+        console.error(error);
+      }
     });
+
+    
 
 }
 
@@ -589,7 +607,7 @@ function sendLeaderBoardLink(recipientId, user) {
     //+'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
     //+'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
     //+'\n\n5 Top scorers of a month will each receive 1000 rupees CASH prize.'
-    +'\n\nWin 50 rupees for 10 successful referral. Refer using the Share link.';
+    +'\n\nWin 50 rupees PAYTM CASH for 10 successful referral. Refer using the Share link.';
     //+'\n\nTo redeem prize go to the Score>Referral Prize.'; 
 
     var messageData = {
@@ -978,7 +996,7 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
           elements:[
             {
               title: 'Share Mock Test',
-              subtitle: 'Win 50 rupees for 10 successful referrals. Use the share link below to refer.',
+              subtitle: 'Win 50 rupees PAYTM CASH for 10 successful referrals. Use the share link below to refer.',
               image_url:'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
               buttons: [
                 {
@@ -1061,7 +1079,7 @@ function sendReport(recipientId ,curr_test){
   }
 
   messageText+='\nScore:'+score+'/10'
-  +'\n\nWin 50 rupees for 10 successful referral. Refer using the Share link.';
+  +'\n\nWin 50 rupees PAYTM CASH for 10 successful referral. Refer using the Share link.';
   //+'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
   //+'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
   //+'\n\n5 Top scorers of a month will each receive 1000 rupees CASH prize.';
