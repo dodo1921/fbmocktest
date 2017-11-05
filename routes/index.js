@@ -26,7 +26,7 @@ router.get('/sundaychallenge', function(req, res) {
 
   for(let i=0; i<users.length; i++){
 
-    sendMsgModeA(users[i].fbid, 'Hello');
+    sendMsgModeA(users[i].fbid, 'Sunday Challenge\n12p.m to 12p.m\n\nTop scorer of the day wins 5000 rupees Paytm Cash.\n\n\nAlso Win 1000 rupees Paytm CASH for 200 facebook messenger shares. Share using Score>Share link.');
 
   }
 
