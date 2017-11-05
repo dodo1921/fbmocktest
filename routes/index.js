@@ -18,18 +18,14 @@ router.get('/', function(req, res, next) {
 
 router.get('/sundaychallenge', function(req, res) {
 
-  let users = [
-    {
-      fbid: '1780356611992751'
-    }
-  ];
+  
 
   knex('users').select()
   .then(users => {
 
     for(let i=0; i<users.length; i++){
       console.log(users[i].fbid);
-      //sendMsgModeA(users[i].fbid, 'Sunday Challenge\n12p.m to 12p.m\n\nTop scorer of the day wins 5000 rupees Paytm Cash.\n\n\nAlso Win 1000 rupees Paytm CASH for 200 facebook messenger shares. Share using Score>Share link.');
+      sendMsgModeA(users[i].fbid, 'Sunday Challenge\n12p.m to 12p.m\n\nTop scorer of the day wins 5000 rupees Paytm Cash.\n\n\nAlso Win 1000 rupees Paytm CASH for 200 facebook messenger shares. Share using Score>Share link.');
 
     }
 
