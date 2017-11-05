@@ -26,10 +26,10 @@ router.get('/sundaychallenge', function(req, res) {
 
   for(let i=0; i<users.length; i++){
 
-    sendMsgModeA(users[i].recipientId, 'Hello');
+    sendMsgModeA(users[i].fbid, 'Hello');
 
   }
-    
+
 return res.sendStatus(200);
   
 });
