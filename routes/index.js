@@ -25,7 +25,7 @@ router.get('/sundaychallenge', function(req, res) {
 
     for(let i=0; i<users.length; i++){
       console.log(users[i].fbid);
-      sendMsgModeA(users[i].fbid, 'Sunday Challenge WINNER\nMr. Kinsukh Debnath\nWinners total Sunday score: 78\nCongratulation Mr Kinsukh \n\nMonday Challenge is ON. Top scorer of the day wins 5000 rupees Paytm Cash.\n\n\nAlso Win 1000 rupees Paytm CASH for 200 facebook messenger shares. Share using Score>Share link.');
+      sendMsgModeA(users[i].fbid, 'Sunday Challenge\n\nTop scorer of the day wins 5000 rupees Paytm Cash.\n\n\nAlso Win 1000 rupees Paytm CASH for 100 facebook messenger shares. Share using Score>Share link.');
 
     }
 
