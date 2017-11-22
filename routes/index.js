@@ -631,7 +631,7 @@ function sendLeaderBoardLink(recipientId, user) {
     //+'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
     //+'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
     //+'\n\n5 Top scorers of a month will each receive 1000 rupees CASH prize.'
-    +'\n\nWin 1000 rupees PAYTM CASH for 200 successful referral. Refer using the Share link.';
+    +'\n\nWin 50 rupees PAYTM CASH for 5 successful referral. Refer using the Share link.';
     //+'\n\nTo redeem prize go to the Score>Referral Prize.'; 
 
     var messageData = {
@@ -1020,7 +1020,7 @@ function sendShareAndSolutionMsg(recipientId, curr_test){
           elements:[
             {
               title: 'Share Mock Test',
-              subtitle: 'Win 1000 rupees PAYTM CASH for 200 successful referrals. Use the share link below to refer.',
+              subtitle: 'Win 50 rupees PAYTM CASH for 5 successful referrals. Use the share link below to refer.',
               image_url:'https://s3.ap-south-1.amazonaws.com/fbmock/cover1.jpg',
               buttons: [
                 {
@@ -1103,7 +1103,7 @@ function sendReport(recipientId ,curr_test){
   }
 
   messageText+='\nScore:'+score+'/10'
-  +'\n\nWin 1000 rupees PAYTM CASH for 200 successful referral. Refer using the Share link.';
+  +'\n\nWin 50 rupees PAYTM CASH for 5 successful referral. Refer using the Share link. Get prize at Score>Referral Prize.';
   //+'\n\n5 Top scorers of a day will each receive 50 rupees CASH prize.'
   //+'\n\n5 Top scorers of a week will each receive 150 rupees CASH prize.'
   //+'\n\n5 Top scorers of a month will each receive 1000 rupees CASH prize.';

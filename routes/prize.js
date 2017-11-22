@@ -47,7 +47,7 @@ router.get('/:recipientId', function(req, res) {
 						pending_share -= records[i].sharecount;
 					}
 
-					if(pending_share>=200)
+					if(pending_share>=5)
 						eligible = true;
 
 
@@ -101,12 +101,12 @@ router.post('/redeemprize', function(req, res, next){
 				pending_share -= records[i].sharecount;
 			}
 
-			if(pending_share>=200){
+			if(pending_share>=5){
 
 						knex('users').where({fbid}).update({email, phone})
 						.then( () => {
 
-							return knex('refprize').returning('id').insert({fbid, sharecount: 200, money: 1000.00, done: 0 });
+							return knex('refprize').returning('id').insert({fbid, sharecount: 5, money: 50.00, done: 0 });
 						})
 						.then(id => {
 
